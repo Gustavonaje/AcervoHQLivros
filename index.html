@@ -364,25 +364,30 @@ const CSS = `
   .topo-in .busca{order:3;width:100%;min-width:0;}
   .btn-icone{min-width:38px;min-height:38px;}
 
-  /* Abas maiores, roláveis e fixas no topo: eram o que mais se procurava
-     e o que estava mais escondido. */
-  .abas{position:sticky;top:0;z-index:40;overflow-x:auto;flex-wrap:nowrap;
-    scrollbar-width:none;border-radius:0;margin:0 -10px;padding:6px 10px;
-    background:rgba(20,17,32,.96);backdrop-filter:blur(12px);
-    border-left:0;border-right:0;}
-  .abas::-webkit-scrollbar{display:none;}
-  .aba{flex-shrink:0;min-height:40px;padding:0 13px;font-size:13.5px;}
-  .aba .cont{display:none;}
-  .aba.ativa .cont{display:inline;}
+  /* As abas viram menu: sete destinos numa tira rolável nunca ficavam
+     visíveis ao mesmo tempo. */
+  .barra-cel{display:flex;gap:8px;position:sticky;top:0;z-index:40;
+    padding:8px 0;background:rgba(20,17,32,.96);backdrop-filter:blur(12px);}
+  .cel-menu{flex:1;justify-content:flex-start;min-height:42px;gap:9px;}
+  .cel-menu b{font-size:14.5px;font-weight:600;}
+  .cel-menu em{font-family:var(--mono);font-size:9px;font-style:normal;
+    color:var(--papel3);padding:2px 6px;border-radius:4px;background:var(--tinta3);}
+  .cel-filtro{min-height:42px;}
+  .cel-filtro.ativo{border-color:var(--amarelo);color:var(--amarelo);}
 
-  /* Filtros numa linha rolável em vez de cinco fileiras empilhadas. */
-  .barra{padding:10px 0;gap:6px;flex-wrap:nowrap;overflow-x:auto;
-    scrollbar-width:none;}
-  .barra::-webkit-scrollbar{display:none;}
-  .barra > *{flex-shrink:0;}
-  .barra .btn,.barra .chip,.barra .sel{min-height:36px;}
-  .chips{overflow-x:visible;flex-wrap:nowrap;}
-  .chip{flex-shrink:0;}
+  .gaveta-item.ativo{background:rgba(242,179,61,.12);color:var(--amarelo);}
+  .gaveta-sub{display:flex;gap:6px;flex-wrap:wrap;padding:2px 0 8px 40px;}
+
+  /* a barra de abas some; os filtros só aparecem quando você pede */
+  .abas{display:none;}
+  .barra{display:none;}
+  .barra.cel-aberta{display:flex;flex-direction:column;align-items:stretch;
+    gap:8px;padding:10px 0 14px;border-bottom:1px solid var(--linha);margin-bottom:8px;}
+  .barra.cel-aberta > *{width:100%;}
+  .barra.cel-aberta .chips{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap;}
+  .barra.cel-aberta .chips::-webkit-scrollbar{display:none;}
+  .barra.cel-aberta .btn,.barra.cel-aberta .chip,.barra.cel-aberta .sel{min-height:40px;}
+  .barra.cel-aberta .stat{display:none;}
   .contagem{display:none;}
 
   .grade{grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;}
@@ -575,6 +580,23 @@ const CSS = `
 .rev-op:hover{border-color:var(--ciano);background:rgba(49,187,217,.08);}
 .rev-op b{font-size:15px;font-weight:600;flex:1;}
 .rev-op em{font-family:var(--mono);font-size:9px;font-style:normal;color:var(--papel3);}
+
+/* a barra do celular não existe no computador, onde tudo cabe na tela */
+.barra-cel{display:none;}
+
+/* gaveta que sobe de baixo: o menu de abas do celular */
+.gaveta-fundo{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.55);
+  display:flex;align-items:flex-end;}
+.gaveta{width:100%;max-height:82vh;overflow-y:auto;background:var(--tinta2);
+  border-top:1px solid var(--linha);border-radius:16px 16px 0 0;
+  padding:8px 12px calc(16px + env(safe-area-inset-bottom));animation:sobe .18s ease;}
+@keyframes sobe{from{transform:translateY(100%);}to{transform:none;}}
+.gaveta-alca{display:block;width:38px;height:4px;border-radius:2px;background:var(--tinta4);
+  margin:4px auto 12px;}
+.gaveta-item{display:flex;align-items:center;gap:12px;width:100%;padding:13px 10px;
+  background:none;border:none;color:var(--papel);font-size:15px;border-radius:9px;text-align:left;}
+.gaveta-item:active{background:var(--tinta3);}
+.gaveta-item b{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--papel3);font-weight:400;}
 
 .porta{position:fixed;inset:0;z-index:200;background:var(--tinta);display:flex;
   align-items:center;justify-content:center;padding:20px;}
@@ -1121,7 +1143,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "2.3", data: "20/09/2026", nota: "celular" };
+const VERSAO = { numero: "2.4", data: "20/09/2026", nota: "menu no celular" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -5284,6 +5306,11 @@ function MapaAnos({ mapa, anoAberto, capas, aoAbrirAno, aoAbrirSerie }) {
   );
 }
 
+const ROTULO_ABA = {
+  estante: "Estante", desejos: "Desejos", colecoes: "Coleções", series: "Séries",
+  personagens: "Personagens", listas: "Listas", relatorios: "Relatórios",
+};
+
 const ROTULO_PARTE = {
   itens: "títulos", colecoes: "coleções", listas: "listas", series: "séries",
   eventos: "eventos", eras: "eras", personagens: "personagens",
@@ -6019,6 +6046,10 @@ function Acervo() {
      sessão, tudo o que você fizer fica só naquele aparelho. Então a entrada
      pede o login — com saída para quem precisar trabalhar solto. */
   const [semNuvem, setSemNuvem] = useState(false);
+  /* Só no celular: as abas viram um menu e os filtros ficam atrás de um
+     botão. No computador nada disso aparece — lá a barra inteira cabe. */
+  const [menuCel, setMenuCel] = useState(false);
+  const [filtrosCel, setFiltrosCel] = useState(false);
   const [nuvemOcupada, setNuvemOcupada] = useState("");
   const [nuvemEm, setNuvemEm] = useState(null);
   const partesSujas = useRef(new Set());
@@ -7609,7 +7640,7 @@ function Acervo() {
   }, [pagina, paginaAtual]);
 
   // mudar de aba ou de recorte recomeça a paginação
-  useEffect(() => { setPagina(1); }, [aba, fSerie, fSit, busca, vistaSeries, vistaPers]);
+  useEffect(() => { setPagina(1); setFiltrosCel(false); }, [aba, fSerie, fSit, busca, vistaSeries, vistaPers]);
 
   const paginados = useMemo(() => {
     if (!porPagina) return visiveis;
@@ -7830,7 +7861,66 @@ function Acervo() {
         )}
       </div>
 
-      <div className="barra">
+      {/* barra do celular: menu de abas e botão de filtros */}
+      <div className="barra-cel">
+        <button className="btn cel-menu" onClick={() => setMenuCel(true)}>
+          <Menu size={16} />
+          <b>{ROTULO_ABA[aba] || "Acervo"}</b>
+          {aba === "series" && vistaSeries === "mapa" && <em>mapa</em>}
+          {aba === "personagens" && vistaPers === "linhas" && <em>linhas do tempo</em>}
+        </button>
+        <button className={`btn cel-filtro ${temFiltro ? "ativo" : ""}`} onClick={() => setFiltrosCel(!filtrosCel)}>
+          <ListFilter size={15} />
+          {filtrosCel ? "fechar" : "filtrar"}
+        </button>
+      </div>
+
+      {menuCel && (
+        <div className="gaveta-fundo" onClick={() => setMenuCel(false)}>
+          <div className="gaveta" onClick={(e) => e.stopPropagation()}>
+            <i className="gaveta-alca" />
+            {[
+              ["estante", "Estante", Library, numeros.estante],
+              ["desejos", "Desejos", Heart, numeros.desejos],
+              ["colecoes", "Coleções", Package, numeros.colecoes],
+              ["series", "Séries", Globe, series.length],
+              ["personagens", "Personagens", Users, personagens.length],
+              ["listas", "Listas", BookOpen, listas.length],
+              ["relatorios", "Relatórios", BarChart3, null],
+            ].map(([id, rot, Ico, n]) => (
+              <div key={id}>
+                <button
+                  className={`gaveta-item ${aba === id ? "ativo" : ""}`}
+                  onClick={() => { setAba(id); setFColecao(""); setMenuCel(false); window.scrollTo(0, 0); }}
+                >
+                  <Ico size={18} /> <span>{rot}</span>
+                  {n != null && <b>{n}</b>}
+                </button>
+
+                {/* as vistas de dentro da aba, quando houver */}
+                {aba === id && id === "series" && (
+                  <div className="gaveta-sub">
+                    {[["lista", "Lista"], ["mapa", "Mapa no tempo"]].map(([v, r]) => (
+                      <button key={v} className={`chip ${vistaSeries === v ? "ativo" : ""}`}
+                              onClick={() => { setVistaSeries(v); setMenuCel(false); }}>{r}</button>
+                    ))}
+                  </div>
+                )}
+                {aba === id && id === "personagens" && (
+                  <div className="gaveta-sub">
+                    {[["lista", "Personagens"], ["linhas", "Linhas do tempo"]].map(([v, r]) => (
+                      <button key={v} className={`chip ${vistaPers === v ? "ativo" : ""}`}
+                              onClick={() => { setVistaPers(v); setMenuCel(false); }}>{r}</button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className={`barra ${filtrosCel ? "cel-aberta" : ""}`}>
         <div className="abas">
           <button className={`aba ${aba === "estante" ? "ativa" : ""}`} onClick={() => { setAba("estante"); setFColecao(""); }}>
             <Library size={15} /> Estante <span className="cont">{numeros.estante}</span>
