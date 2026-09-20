@@ -354,6 +354,11 @@ const CSS = `
 /* ── ajustes de celular ──────────────────────────────────────
    O app nasceu para tela grande; hospedado, passou a ser usado no
    telefone de verdade. */
+/* a barra do celular não existe no computador; a regra precisa vir ANTES
+   do bloco de celular, senão anula o menu — mesmo tropeço da barra
+   inferior, meses atrás */
+.barra-cel{display:none;}
+
 @media (max-width:760px){
   .acv{padding:8px 10px 28px;}
 
@@ -581,9 +586,6 @@ const CSS = `
 .rev-op:hover{border-color:var(--ciano);background:rgba(49,187,217,.08);}
 .rev-op b{font-size:15px;font-weight:600;flex:1;}
 .rev-op em{font-family:var(--mono);font-size:9px;font-style:normal;color:var(--papel3);}
-
-/* a barra do celular não existe no computador, onde tudo cabe na tela */
-.barra-cel{display:none;}
 
 /* gaveta que sobe de baixo: o menu de abas do celular */
 .gaveta-fundo{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.55);
@@ -1144,7 +1146,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "2.5", data: "20/09/2026", nota: "menu no celular" };
+const VERSAO = { numero: "2.6", data: "20/09/2026", nota: "correção: nunca grava vazio" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -6170,6 +6172,8 @@ function Acervo() {
 
   const salvaguarda = useCallback(async (manual) => {
     if (!carregado.current) return;
+    // nunca grava uma cópia vazia por cima de uma boa
+    if (!itens.length && !metaSeries.length && !manual) return;
     const dados = {
       versao: 2, itens, colecoes, listas, series: metaSeries, eventos, eras,
       personagens: metaPers, linhasTempo, gruposSerie, capas,
@@ -6257,8 +6261,14 @@ function Acervo() {
       const somaN = PARTES.reduce((n, k) => n + daNuvem[k], 0);
       const somaL = PARTES.reduce((n, k) => n + local[k], 0);
 
-      // nuvem vazia: nada a trazer, e o envio fica por sua conta
-      if (!somaN) { setNuvemOcupada(""); return "nuvem-vazia"; }
+      /* Nuvem vazia com acervo aqui é sinal de alerta, não de rotina: pode
+         ser conta errada, sessão de outro usuário, ou falha na leitura.
+         Nunca apaga nada — e avisa em vez de deixar você concluir que
+         perdeu tudo. */
+      if (!somaN) {
+        setNuvemOcupada("");
+        return somaL ? "nuvem-vazia-com-local" : "nuvem-vazia";
+      }
 
       // aqui está vazio: traz sem perguntar, não há o que perder
       if (!somaL) { aplicarDaNuvem(d); setNuvemOcupada(""); avisar(`Acervo carregado da nuvem: ${daNuvem.itens} itens.`); return "trazido"; }
@@ -6281,7 +6291,11 @@ function Acervo() {
     if (!sessao || !carregado.current || jaPuxou.current) return;
     jaPuxou.current = true;
     puxarDaNuvem().then((r) => {
-      if (r === "nuvem-vazia") avisar("A nuvem está vazia. Use “Enviar os dados agora” para a primeira carga.");
+      if (r === "nuvem-vazia") {
+        avisar("A nuvem está vazia. Use “Enviar os dados agora” para a primeira carga.");
+      } else if (r === "nuvem-vazia-com-local") {
+        avisar("A nuvem respondeu vazia, mas o acervo daqui está intacto. Confira a conta antes de enviar.");
+      }
     });
   }, [sessao, puxarDaNuvem, avisar]);
 
@@ -6318,19 +6332,11 @@ function Acervo() {
   useEffect(() => {
     if (!carregado.current) return;
     const t = setTimeout(() => {
-      /* Com nuvem ou arquivo, a cópia no navegador é só conveniência — e é
-         ela que estoura o espaço e derrubava o login. Nesses casos, grava
-         apenas um resumo, o bastante para o app abrir sabendo de onde
-         puxar o resto. */
-      const soResumo = !!(sessao || arquivo);
-      if (soResumo) {
-        disco.gravar(CHAVE, JSON.stringify({
-          versao: 2, resumo: true, itens: [], colecoes: [], listas: [],
-          series: [], eventos: [], eras: [], personagens: [], linhasTempo: [], gruposSerie: [],
-        })).catch(() => {});
-        return;
-      }
-
+      /* Nunca grava vazio. A versão anterior escrevia um conjunto sem nada
+         quando havia nuvem ou arquivo, para poupar espaço — e bastava a
+         nuvem demorar para o acervo parecer ter sumido. A cópia local
+         continua sendo tentada; se não couber, ela falha e a anterior fica
+         onde está, servindo de rede. */
       gravarDados(itens, colecoes, listas, metaSeries, eventos, eras, metaPers, linhasTempo, gruposSerie)
         .then(() => { if (cacheCheio.current) { cacheCheio.current = false; } })
         .catch((e) => {
