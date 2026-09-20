@@ -554,6 +554,25 @@ const CSS = `
 .rev-op b{font-size:15px;font-weight:600;flex:1;}
 .rev-op em{font-family:var(--mono);font-size:9px;font-style:normal;color:var(--papel3);}
 
+.porta{position:fixed;inset:0;z-index:200;background:var(--tinta);display:flex;
+  align-items:center;justify-content:center;padding:20px;}
+.porta-caixa{width:100%;max-width:340px;}
+.porta-marca{font-family:var(--disp);font-size:30px;font-weight:800;letter-spacing:-.03em;margin:0 0 2px;
+  background:linear-gradient(92deg,var(--ciano),var(--magenta) 55%,var(--amarelo));
+  -webkit-background-clip:text;background-clip:text;color:transparent;}
+.porta-btn{width:100%;justify-content:center;margin-top:14px;min-height:44px;}
+.porta-sair{display:block;margin:12px auto 0;}
+
+.cmp{border:1px solid var(--linha);border-radius:9px;overflow:hidden;}
+.cmp-cab,.cmp-linha{display:grid;grid-template-columns:1fr 84px 84px;align-items:center;
+  padding:7px 12px;font-size:13px;}
+.cmp-cab{background:var(--tinta3);font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--papel3);}
+.cmp-cab b,.cmp-linha b{text-align:right;font-family:var(--mono);}
+.cmp-linha{border-top:1px solid var(--linha);}
+.cmp-linha b.mais{color:var(--verde);}
+.cmp-linha b.menos{color:var(--papel3);opacity:.6;}
+
 .ponto-sit{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .ponto-sit.publicando{background:var(--amarelo);}
 .ponto-sit.encerrada{background:var(--verde);}
@@ -5243,6 +5262,108 @@ function MapaAnos({ mapa, anoAberto, capas, aoAbrirAno, aoAbrirSerie }) {
   );
 }
 
+const ROTULO_PARTE = {
+  itens: "títulos", colecoes: "coleções", listas: "listas", series: "séries",
+  eventos: "eventos", eras: "eras", personagens: "personagens",
+  linhasTempo: "linhas do tempo", gruposSerie: "grupos",
+};
+
+function PortaDeEntrada({ ocupado, aoEntrar, aoSeguirSemNuvem }) {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const pronto = email.trim() && senha && !ocupado;
+
+  return (
+    <div className="porta">
+      <div className="porta-caixa">
+        <h1 className="porta-marca">Acervo</h1>
+        <p className="dica" style={{ margin: "0 0 16px" }}>
+          Entre para sincronizar com a nuvem. Sem isso, o que você fizer fica só neste aparelho.
+        </p>
+
+        <div className="campo largo">
+          <label>E-mail</label>
+          <input value={email} onChange={(e) => setEmail(e.target.value.trim())}
+                 type="email" autoComplete="username" autoFocus />
+        </div>
+        <div className="campo largo" style={{ marginTop: 8 }}>
+          <label>Senha</label>
+          <input value={senha} onChange={(e) => setSenha(e.target.value)}
+                 type="password" autoComplete="current-password"
+                 onKeyDown={(e) => { if (e.key === "Enter" && pronto) aoEntrar(email, senha); }} />
+        </div>
+
+        <button className="btn btn-primario porta-btn" disabled={!pronto}
+                onClick={() => aoEntrar(email, senha)}>
+          <Check size={15} /> {ocupado || "Entrar"}
+        </button>
+
+        <button className="btn-mini-link porta-sair" onClick={aoSeguirSemNuvem}>
+          seguir sem a nuvem, só neste aparelho
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function EscolherLado({ nuvem: cN, local: cL, aoUsarNuvem, aoUsarLocal, aoFechar }) {
+  const linhas = Object.keys(ROTULO_PARTE).filter((k) => (cN[k] || 0) !== (cL[k] || 0));
+  const somaN = Object.values(cN).reduce((a, b) => a + b, 0);
+  const somaL = Object.values(cL).reduce((a, b) => a + b, 0);
+  const nuvemMaior = somaN > somaL;
+
+  return (
+    <Modal
+      titulo="Os dois lados estão diferentes"
+      aoFechar={aoFechar}
+      rodape={
+        <>
+          <button className={`btn ${nuvemMaior ? "btn-primario" : ""}`} onClick={aoUsarNuvem}>
+            <Download size={14} /> Trazer da nuvem
+          </button>
+          <button className={`btn ${!nuvemMaior ? "btn-primario" : ""}`} onClick={aoUsarLocal}>
+            <Upload size={14} /> Enviar o daqui
+          </button>
+          <button className="btn btn-mini" style={{ marginLeft: "auto" }} onClick={aoFechar}>
+            decidir depois
+          </button>
+        </>
+      }
+    >
+      <p className="dica" style={{ marginTop: 0 }}>
+        {nuvemMaior
+          ? "A nuvem tem mais coisas que este aparelho — provavelmente você mexeu em outro lugar."
+          : "Este aparelho tem mais coisas que a nuvem — provavelmente você mexeu aqui sem estar conectado."}
+        {" "}Nada foi alterado ainda. Escolhendo um lado, o outro é substituído.
+      </p>
+
+      <div className="cmp">
+        <div className="cmp-cab">
+          <span />
+          <b>na nuvem</b>
+          <b>aqui</b>
+        </div>
+        {linhas.map((k) => {
+          const n = cN[k] || 0, l = cL[k] || 0;
+          return (
+            <div className="cmp-linha" key={k}>
+              <span>{ROTULO_PARTE[k]}</span>
+              <b className={n > l ? "mais" : n < l ? "menos" : ""}>{n}</b>
+              <b className={l > n ? "mais" : l < n ? "menos" : ""}>{l}</b>
+            </div>
+          );
+        })}
+        {!linhas.length && <p className="dica">As contagens batem; a diferença está no conteúdo.</p>}
+      </div>
+
+      <p className="dica" style={{ marginTop: 10 }}>
+        Em dúvida, escolha "decidir depois" e guarde uma cópia local pelo painel da nuvem — aí nenhum
+        dos dois se perde enquanto você confere.
+      </p>
+    </Modal>
+  );
+}
+
 function PainelNuvem({ sessao, cfg, ocupado, capas, naNuvem, backupAuto, backupEm, arquivo,
                       aoConfigurar, aoEntrar, aoCriar, aoSair, aoTrocarBackup, aoSalvaguarda,
                       aoEnviarTudo, aoEnviarCapas, aoBaixarCapas, aoFechar, aoAvisar }) {
@@ -5872,6 +5993,10 @@ function Acervo() {
   const [cfgNuvem, setCfgNuvem] = useState(() => lerConfigNuvem());
   const [sessao, setSessao] = useState(null);
   const [painelNuvem, setPainelNuvem] = useState(false);
+  /* Mexendo no computador e no celular, entrar deixou de ser opcional: sem
+     sessão, tudo o que você fizer fica só naquele aparelho. Então a entrada
+     pede o login — com saída para quem precisar trabalhar solto. */
+  const [semNuvem, setSemNuvem] = useState(false);
   const [nuvemOcupada, setNuvemOcupada] = useState("");
   const [nuvemEm, setNuvemEm] = useState(null);
   const partesSujas = useRef(new Set());
@@ -6040,40 +6165,70 @@ function Acervo() {
 
   /* Ao conectar, a nuvem manda: traz o que está lá. Vazia, recebe o que
      está aqui — é a primeira carga. */
+
+  /* Antes de sobrescrever qualquer lado, compara. Mexendo no computador e
+     no celular, a nuvem vencer calada apagaria trabalho — e o contrário
+     também. Quando os dois têm conteúdo diferente, quem decide é você. */
+  const [conflito, setConflito] = useState(null);
+  const jaPuxou = useRef(false);
+
+  const contarLocal = useCallback(() => ({
+    itens: itens.length, colecoes: colecoes.length, listas: listas.length,
+    series: metaSeries.length, eventos: eventos.length, eras: eras.length,
+    personagens: metaPers.length, linhasTempo: linhasTempo.length,
+    gruposSerie: gruposSerie.length,
+  }), [itens, colecoes, listas, metaSeries, eventos, eras, metaPers, linhasTempo, gruposSerie]);
+
+  const aplicarDaNuvem = useCallback((d) => {
+    if (d.itens) setItens(d.itens);
+    if (d.colecoes) setColecoes(d.colecoes);
+    if (d.listas) setListas(d.listas);
+    if (d.series) setMetaSeries(d.series);
+    if (d.eventos) setEventos(d.eventos);
+    if (d.eras) setEras(d.eras);
+    if (d.personagens) setMetaPers(d.personagens);
+    if (d.linhasTempo) setLinhasTempo(d.linhasTempo);
+    if (d.gruposSerie) setGruposSerie(d.gruposSerie);
+    setNuvemEm(new Date());
+  }, []);
+
   const puxarDaNuvem = useCallback(async () => {
-    setNuvemOcupada("buscando…");
+    setNuvemOcupada("comparando…");
     try {
       const d = await lerDaNuvem();
-      const temAlgo = d && PARTES.some((k) => Array.isArray(d[k]) && d[k].length);
-      if (!temAlgo) {
-        setNuvemOcupada("");
-        return false;
-      }
-      if (d.itens) setItens(d.itens);
-      if (d.colecoes) setColecoes(d.colecoes);
-      if (d.listas) setListas(d.listas);
-      if (d.series) setMetaSeries(d.series);
-      if (d.eventos) setEventos(d.eventos);
-      if (d.eras) setEras(d.eras);
-      if (d.personagens) setMetaPers(d.personagens);
-      if (d.linhasTempo) setLinhasTempo(d.linhasTempo);
-      if (d.gruposSerie) setGruposSerie(d.gruposSerie);
-      setNuvemEm(new Date());
-      avisar(`Acervo carregado da nuvem: ${(d.itens || []).length} itens.`);
+      const daNuvem = {};
+      for (const k of PARTES) daNuvem[k] = Array.isArray(d && d[k]) ? d[k].length : 0;
+      const local = contarLocal();
+
+      const somaN = PARTES.reduce((n, k) => n + daNuvem[k], 0);
+      const somaL = PARTES.reduce((n, k) => n + local[k], 0);
+
+      // nuvem vazia: nada a trazer, e o envio fica por sua conta
+      if (!somaN) { setNuvemOcupada(""); return "nuvem-vazia"; }
+
+      // aqui está vazio: traz sem perguntar, não há o que perder
+      if (!somaL) { aplicarDaNuvem(d); setNuvemOcupada(""); avisar(`Acervo carregado da nuvem: ${daNuvem.itens} itens.`); return "trazido"; }
+
+      // iguais em tudo: segue com o que está na nuvem, em silêncio
+      const iguais = PARTES.every((k) => daNuvem[k] === local[k]);
+      if (iguais) { aplicarDaNuvem(d); setNuvemOcupada(""); return "iguais"; }
+
       setNuvemOcupada("");
-      return true;
+      setConflito({ dados: d, nuvem: daNuvem, local });
+      return "conflito";
     } catch (e) {
       avisar(`Não consegui ler da nuvem: ${String(e.message || e).slice(0, 80)}`);
       setNuvemOcupada("");
-      return false;
+      return "erro";
     }
-  }, [avisar]);
+  }, [contarLocal, aplicarDaNuvem, avisar]);
 
-  const jaPuxou = useRef(false);
   useEffect(() => {
     if (!sessao || !carregado.current || jaPuxou.current) return;
     jaPuxou.current = true;
-    puxarDaNuvem().then((veio) => { if (!veio) avisar("A nuvem está vazia. Use “Enviar o acervo inteiro” para a primeira carga."); });
+    puxarDaNuvem().then((r) => {
+      if (r === "nuvem-vazia") avisar("A nuvem está vazia. Use “Enviar os dados agora” para a primeira carga.");
+    });
   }, [sessao, puxarDaNuvem, avisar]);
 
   /* Marca o que mudou e grava só essas partes, um segundo depois da última
@@ -8393,6 +8548,38 @@ function Acervo() {
           />
         );
       })()}
+
+      {/* porta de entrada: sem sessão, o app não abre calado guardando só local */}
+      {cfgNuvem && !sessao && !semNuvem && !carregando && (
+        <PortaDeEntrada
+          ocupado={nuvemOcupada}
+          aoEntrar={async (email, senha) => {
+            const sb = nuvem();
+            if (!sb) return avisar("Configure o projeto primeiro.");
+            setNuvemOcupada("entrando…");
+            try {
+              const { error } = await comPrazo(sb.auth.signInWithPassword({ email, password: senha }), 20, "o login");
+              setNuvemOcupada("");
+              if (error) return avisar(error.message);
+              jaPuxou.current = false;
+            } catch (e) { setNuvemOcupada(""); avisar(String(e.message || e)); }
+          }}
+          aoSeguirSemNuvem={() => {
+            setSemNuvem(true);
+            avisar("Trabalhando só neste aparelho. Entre pelo ícone de nuvem quando quiser sincronizar.");
+          }}
+        />
+      )}
+
+      {conflito && (
+        <EscolherLado
+          nuvem={conflito.nuvem}
+          local={conflito.local}
+          aoUsarNuvem={() => { aplicarDaNuvem(conflito.dados); setConflito(null); avisar("Trazido da nuvem."); }}
+          aoUsarLocal={() => { const c = conflito; setConflito(null); enviarTudo().then(() => avisar("Nuvem atualizada com o que estava aqui.")); }}
+          aoFechar={() => setConflito(null)}
+        />
+      )}
 
       {painelNuvem && (
         <PainelNuvem
