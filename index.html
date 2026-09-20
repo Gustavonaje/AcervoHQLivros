@@ -354,17 +354,39 @@ const CSS = `
    O app nasceu para tela grande; hospedado, passou a ser usado no
    telefone de verdade. */
 @media (max-width:760px){
-  .acv{padding:10px 12px 28px;}
-  .acv-topo{flex-wrap:wrap;gap:8px;}
-  .btn-icone{min-width:40px;min-height:40px;}
+  .acv{padding:8px 10px 28px;}
 
-  /* abas e chips rolam de lado em vez de quebrar em três linhas */
-  .abas,.chips{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;}
-  .abas::-webkit-scrollbar,.chips::-webkit-scrollbar{display:none;}
-  .aba,.chip{flex-shrink:0;}
-  .barra .btn,.barra .chip,.aba{min-height:38px;}
+  /* O cabeçalho deixa de grudar: ele ocupava um terço da tela e o conteúdo
+     ficava espremido. Quem gruda são as abas, que é o que se usa o tempo
+     todo. */
+  .acv-topo{position:static;backdrop-filter:none;}
+  .topo-in{padding:10px 12px;flex-wrap:wrap;gap:10px;}
+  .topo-in .busca{order:3;width:100%;min-width:0;}
+  .btn-icone{min-width:38px;min-height:38px;}
 
-  /* modal ocupa a tela toda: metade da tela num telefone é pouco */
+  /* Abas maiores, roláveis e fixas no topo: eram o que mais se procurava
+     e o que estava mais escondido. */
+  .abas{position:sticky;top:0;z-index:40;overflow-x:auto;flex-wrap:nowrap;
+    scrollbar-width:none;border-radius:0;margin:0 -10px;padding:6px 10px;
+    background:rgba(20,17,32,.96);backdrop-filter:blur(12px);
+    border-left:0;border-right:0;}
+  .abas::-webkit-scrollbar{display:none;}
+  .aba{flex-shrink:0;min-height:40px;padding:0 13px;font-size:13.5px;}
+  .aba .cont{display:none;}
+  .aba.ativa .cont{display:inline;}
+
+  /* Filtros numa linha rolável em vez de cinco fileiras empilhadas. */
+  .barra{padding:10px 0;gap:6px;flex-wrap:nowrap;overflow-x:auto;
+    scrollbar-width:none;}
+  .barra::-webkit-scrollbar{display:none;}
+  .barra > *{flex-shrink:0;}
+  .barra .btn,.barra .chip,.barra .sel{min-height:36px;}
+  .chips{overflow-x:visible;flex-wrap:nowrap;}
+  .chip{flex-shrink:0;}
+  .contagem{display:none;}
+
+  .grade{grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;}
+
   .modal{max-width:100%;width:100%;max-height:100%;height:100%;border-radius:0;}
   .modal-corpo{padding:14px;}
   .modal-pe{position:sticky;bottom:0;background:var(--tinta2);
@@ -372,17 +394,17 @@ const CSS = `
   .grade-form{grid-template-columns:1fr;}
   .campo.largo{grid-column:auto;}
 
-  /* a régua e o mapa pedem arraste lateral, e a coluna de nomes encolhe */
   .lt,.mapa-anos{overflow-x:auto;}
-  .lt-nome{width:118px;}
-  .lt-eventos,.lt-rotulos,.lt-eras,.lt-regua{margin-left:118px;}
-  .fx-barra{margin-left:100px;margin-right:52px;}
-  .lt-conta{width:52px;}
+  .lt-nome{width:104px;}
+  .lt-eventos,.lt-rotulos,.lt-eras,.lt-regua{margin-left:104px;}
+  .fx-barra{margin-left:86px;margin-right:46px;}
+  .lt-conta{width:46px;}
   .ma-mes-grade{grid-template-columns:repeat(4,1fr);}
 
-  .rodape{flex-direction:column;align-items:flex-start;gap:6px;}
+  .rodape{flex-direction:column;align-items:flex-start;gap:6px;padding:14px 0 20px;}
   .lote-topo{gap:6px;}
   .lt-escolha{grid-template-columns:1fr;max-height:260px;}
+  .paginacao{flex-wrap:wrap;gap:6px;}
 }
 
 .contagem{font-family:var(--mono);font-size:11px;color:var(--papel3);letter-spacing:.03em;white-space:nowrap;}
@@ -1099,7 +1121,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "2.2", data: "17/09/2026", nota: "capas sob demanda" };
+const VERSAO = { numero: "2.3", data: "20/09/2026", nota: "celular" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
