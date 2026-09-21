@@ -415,7 +415,58 @@ const CSS = `
   .rodape{flex-direction:column;align-items:flex-start;gap:6px;padding:14px 0 20px;}
   .lote-topo{gap:6px;}
   .lt-escolha{grid-template-columns:1fr;max-height:260px;}
-  .paginacao{flex-wrap:wrap;gap:6px;}
+  .paginacao{flex-wrap:wrap;gap:6px;justify-content:center;}
+  .paginacao .btn{min-height:40px;}
+
+  /* ── ficha da edição ──────────────────────────────────────
+     A capa ocupava a largura inteira e empurrava título, dados e
+     ações para fora da primeira tela. Limitada, ela divide espaço
+     com o essencial e as ações ficam ao alcance do polegar. */
+  .det{grid-template-columns:1fr;gap:14px;}
+  .det-capa{max-width:132px;margin:0;}
+  .det-topo{display:flex;gap:14px;align-items:flex-start;}
+  .det-topo .det-capa{flex-shrink:0;width:118px;}
+  .det h2{font-size:19px;line-height:1.2;}
+  .det-acoes{position:sticky;bottom:0;background:linear-gradient(transparent,var(--tinta2) 22%);
+    padding:12px 0 calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px;flex-wrap:wrap;z-index:5;}
+  .det-acoes .btn{flex:1;min-width:132px;min-height:44px;justify-content:center;}
+
+  /* linhas de dado viram pares empilhados em vez de duas colunas */
+  .orig-linha{grid-template-columns:1fr;gap:4px;}
+  .orig-linha-barra{width:100%;}
+  .eds-regua{overflow-x:auto;padding-bottom:6px;}
+
+  /* ── relatórios ──────────────────────────────────────────
+     Duas colunas de 158px somam 316px e estouram numa tela de 320. */
+  .rel-filtros,.rel-cartoes{grid-template-columns:1fr;gap:10px;}
+  .rel-secao{padding:12px;}
+  .mapa-linha{grid-template-columns:1fr;}
+  .mapa-regua{overflow-x:auto;}
+
+  /* ── linhas do tempo e fases ─────────────────────────────── */
+  .lt-fase-nome{width:96px;font-size:11px;}
+  .fx-detalhe{gap:6px;}
+  .fx-cab{gap:7px;font-size:12px;}
+  .fx-cab b{width:100%;}
+  .fx-listas{font-size:11px;}
+
+  /* ── comparação nuvem × aparelho ─────────────────────────── */
+  .cmp-cab,.cmp-linha{grid-template-columns:1fr 58px 58px;padding:7px 9px;font-size:12px;}
+
+  /* ── galeria e retratos ──────────────────────────────────── */
+  .gal-item{width:76px;}
+  .pers-cartao-foto{width:108px;}
+
+  /* ── toque ───────────────────────────────────────────────
+     44px é o mínimo confortável para o polegar. */
+  .btn,.chip,.aba,select,input[type="text"],input[type="date"],input[type="number"]{min-height:42px;}
+  .btn-mini{min-height:36px;}
+  .btn-icone{min-width:42px;min-height:42px;}
+  input,select,textarea{font-size:16px;}   /* abaixo disso o iPhone dá zoom sozinho */
+
+  /* nada de rolagem lateral da página inteira */
+  html,body{overflow-x:hidden;}
+  .modal-corpo table{display:block;overflow-x:auto;}
 }
 
 .contagem{font-family:var(--mono);font-size:11px;color:var(--papel3);letter-spacing:.03em;white-space:nowrap;}
@@ -1146,7 +1197,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "2.6", data: "20/09/2026", nota: "correção: nunca grava vazio" };
+const VERSAO = { numero: "2.9", data: "20/09/2026", nota: "auditoria de celular" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -1240,9 +1291,20 @@ const esquecerCliente = () => { _cliente = null; };
 async function lerDaNuvem() {
   const sb = nuvem();
   if (!sb) return null;
-  const { data, error } = await comPrazo(sb.from("acervo").select("parte, conteudo, versao"), 30, "a leitura da nuvem");
+  /* As políticas do banco devolvem zero linhas, sem erro, quando a consulta
+     chega sem a identificação de quem está logado — e o app concluía
+     "nuvem vazia" com 1183 itens lá dentro. Agora confirma a sessão antes,
+     filtra pelo dono explicitamente, e diz em nome de quem perguntou. */
+  const { data: ses } = await comPrazo(sb.auth.getSession(), 15, "a sessão");
+  const sessaoAtual = ses && ses.session;
+  if (!sessaoAtual) throw new Error("sem sessão ativa — entre de novo pelo ícone de nuvem");
+
+  const { data, error } = await comPrazo(
+    sb.from("acervo").select("parte, conteudo, versao").eq("dono", sessaoAtual.user.id),
+    45, "a leitura da nuvem");
   if (error) throw new Error(error.message);
-  const fora = { versoes: {} };
+
+  const fora = { versoes: {}, email: sessaoAtual.user.email, linhas: (data || []).length };
   for (const l of data || []) {
     fora[l.parte] = l.conteudo;
     fora.versoes[l.parte] = l.versao;
@@ -5418,7 +5480,7 @@ function EscolherLado({ nuvem: cN, local: cL, aoUsarNuvem, aoUsarLocal, aoFechar
 
 function PainelNuvem({ sessao, cfg, ocupado, capas, naNuvem, backupAuto, backupEm, arquivo,
                       aoConfigurar, aoEntrar, aoCriar, aoSair, aoTrocarBackup, aoSalvaguarda,
-                      aoEnviarTudo, aoEnviarCapas, aoBaixarCapas, aoFechar, aoAvisar }) {
+                      aoEnviarTudo, aoTrazerDados, aoEnviarCapas, aoBaixarCapas, aoFechar, aoAvisar }) {
   const [url, setUrl] = useState((cfg && cfg.url) || "");
   const [chave, setChave] = useState((cfg && cfg.chave) || "");
   const [email, setEmail] = useState("");
@@ -5470,6 +5532,9 @@ function PainelNuvem({ sessao, cfg, ocupado, capas, naNuvem, backupAuto, backupE
             As alterações vão para a nuvem automaticamente.
           </p>
           <div className="lote-topo" style={{ marginTop: 12 }}>
+            <button className="btn" onClick={aoTrazerDados} disabled={!!ocupado}>
+              <Download size={14} /> Trazer da nuvem
+            </button>
             <button className="btn btn-primario" onClick={aoEnviarTudo} disabled={!!ocupado}>
               <Upload size={14} /> Enviar os dados agora
             </button>
@@ -5512,8 +5577,7 @@ function PainelNuvem({ sessao, cfg, ocupado, capas, naNuvem, backupAuto, backupE
               </button>
             </div>
             <span className="dica">
-              Capas de itens já apagados ficam de fora — são 649 no seu acervo, uns 38 MB que não
-              servem a nada.
+              Vão as capas dos títulos, das séries e os retratos dos personagens.
             </span>
           </div>
         </>
@@ -6079,8 +6143,10 @@ function Acervo() {
   const pararCapas = useRef(false);
 
   const chavesUteis = useCallback(() => {
+    /* Itens, personagens E séries. A versão anterior esquecia as séries e
+       eu as chamei de "órfãs" — eram 649 capas de série que nunca subiram. */
     const ids = new Set(itens.map((i) => i.id));
-    return Object.keys(capas).filter((k) => k.startsWith("pers:") || ids.has(k));
+    return Object.keys(capas).filter((k) => k.startsWith("pers:") || k.startsWith("serie:") || ids.has(k));
   }, [itens, capas]);
 
   const enviarCapas = async () => {
@@ -6206,6 +6272,9 @@ function Acervo() {
 
   const enviarTudo = async () => {
     if (!sessao) return;
+    const vazio = !itens.length && !metaSeries.length && !metaPers.length;
+    if (vazio && typeof window !== "undefined" &&
+        !window.confirm("O acervo aqui está vazio. Enviar assim apaga o que estiver na nuvem.\n\nTem certeza?")) return;
     setNuvemOcupada("enviando…");
     try {
       for (const parte of PARTES) {
@@ -6229,6 +6298,9 @@ function Acervo() {
      também. Quando os dois têm conteúdo diferente, quem decide é você. */
   const [conflito, setConflito] = useState(null);
   const jaPuxou = useRef(false);
+  const ultimaLeitura = useRef("");        // a leitura começou
+  const leituraOk = useRef(false);      // a leitura TERMINOU
+  const ultimoDaNuvem = useRef({});     // tamanho do que veio de lá
 
   const contarLocal = useCallback(() => ({
     itens: itens.length, colecoes: colecoes.length, listas: listas.length,
@@ -6265,8 +6337,12 @@ function Acervo() {
          ser conta errada, sessão de outro usuário, ou falha na leitura.
          Nunca apaga nada — e avisa em vez de deixar você concluir que
          perdeu tudo. */
+      ultimoDaNuvem.current = daNuvem;
+      leituraOk.current = true;
+
       if (!somaN) {
         setNuvemOcupada("");
+        ultimaLeitura.current = d ? `${d.email} · ${d.linhas} linha(s) lidas` : "";
         return somaL ? "nuvem-vazia-com-local" : "nuvem-vazia";
       }
 
@@ -6291,10 +6367,10 @@ function Acervo() {
     if (!sessao || !carregado.current || jaPuxou.current) return;
     jaPuxou.current = true;
     puxarDaNuvem().then((r) => {
-      if (r === "nuvem-vazia") {
-        avisar("A nuvem está vazia. Use “Enviar os dados agora” para a primeira carga.");
-      } else if (r === "nuvem-vazia-com-local") {
-        avisar("A nuvem respondeu vazia, mas o acervo daqui está intacto. Confira a conta antes de enviar.");
+      if (r === "nuvem-vazia" || r === "nuvem-vazia-com-local") {
+        // não trava: deixa tentar de novo pelo painel
+        jaPuxou.current = false;
+        avisar(`A nuvem respondeu vazia (${ultimaLeitura.current}). Nada foi apagado — tente “Trazer da nuvem” no painel.`);
       }
     });
   }, [sessao, puxarDaNuvem, avisar]);
@@ -6312,13 +6388,28 @@ function Acervo() {
   useEffect(() => { if (carregado.current) partesSujas.current.add("gruposSerie"); }, [gruposSerie]);
 
   useEffect(() => {
-    if (!sessao || !carregado.current || !jaPuxou.current) return;
+    /* Só depois de a leitura TERMINAR. Antes bastava ela ter começado, e a
+       gravação automática subia o estado vazio do carregamento por cima do
+       que estava na nuvem — foi assim que o acervo lá foi zerado. */
+    if (!sessao || !carregado.current || !leituraOk.current) return;
     const t = setTimeout(async () => {
       const sujas = [...partesSujas.current];
       if (!sujas.length) return;
       partesSujas.current.clear();
       try {
-        for (const parte of sujas) await gravarNaNuvem(parte, valorDaParte(parte) || []);
+        for (const parte of sujas) {
+          const v = valorDaParte(parte) || [];
+          const tinha = ultimoDaNuvem.current[parte] || 0;
+          /* Esvaziar de uma vez uma parte que tinha conteúdo quase nunca é
+             intenção: é sinal de carregamento incompleto. Exige o envio
+             manual, que é explícito. */
+          if (!v.length && tinha > 0) {
+            avisar(`Não enviei ${parte}: está vazio aqui e tem ${tinha} na nuvem. Confira antes.`);
+            continue;
+          }
+          await gravarNaNuvem(parte, v);
+          ultimoDaNuvem.current[parte] = v.length;
+        }
         setNuvemEm(new Date());
       } catch (e) {
         sujas.forEach((x) => partesSujas.current.add(x));   // tenta de novo depois
@@ -7300,6 +7391,40 @@ function Acervo() {
 
   /* Fecha o detalhe do item devolvendo você para a tela de onde ele foi
      aberto — coleção, lista de leitura, série ou a própria grade. */
+  /* O botão "voltar" do celular fecha o que estiver aberto, em vez de sair
+     do app — é o gesto que todo mundo tenta primeiro, e sem isto ele
+     descartava a navegação inteira. */
+  const aberturas = useRef(0);
+  useEffect(() => {
+    const algoAberto = !!(aberto || serieAberta || persAberto || persEditando
+      || grupoEditando || painelNuvem || importando || menuCel || conflito);
+    if (algoAberto && aberturas.current === 0) {
+      aberturas.current = 1;
+      try { history.pushState({ acervo: true }, ""); } catch (e) {}
+    } else if (!algoAberto && aberturas.current === 1) {
+      aberturas.current = 0;
+    }
+  }, [aberto, serieAberta, persAberto, persEditando, grupoEditando, painelNuvem,
+      importando, menuCel, conflito]);
+
+  useEffect(() => {
+    const voltar = () => {
+      aberturas.current = 0;
+      if (menuCel) return setMenuCel(false);
+      if (conflito) return;                     // decisão pendente: não fecha por engano
+      if (painelNuvem) return setPainelNuvem(false);
+      if (importando) return setImportando(false);
+      if (persEditando) return setPersEditando(null);
+      if (grupoEditando) return setGrupoEditando(null);
+      if (persAberto) return setPersAberto(null);
+      if (serieAberta) return setSerieAberta(null);
+      if (aberto) return setAberto(null);
+    };
+    window.addEventListener("popstate", voltar);
+    return () => window.removeEventListener("popstate", voltar);
+  }, [aberto, serieAberta, persAberto, persEditando, grupoEditando, painelNuvem,
+      importando, menuCel, conflito]);
+
   const fecharDetalhe = () => {
     const o = origemItem;
     setAberto(null);
@@ -8736,6 +8861,14 @@ function Acervo() {
           capas={chavesUteis().length}
           naNuvem={null}
           aoEnviarTudo={enviarTudo}
+          aoTrazerDados={async () => {
+            /* manual: traz e compara, igual à abertura, mas quando você pede */
+            const r = await puxarDaNuvem();
+            if (r === "iguais") avisar("Este aparelho já está igual à nuvem.");
+            else if (r === "trazido") avisar("Trazido da nuvem.");
+            else if (r === "nuvem-vazia" || r === "nuvem-vazia-com-local")
+              avisar(`A nuvem respondeu vazia (${ultimaLeitura.current}).`);
+          }}
           backupAuto={backupAuto}
           backupEm={backupEm}
           arquivo={arquivo}
