@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="manifest" href='data:application/manifest+json,{"name":"Acervo","short_name":"Acervo","start_url":".","display":"standalone","background_color":"%23141120","theme_color":"%23141120"}'>
+<!-- manifesto em arquivo próprio: o Chrome só oferece "Instalar app" assim;
+     embutido em data:, ele cria apenas um atalho -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <meta name="theme-color" content="#141120">
 <meta name="mobile-web-app-capable" content="yes">
 <title>Acervo — estante pessoal</title>
@@ -1225,7 +1229,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.0", data: "21/09/2026", nota: "celular testado de verdade" };
+const VERSAO = { numero: "3.1", data: "21/09/2026", nota: "instalável como app" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -13416,5 +13420,12 @@ function Relatorios({ itens, colecoes, series, aoAbrirItem, aoIrParaSeries }) {
 ReactDOM.createRoot(document.getElementById('raiz')).render(<Acervo />);
 </script>
 
+<script>
+  if ("serviceWorker" in navigator && /^https?:/.test(location.protocol)) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => { /* sem instalação, o app segue igual */ });
+    });
+  }
+</script>
 </body>
 </html>
