@@ -1229,7 +1229,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.2", data: "21/09/2026", nota: "fila de consultas ao Fandom" };
+const VERSAO = { numero: "3.4", data: "21/09/2026", nota: "consultas ao Fandom sem repetição em cascata" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -9323,6 +9323,20 @@ window.fetch = async (entrada, opcoes) => {
   const url = String((entrada && entrada.url) || entrada || "");
   if (!/\.fandom\.com\//.test(url)) return _fetchOriginal(entrada, opcoes);
 
+  /* "action=parse" pede ao Fandom que desenhe a página inteira — para a
+     categoria da Hellblazer, trezentos links. É a consulta mais pesada do
+     app, e o 503 dela significa "caro demais agora", não "tente de novo".
+     Repeti-la quatro vezes, com o freio travando tudo por até 46 segundos,
+     era o que transformava uma falha inofensiva numa tempestade. Uma
+     tentativa só, sem acionar o freio: quem chama já sabe seguir sem ela. */
+  if (/[?&]action=parse\b/.test(url)) {
+    const agora = Date.now();
+    const vez = Math.max(agora, _proximaWiki, _freioAte);
+    _proximaWiki = vez + ESPACO_WIKI;
+    if (vez > agora) await dormir(vez - agora);
+    return _fetchOriginal(entrada, opcoes);
+  }
+
   for (let tentativa = 0; tentativa <= ESPERAS.length; tentativa++) {
     // cada chamada reserva a própria vez, então rajadas paralelas também se espaçam
     const agora = Date.now();
@@ -9345,53 +9359,6 @@ window.fetch = async (entrada, opcoes) => {
     }
   }
 };
-
-/* ── fila de consultas ao Fandom ─────────────────────────────
-   Uma busca de série dispara dezenas de perguntas, algumas em paralelo, e
-   duas séries seguidas bastavam para o Fandom pedir pausa. A resposta de
-   pausa vem sem o cabeçalho de permissão, e o navegador a relata como
-   bloqueio de CORS — por isso parecia que a base tinha parado de vez.
-
-   Aqui toda consulta ao Fandom passa por uma fila: uma de cada vez, com
-   intervalo mínimo entre elas, e nova tentativa com espera crescente se a
-   resposta falhar. As outras consultas do app (nuvem, Wikipédia) seguem
-   direto, sem fila. */
-const INTERVALO_WIKI = 350;
-let wikiPausadaEm = 0;
-if (typeof window !== "undefined" && window.fetch && !window.__filaWiki) {
-  window.__filaWiki = true;
-  const original = window.fetch.bind(window);
-  let fila = Promise.resolve();
-  let ultima = 0;
-  const pausa = (ms) => new Promise((r) => setTimeout(r, ms));
-
-  const tentar = async (entrada, opcoes, n) => {
-    try {
-      const r = await original(entrada, opcoes);
-      if ((r.status === 429 || r.status >= 500) && n < 2) {
-        await pausa((n + 1) * 4000);
-        return tentar(entrada, opcoes, n + 1);
-      }
-      return r;
-    } catch (e) {
-      if (n < 2) { await pausa((n + 1) * 4000); return tentar(entrada, opcoes, n + 1); }
-      wikiPausadaEm = Date.now();
-      throw e;
-    }
-  };
-
-  window.fetch = (entrada, opcoes) => {
-    const url = typeof entrada === "string" ? entrada : (entrada && entrada.url) || "";
-    if (!/\.fandom\.com\//.test(url)) return original(entrada, opcoes);
-    const vez = fila.then(async () => {
-      const espera = Math.max(0, ultima + INTERVALO_WIKI - Date.now());
-      if (espera) await pausa(espera);
-      ultima = Date.now();
-    });
-    fila = vez.catch(() => {});
-    return vez.then(() => tentar(entrada, opcoes, 0));
-  };
-}
 
 const WIKIS = [
   { id: "dc", rot: "DC", base: "https://dc.fandom.com/api.php", editora: "DC Comics", pais: "Estados Unidos" },
