@@ -398,10 +398,26 @@ const CSS = `
 
   .grade{grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;}
 
-  .modal{max-width:100%;width:100%;max-height:100%;height:100%;border-radius:0;}
-  .modal-corpo{padding:14px;}
-  .modal-pe{position:sticky;bottom:0;background:var(--tinta2);
-    padding-bottom:calc(12px + env(safe-area-inset-bottom));}
+  /* A janela ocupa a tela e se divide em três faixas: título fixo no
+     topo, corpo que ROLA, rodapé fixo embaixo. A versão anterior travava
+     a altura mas herdava "overflow:hidden" do computador — o que passava
+     da primeira tela era cortado, e só se via título e capa.
+     "min-height:0" no corpo é o que permite a rolagem dentro de um flex. */
+  .fundo{padding:0;align-items:stretch;overflow:hidden;}
+  .modal{display:flex;flex-direction:column;max-width:100%;width:100%;
+    height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;
+    border-radius:0;border:0;margin:0;overflow:hidden;}
+  .modal-topo{flex-shrink:0;position:static;padding:10px 12px;
+    padding-top:calc(10px + env(safe-area-inset-top));}
+  .modal-topo h2{font-size:17px;}
+  .modal-corpo{flex:1 1 auto;min-height:0;overflow-y:auto;
+    -webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:14px;}
+  /* Rodapé numa linha só. Três botões em linhas cheias somavam 150px e,
+     com a capa, empurravam os dados para fora da tela. Visto no teste. */
+  .modal-pe{flex-shrink:0;position:static;background:var(--tinta2);flex-wrap:nowrap;
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom));gap:6px;}
+  .modal-pe .btn{flex:1 1 0;min-width:0;justify-content:center;white-space:normal;
+    line-height:1.15;font-size:12.5px;padding:6px 8px;min-height:46px;text-align:center;}
   .grade-form{grid-template-columns:1fr;}
   .campo.largo{grid-column:auto;}
 
@@ -427,8 +443,7 @@ const CSS = `
   .det-topo{display:flex;gap:14px;align-items:flex-start;}
   .det-topo .det-capa{flex-shrink:0;width:118px;}
   .det h2{font-size:19px;line-height:1.2;}
-  .det-acoes{position:sticky;bottom:0;background:linear-gradient(transparent,var(--tinta2) 22%);
-    padding:12px 0 calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px;flex-wrap:wrap;z-index:5;}
+  .det-acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
   .det-acoes .btn{flex:1;min-width:132px;min-height:44px;justify-content:center;}
 
   /* linhas de dado viram pares empilhados em vez de duas colunas */
@@ -455,7 +470,6 @@ const CSS = `
 
   /* ── galeria e retratos ──────────────────────────────────── */
   .gal-item{width:76px;}
-  .pers-cartao-foto{width:108px;}
 
   /* ── toque ───────────────────────────────────────────────
      44px é o mínimo confortável para o polegar. */
@@ -930,7 +944,6 @@ const CSS = `
 .orig-linha-num{font-family:var(--mono);font-size:10.5px;color:var(--magenta);white-space:nowrap;}
 .orig-linha-num.ok{color:var(--amarelo);}
 @media (max-width:640px){
-  .orig-linha{grid-template-columns:1fr auto;}
   .orig-linha-barra{display:none;}
 }
 
@@ -1004,7 +1017,7 @@ const CSS = `
 
 /* ---------- detalhe ---------- */
 .det{display:grid;grid-template-columns:210px 1fr;gap:24px;}
-@media(max-width:640px){.det{grid-template-columns:1fr;}.det-capa{max-width:190px;}}
+/* regras de ficha em tela estreita: vivem no bloco de celular, que vem por último */
 .det-capa{aspect-ratio:2/3;border-radius:6px;overflow:hidden;border:1px solid var(--linha);background:var(--tinta);
   box-shadow:0 16px 32px -18px #000;}
 .det-capa img{width:100%;height:100%;object-fit:cover;}
@@ -1139,6 +1152,21 @@ const CSS = `
 @media (prefers-reduced-motion:reduce){
   .acv *,.acv *::before,.acv *::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}
 }
+
+
+/* ── celular, regras que precisam vir por último ─────────────────
+   Estas brigavam com blocos antigos de 640px escritos mais abaixo no
+   arquivo, que as anulavam: a capa ficava com 190px em vez de 118.
+   No fim do CSS, vencem sem depender da ordem de ninguém. */
+@media (max-width:760px){
+  .det{grid-template-columns:1fr;gap:12px;}
+  .det-capa{max-width:118px !important;width:118px;}
+  .pers-retrato.grande{width:104px !important;height:104px !important;}
+  /* o aviso flutuante sobe para o topo: embaixo, cobria os botões do
+     rodapé das janelas */
+  .toast{bottom:auto !important;top:calc(10px + env(safe-area-inset-top)) !important;
+    left:10px !important;right:10px !important;max-width:none !important;transform:none !important;}
+}
 `;
 
 /* ══════════════════════════════════════════════════════════════
@@ -1197,7 +1225,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "2.9", data: "20/09/2026", nota: "auditoria de celular" };
+const VERSAO = { numero: "3.0", data: "21/09/2026", nota: "celular testado de verdade" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -11751,7 +11779,10 @@ function FichaPersonagem({ personagem, retrato, ficha, carregando, erro, volumes
   const linhas = [
     ["Nome real", ficha && ficha.nomeReal],
     ["Primeira aparição", ficha && ficha.primeiraAparicao],
-    ["Afiliação", ficha && ficha.afiliacao],
+    /* a wiki separa com ";" e o leitor juntava com ", ", deixando
+       "Batman Family,, Batman Inc.,," — visto no teste em tela de celular */
+    ["Afiliação", ficha && ficha.afiliacao && String(ficha.afiliacao)
+      .replace(/\s*[,;]\s*[,;]+\s*/g, ", ").replace(/[,;]\s*$/, "").replace(/^\s*[,;]\s*/, "")],
     ["Alinhamento", ficha && ficha.alinhamento],
   ].filter(([, v]) => v);
 
