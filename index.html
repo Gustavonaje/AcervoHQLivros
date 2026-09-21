@@ -1229,7 +1229,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.1", data: "21/09/2026", nota: "instalável como app" };
+const VERSAO = { numero: "3.2", data: "21/09/2026", nota: "fila de consultas ao Fandom" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -6070,6 +6070,11 @@ function Acervo() {
   const buscaRef = useRef(null);
   const importRef = useRef(null);
 
+  useEffect(() => {
+    window.__avisoFreio = (m) => avisar(m);
+    return () => { window.__avisoFreio = null; };
+  });
+
   const avisar = useCallback((m) => {
     setToast(m);
     setTimeout(() => setToast((t) => (t === m ? "" : t)), 3200);
@@ -9300,6 +9305,94 @@ async function tentarParse(wiki, pagina, extra = "prop=text") {
   }
 }
 
+/* ── freio nas consultas ao Fandom ────────────────────────────
+   O DC Database limita o volume: aceita uma rajada e depois recusa por
+   alguns minutos. A recusa vem sem permissão de origem, e o navegador a
+   relata como "Failed to fetch" — foi o que parou tudo depois de duas
+   séries. Aqui toda consulta ao Fandom passa por um ponto só: espaçadas
+   entre si, e repetidas com espera crescente quando recusadas. */
+const _fetchOriginal = window.fetch.bind(window);
+let _proximaWiki = 0;
+let _freioAte = 0;          // depois de uma recusa, todos esperam juntos
+const ESPACO_WIKI = 350;    // ms entre consultas: ~3 por segundo
+const ESPERAS = [4000, 12000, 30000];
+
+const dormir = (ms) => new Promise((r) => setTimeout(r, ms));
+
+window.fetch = async (entrada, opcoes) => {
+  const url = String((entrada && entrada.url) || entrada || "");
+  if (!/\.fandom\.com\//.test(url)) return _fetchOriginal(entrada, opcoes);
+
+  for (let tentativa = 0; tentativa <= ESPERAS.length; tentativa++) {
+    // cada chamada reserva a própria vez, então rajadas paralelas também se espaçam
+    const agora = Date.now();
+    const vez = Math.max(agora, _proximaWiki, _freioAte);
+    _proximaWiki = vez + ESPACO_WIKI;
+    if (vez > agora) await dormir(vez - agora);
+
+    try {
+      const r = await _fetchOriginal(entrada, opcoes);
+      if (r.status === 429 || r.status === 503) throw new Error("limite");
+      return r;
+    } catch (e) {
+      if (tentativa === ESPERAS.length) {
+        throw new Error("O DC Database não está respondendo — provavelmente limitou as consultas por excesso. Espere alguns minutos e tente de novo.");
+      }
+      _freioAte = Date.now() + ESPERAS[tentativa];
+      if (typeof window.__avisoFreio === "function") {
+        window.__avisoFreio(`O DC Database pediu uma pausa. Tentando de novo em ${ESPERAS[tentativa] / 1000}s…`);
+      }
+    }
+  }
+};
+
+/* ── fila de consultas ao Fandom ─────────────────────────────
+   Uma busca de série dispara dezenas de perguntas, algumas em paralelo, e
+   duas séries seguidas bastavam para o Fandom pedir pausa. A resposta de
+   pausa vem sem o cabeçalho de permissão, e o navegador a relata como
+   bloqueio de CORS — por isso parecia que a base tinha parado de vez.
+
+   Aqui toda consulta ao Fandom passa por uma fila: uma de cada vez, com
+   intervalo mínimo entre elas, e nova tentativa com espera crescente se a
+   resposta falhar. As outras consultas do app (nuvem, Wikipédia) seguem
+   direto, sem fila. */
+const INTERVALO_WIKI = 350;
+let wikiPausadaEm = 0;
+if (typeof window !== "undefined" && window.fetch && !window.__filaWiki) {
+  window.__filaWiki = true;
+  const original = window.fetch.bind(window);
+  let fila = Promise.resolve();
+  let ultima = 0;
+  const pausa = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  const tentar = async (entrada, opcoes, n) => {
+    try {
+      const r = await original(entrada, opcoes);
+      if ((r.status === 429 || r.status >= 500) && n < 2) {
+        await pausa((n + 1) * 4000);
+        return tentar(entrada, opcoes, n + 1);
+      }
+      return r;
+    } catch (e) {
+      if (n < 2) { await pausa((n + 1) * 4000); return tentar(entrada, opcoes, n + 1); }
+      wikiPausadaEm = Date.now();
+      throw e;
+    }
+  };
+
+  window.fetch = (entrada, opcoes) => {
+    const url = typeof entrada === "string" ? entrada : (entrada && entrada.url) || "";
+    if (!/\.fandom\.com\//.test(url)) return original(entrada, opcoes);
+    const vez = fila.then(async () => {
+      const espera = Math.max(0, ultima + INTERVALO_WIKI - Date.now());
+      if (espera) await pausa(espera);
+      ultima = Date.now();
+    });
+    fila = vez.catch(() => {});
+    return vez.then(() => tentar(entrada, opcoes, 0));
+  };
+}
+
 const WIKIS = [
   { id: "dc", rot: "DC", base: "https://dc.fandom.com/api.php", editora: "DC Comics", pais: "Estados Unidos" },
   { id: "marvel", rot: "Marvel", base: "https://marvel.fandom.com/api.php", editora: "Marvel", pais: "Estados Unidos" },
@@ -9381,7 +9474,32 @@ const categoriaDaEdicao = (titulo) => {
   return m ? "Category:" + m[1] : "";
 };
 
+/* Link colado no lugar do nome: "https://dc.fandom.com/wiki/The_Flintstones_Vol_1"
+   era pesquisado como texto, com barras e dois-pontos, e não achava nada.
+   Agora o link vira o título da página, na base certa. */
+function paginaDoLink(texto) {
+  const m = String(texto || "").match(/https?:\/\/(dc|marvel)\.fandom\.com\/wiki\/([^?#\s]+)/i);
+  if (!m) return null;
+  const wiki = WIKIS.find((w) => w.id === m[1].toLowerCase());
+  let titulo = m[2];
+  try { titulo = decodeURIComponent(titulo); } catch (e) {}
+  titulo = titulo.replace(/_/g, " ").trim();
+  return wiki && titulo ? { wiki, titulo } : null;
+}
+
 async function volumesDaWiki(nome) {
+  const link = paginaDoLink(nome);
+  if (link) {
+    const cat = categoriaDaEdicao(link.titulo);
+    const pagina = /^Category:/i.test(link.titulo)
+      ? link.titulo
+      : cat || (ehPaginaDeVolume(link.titulo) ? "Category:" + link.titulo : link.titulo);
+    return [{
+      wiki: link.wiki, pagina, rot: pagina.replace(/^Category:/, ""),
+      reserva: pagina === link.titulo ? "" : link.titulo,
+    }];
+  }
+
   const nomes = variacoesDoNome(nome);
   if (!nomes.length) return [];
   const achados = new Map();
@@ -11544,7 +11662,7 @@ function ModalDatasWiki({ nomeSerie, edicoesTexto, jaTemCapa, podeRenomear, aoAp
 
       {etapa === "erro" && (
         <p className="dica" style={{ color: "var(--vermelho)" }}>
-          {erro}<br />Se disser “Failed to fetch”, a base recusou a consulta a partir do arquivo local.
+          {erro}<br />Se disser “Failed to fetch” ou “não está respondendo”, o DC Database provavelmente limitou as consultas por excesso — espere alguns minutos.
         </p>
       )}
 
