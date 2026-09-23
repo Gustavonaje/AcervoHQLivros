@@ -1,13 +1,13 @@
 {
  "versao": 1,
- "gerado_em": "2026-09-23T12:31:00+00:00",
+ "gerado_em": "2026-09-23T13:54:59+00:00",
  "fonte": [
   "https://panini.com.br/dc-comics",
   "https://panini.com.br/panini-comics"
  ],
  "execucao": {
-  "requisicoes": 21,
-  "novos": 3,
+  "requisicoes": 18,
+  "novos": 0,
   "lancados": 0,
   "fora_do_site": 0,
   "categorias": [
