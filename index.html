@@ -1198,8 +1198,11 @@ const CSS = `
 .lc-rel.palpite{opacity:.75;}
 .lc-titulo{font-family:var(--disp);font-size:15px;font-weight:700;line-height:1.25;}
 .lc-var{font-size:11.5px;color:var(--papel3);}
-.lc-linha{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12px;color:var(--papel3);}
-.lc-linha b{font-size:15px;color:var(--papel);}
+.lc-prev{display:flex;flex-direction:column;gap:1px;padding:7px 10px;border-radius:8px;background:var(--tinta3);}
+.lc-prev span{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--papel3);}
+.lc-prev b{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--amarelo);line-height:1.2;}
+.lc-prev b.vd{color:var(--verde);}
+.lc-linha{font-size:12px;color:var(--papel3);}
 .lc-acoes{display:flex;gap:6px;padding-top:2px;}
 .lc-acoes .btn{padding:6px 9px;}
 .lc-acoes > :first-child{flex:1;justify-content:center;}
@@ -1211,7 +1214,7 @@ const CSS = `
 .lc-row-tit{flex:1 1 240px;font-weight:600;font-size:13.5px;color:var(--papel);text-decoration:none;}
 .lc-row-tit:hover{text-decoration:underline;}
 .lc-row-data{font-family:var(--mono);font-size:11px;color:var(--papel3);}
-.lc-row-preco{font-size:13px;min-width:74px;text-align:right;}
+.lc-row-prev{font-family:var(--mono);font-size:12px;color:var(--amarelo);min-width:84px;text-align:right;text-transform:uppercase;}
 .lc-row select{max-width:210px;padding:5px 8px;border-radius:7px;background:var(--tinta);border:1px solid var(--linha);color:var(--papel2);font-size:12px;}
 .selo.lanc-pre{background:rgba(242,179,61,.95);color:#241B05;}
 .selo.lanc-venda{background:rgba(79,201,139,.95);color:#062014;}
@@ -1300,7 +1303,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.4", data: "21/09/2026", nota: "consultas ao Fandom sem repetição em cascata" };
+const VERSAO = { numero: "3.5", data: "22/09/2026", nota: "aba Lançamentos com as pré-vendas da Panini" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -4499,8 +4502,8 @@ function Card({ item, capaSrc, colecoes, aoAbrir, indice, selecao, selecionado, 
         {desejo && abaixoDoAlvo && <span className="selo alvo">{brl(melhor)}</span>}
         {desejo && !abaixoDoAlvo && lanc && (
           <span className={`selo ${lanc.estado === "a-venda" ? "lanc-venda" : "lanc-pre"}`}
-                title={`Panini: ${lanc.titulo}`}>
-            {lanc.estado === "a-venda" ? "À venda" : `Pré-venda${lanc.preco ? ` · ${lanc.preco}` : ""}`}
+                title={`Panini: ${lanc.titulo}${lanc.previsao ? ` · previsão: ${lanc.previsao.txt}` : ""}`}>
+            {lanc.estado === "a-venda" ? "À venda" : `Pré-venda${lanc.previsao ? ` · ${lanc.previsao.curto}` : ""}`}
           </span>
         )}
         {desejo && !abaixoDoAlvo && !lanc && <span className="selo desejo">Quero</span>}
@@ -9422,6 +9425,23 @@ function refPanini(ref) {
   return m ? { codigo: m[1], numero: Number(m[2]), sufixo: m[3] || "" } : null;
 }
 
+/* A ficha da Panini traz só mês e ano de lançamento — é a previsão que
+   ela divulga para a pré-venda. */
+const MESES_LANC = ["janeiro", "fevereiro", "marco", "abril", "maio", "junho",
+                    "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+const MESES_CURTOS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+function previsaoLanc(p) {
+  const a = Number(p && p.ano) || null;
+  const m = MESES_LANC.indexOf(semAcento(String((p && p.mes) || "")).trim()) + 1;
+  if (!a) return null;
+  if (!m) return { txt: String(a), curto: String(a), chave: a * 100 + 12 };
+  return {
+    txt: `${MESES_LANC[m - 1].replace("marco", "março")} de ${a}`,
+    curto: `${MESES_CURTOS[m - 1]}/${String(a).slice(2)}`,
+    chave: a * 100 + m,
+  };
+}
+
 /* Séries do seu acervo, pelo nome do título sem o número. Coleções
    numeradas entram também pelo nome delas. */
 function indiceSeriesDoAcervo(itens, colecoes) {
@@ -9486,6 +9506,10 @@ function relacaoComSerie(g, numeros, alt) {
     return { ...compararNumero(alt, g.tenhoAlt, g.querendoAlt), porAlt: true };
   }
   const n = numeroMaisProvavel(numeros, g);
+  // desejado sem número ("ABSOLUTE VILANIA") conta como o volume 1
+  if (n === 1 && !g.tenho.size && !g.querendo.size && g.itens.some((i) => i.lista === "desejos")) {
+    return { tipo: "desejo", txt: "está nos seus desejos", n };
+  }
   if (n == null) {
     return g.itens.some((i) => i.lista === "estante")
       ? { tipo: "tenho", txt: "você já tem este título" }
@@ -9529,7 +9553,14 @@ function montarLancamentos(dados, itens, colecoes, vinculos) {
     const ignorado = vinc.has(`x:${g.id}`);
     let situacao = "outra", alvo = null;
     if (v && v.chave && indice.get(v.chave)) { situacao = "minha"; alvo = indice.get(v.chave); }
-    else if (!v && indice.get(g.chaveP)) { situacao = "sugerida"; alvo = indice.get(g.chaveP); }
+    else if (!v && indice.get(g.chaveP)) {
+      alvo = indice.get(g.chaveP);
+      /* Sem número, é um título único — "A Nova História do Universo DC".
+         Mesmo nome de algo que você tem ou deseja é o mesmo livro, não uma
+         série: entra direto, sem perguntar. Só séries numeradas pedem
+         confirmação. */
+      situacao = numeros.length ? "sugerida" : "minha";
+    }
     const todos = [...g.lista, ...g.variantes];
     const estado = todos.some((x) => x.estado === "pre-venda") ? "pre-venda"
       : todos.some((x) => x.estado === "a-venda") ? "a-venda" : "fora-do-site";
@@ -9537,7 +9568,7 @@ function montarLancamentos(dados, itens, colecoes, vinculos) {
       id: g.id, codigo, principal: p, variantes: g.lista.length ? g.variantes : g.variantes.slice(1),
       titulo: g.t.base, serieP: g.t.serie, chaveP: g.chaveP, numeros,
       estado, data: estado === "a-venda" ? p.lancou_em : estado === "fora-do-site" ? p.saiu_em : p.pre_venda_desde,
-      categoria: p.categoria, preco: p.preco, capa: p.capa ? String(p.capa).replace(/-S\d+-/, "-S265-") : "",
+      categoria: p.categoria, preco: p.preco, previsao: previsaoLanc(p), capa: p.capa ? String(p.capa).replace(/-S\d+-/, "-S265-") : "",
       url: p.url, vinculo: v || null, situacao: ignorado ? "ignorada" : situacao, alvo,
       rel: relacaoComSerie(alvo, numeros, alt),
     });
@@ -9553,7 +9584,8 @@ function montarLancamentos(dados, itens, colecoes, vinculos) {
     const achado = grupos.find((gr) => {
       const mesmaSerie = gr.chaveP === chave || (gr.alvo && gr.alvo.chave === chave && gr.situacao === "minha");
       if (!mesmaSerie) return false;
-      return vol == null ? !gr.numeros.length : gr.numeros.includes(vol);
+      // sem número no seu item: vale o título único ou o volume 1
+      return vol == null ? (!gr.numeros.length || gr.numeros.includes(1)) : gr.numeros.includes(vol);
     });
     if (achado && achado.estado !== "fora-do-site") porDesejo.set(it.id, achado);
   }
@@ -9576,7 +9608,7 @@ function CardLancamento({ g, desejado, aoConfirmar, aoRecusar, aoDesvincular, ao
       <div className="lc-corpo">
         {g.situacao === "sugerida" && g.alvo && (
           <div className="lc-pergunta">
-            <span>Parece ser da sua série <b>{g.alvo.nome}</b>.</span>
+            <span>É a mesma série de <b>{g.alvo.nome}</b>, do seu acervo?</span>
             <div>
               <button className="btn btn-mini btn-ok" onClick={() => aoConfirmar(g)}><Check size={12} /> É sim</button>
               <button className="btn btn-mini" onClick={() => aoRecusar(g)}>Não é</button>
@@ -9587,10 +9619,14 @@ function CardLancamento({ g, desejado, aoConfirmar, aoRecusar, aoDesvincular, ao
         {g.rel && g.situacao === "sugerida" && <div className={`lc-rel ${g.rel.tipo} palpite`}>se for: {g.rel.txt}</div>}
         <div className="lc-titulo">{g.titulo}</div>
         {g.variantes.length > 0 && <div className="lc-var">+ {g.variantes.length} capa{g.variantes.length > 1 ? "s" : ""} variante{g.variantes.length > 1 ? "s" : ""}</div>}
-        <div className="lc-linha">
-          <b>{g.preco || "—"}</b>
-          <span>{g.estado === "a-venda" ? "lançou" : g.estado === "fora-do-site" ? "saiu" : "desde"} {dataCurtaLanc(g.data)}</span>
+        <div className="lc-prev">
+          {g.estado === "a-venda"
+            ? <><span>lançou em</span><b className="vd">{dataCurtaLanc(g.data)}</b></>
+            : g.estado === "fora-do-site"
+              ? <><span>saiu do site em</span><b>{dataCurtaLanc(g.data)}</b></>
+              : <><span>previsão</span><b>{g.previsao ? g.previsao.txt : "sem data"}</b></>}
         </div>
+        <div className="lc-linha"><span>{g.preco || ""}</span></div>
         <div className="lc-acoes">
           {g.estado === "a-venda"
             ? <button className="btn btn-mini btn-primario" onClick={() => aoComprei(g)}>Comprei → Estante</button>
@@ -9603,7 +9639,9 @@ function CardLancamento({ g, desejado, aoConfirmar, aoRecusar, aoDesvincular, ao
           <button className="btn btn-mini btn-icone" aria-label="Ignorar este lançamento" title="Ignorar" onClick={() => aoIgnorar(g)}><X size={12} /></button>
         </div>
         {g.situacao === "minha" && (
-          <button className="btn-mini-link lc-desvincular" onClick={() => aoDesvincular(g)}>não é desta série</button>
+          <button className="btn-mini-link lc-desvincular" onClick={() => aoDesvincular(g)}>
+            {g.numeros.length ? "não é desta série" : "não é este título"}
+          </button>
         )}
       </div>
     </article>
@@ -9645,7 +9683,12 @@ function PainelLancamentos({ info, estado, vinculos, aoRecarregar, aoVincular, a
     (!fEstado || g.estado === fEstado)
     && (!fLinha || g.categoria === fLinha)
     && (!q || semAcento(g.titulo).includes(q));
-  const ordenar = (a, b) => String(b.data || "").localeCompare(String(a.data || "")) || a.titulo.localeCompare(b.titulo, "pt-BR");
+  const PESO_ESTADO = { "a-venda": 0, "pre-venda": 1, "fora-do-site": 2 };
+  const ordenar = (a, b) =>
+    PESO_ESTADO[a.estado] - PESO_ESTADO[b.estado]
+    || (a.estado === "a-venda" ? String(b.data || "").localeCompare(String(a.data || "")) : 0)
+    || ((a.previsao ? a.previsao.chave : 999999) - (b.previsao ? b.previsao.chave : 999999))
+    || a.titulo.localeCompare(b.titulo, "pt-BR");
   // reimpressão do que você já tem vai para o fim: é o menos urgente
   const jaTem = (g) => (g.rel && g.rel.tipo === "tenho" ? 1 : 0);
   const minhas = info.grupos.filter((g) => g.situacao === "minha" && filtra(g))
@@ -9725,8 +9768,9 @@ function PainelLancamentos({ info, estado, vinculos, aoRecarregar, aoVincular, a
               <div key={g.id} className="lc-row">
                 <span className={`lc-estado mini ${g.estado}`}>{ROT_ESTADO_LANC[g.estado]}</span>
                 <a className="lc-row-tit" href={g.url} target="_blank" rel="noopener noreferrer">{g.titulo}</a>
-                <span className="lc-row-data">{dataCurtaLanc(g.data)}</span>
-                <b className="lc-row-preco">{g.preco || "—"}</b>
+                <b className="lc-row-prev">
+                  {g.estado === "a-venda" ? `lançou ${dataCurtaLanc(g.data)}` : g.previsao ? g.previsao.curto : "—"}
+                </b>
                 <select value="" aria-label={`Vincular ${g.titulo} a uma série sua`}
                         onChange={(e) => {
                           const s = opcoesSerie.find((x) => x.chave === e.target.value);
