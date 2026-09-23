@@ -85,6 +85,7 @@ const TrendingUp = fazerIcone('<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
 const TriangleAlert = fazerIcone('<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>');
 const Upload = fazerIcone('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><path d="M12 3v12"/>');
 const X = fazerIcone('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>');
+const RefreshCw = fazerIcone('<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>');
 
 
 /* ══════════════════════════════════════════════════════════════
@@ -1159,6 +1160,10 @@ const CSS = `
 
 
 /* ---------- lançamentos da Panini ---------- */
+.lc-recarregar{display:inline-flex;align-items:center;gap:5px;}
+.lc-recarregar:disabled{opacity:.7;cursor:progress;}
+.lc-gira{animation:lc-gira .8s linear infinite;}
+@keyframes lc-gira{to{transform:rotate(360deg);}}
 .lc{max-width:1400px;margin:0 auto;padding:12px 20px 90px;display:flex;flex-direction:column;gap:26px;}
 .lc-msg{max-width:560px;margin:60px auto;text-align:center;color:var(--papel2);display:flex;flex-direction:column;gap:10px;align-items:center;}
 .lc-msg p{margin:0;}
@@ -1321,7 +1326,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.6", data: "22/09/2026", nota: "relatório do que mudou ao completar dados; conferência de páginas" };
+const VERSAO = { numero: "3.7", data: "23/09/2026", nota: "lançamentos: aviso ao recarregar e atalho para buscar na Panini" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -6755,18 +6760,28 @@ function Acervo() {
      do cache do navegador e do service worker (que é rede-primeiro), então
      abrir o app sempre traz a leitura mais recente. */
   const [lanc, setLanc] = useState({ dados: null, erro: "", carregando: false });
-  const carregarLanc = useCallback(async () => {
+  const leituraLanc = useRef(null);
+  const carregarLanc = useCallback(async (manual = false) => {
     if (!/^https?:/.test(location.protocol)) { setLanc({ dados: null, erro: "local", carregando: false }); return; }
     setLanc((x) => ({ ...x, carregando: true }));
     try {
-      const r = await fetch(URL_LANC, { cache: "no-store" });
+      // meio segundo mínimo: a leitura é rápida demais para o giro aparecer
+      const [r] = await Promise.all([fetch(URL_LANC, { cache: "no-store" }), new Promise((ok) => setTimeout(ok, manual ? 600 : 0))]);
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const d = await r.json();
       setLanc({ dados: d, erro: "", carregando: false });
+      if (manual) {
+        const quando = new Date(d.gerado_em).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+        avisar(leituraLanc.current === d.gerado_em
+          ? `Nada novo: a última leitura da Panini ainda é a de ${quando}.`
+          : `Lançamentos atualizados — leitura da Panini de ${quando}.`);
+      }
+      leituraLanc.current = d.gerado_em;
     } catch (e) {
       setLanc((x) => ({ dados: x.dados, erro: String((e && e.message) || e), carregando: false }));
+      if (manual) avisar(`Não consegui reler os lançamentos (${(e && e.message) || e}).`);
     }
-  }, []);
+  }, [avisar]);
   useEffect(() => { carregarLanc(); }, [carregarLanc]);
   const infoLanc = useMemo(
     () => montarLancamentos(lanc.dados, itens, colecoes, vincPanini),
@@ -8830,7 +8845,7 @@ function Acervo() {
           info={infoLanc}
           estado={lanc}
           vinculos={vincPanini}
-          aoRecarregar={carregarLanc}
+          aoRecarregar={() => carregarLanc(true)}
           aoVincular={vincularLanc}
           aoIgnorar={ignorarLanc}
           aoDesfazerIgnorar={desfazerIgnorarLanc}
@@ -9562,6 +9577,10 @@ function separarVolume(titulo) {
    ASABA em ASABA068). Dali em diante, todo volume novo com aquele código
    cai direto em "das suas séries", sem depender do título. */
 const URL_LANC = "data/lancamentos.json";
+/* "Recarregar" só relê o arquivo que o GitHub gerou. Quem vai até a Panini
+   é o agendamento no GitHub Actions — este link abre a página dele, onde o
+   botão "Run workflow" faz uma leitura nova na hora. */
+const URL_ACAO_LANC = "https://github.com/Gustavonaje/AcervoHQLivros/actions/workflows/lancamentos.yml";
 
 // "Saga do Lanterna Verde, A" e "A Saga Do Lanterna Verde" viram a mesma chave
 const normSerie = (s) => {
@@ -9884,8 +9903,16 @@ function PainelLancamentos({ info, estado, vinculos, aoRecarregar, aoVincular, a
         <div>
           <h2>Lançamentos</h2>
           <div className="lc-fonte">
-            Panini · {linhas.join(" e ")} · atualizado em {new Date(d.gerado_em).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
-            <button className="btn-mini-link" onClick={aoRecarregar}>recarregar</button>
+            Panini · {linhas.join(" e ")} · última leitura em {new Date(d.gerado_em).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
+            <button className="btn-mini-link lc-recarregar" onClick={aoRecarregar} disabled={estado.carregando}
+                    title="Relê o arquivo de lançamentos que o GitHub gerou">
+              <RefreshCw size={11} className={estado.carregando ? "lc-gira" : ""} />
+              {estado.carregando ? "recarregando…" : "recarregar"}
+            </button>
+            <a className="btn-mini-link" href={URL_ACAO_LANC} target="_blank" rel="noopener noreferrer"
+               title="Abre o GitHub Actions: clique em Run workflow para ler a Panini agora. Leva uns 2 minutos; depois é só recarregar.">
+              buscar na Panini agora ↗
+            </a>
           </div>
         </div>
         <div className="lc-nums">
