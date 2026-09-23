@@ -35,7 +35,7 @@ CATEGORIAS = {
     "Panini Comics": f"{BASE}/panini-comics",
 }
 POR_PAGINA = 36          # maior opção que o site oferece
-MAX_PAGINAS = 8          # teto de segurança por categoria (8 x 36 = 288 itens)
+MAX_PAGINAS = 12         # teto de segurança por categoria (12 x 36 = 432 itens)
 PAUSA = 2.0              # segundos entre requisições
 DIAS_MANTER_LANCADO = 60 # quanto tempo um lançado continua no arquivo
 DIAS_MANTER_FORA = 30
@@ -66,8 +66,9 @@ def norm(txt):
 RE_VARIANTE = re.compile(r"\s*[-–—]\s*(capa\s+variante.*|variante.*|capa\s+alternativa.*)$", re.I)
 RE_NUMERO = re.compile(
     r"^(?P<serie>.*?)[\s,:\-–—]*"
-    r"(?:\b(?:vol(?:ume)?|n[º°o]|no|#)\.?\s*)?"
-    r"(?P<num>\d{1,3})(?:\s*/\s*(?P<total>\d{1,4}))?\s*$",
+    r"(?:\b(?:vol(?:ume)?|n[º°o])\.?\s*)?"
+    r"\b(?P<num>\d{1,3})\b(?:\s*/\s*(?P<total>\d{1,4})|\s*\((?P<total2>\d{1,4})\))?"
+    r"(?:\s+[-–—]\s+.*)?\s*$",
     re.I,
 )
 
@@ -85,7 +86,8 @@ def analisar_titulo(titulo):
     if m and m.group("serie").strip():
         serie = m.group("serie").strip(" ,:-–—")
         numero = int(m.group("num"))
-        total = int(m.group("total")) if m.group("total") else None
+        t2 = m.group("total") or m.group("total2")
+        total = int(t2) if t2 else None
     return {
         "serie": serie,
         "serie_norm": norm(re.sub(r"\b(vol(ume)?|n[º°o])\.?\s*$", "", serie, flags=re.I)),
