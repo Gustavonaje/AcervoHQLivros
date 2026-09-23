@@ -1232,6 +1232,24 @@ const CSS = `
   .lc-row select{max-width:100%;flex:1 1 100%;}
 }
 
+/* ---------- relatório de completar dados ---------- */
+.rc-secao{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.rc-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+.rc-cab h3{margin:0;font-family:var(--disp);font-size:15px;font-weight:700;}
+.rc-cab h3 span{font-family:var(--mono);font-size:11px;color:var(--papel3);font-weight:400;margin-left:4px;}
+.rc-nota{margin:0;font-size:12.5px;color:var(--papel2);}
+.rc-lista{display:flex;flex-direction:column;border:1px solid var(--linha);border-radius:10px;overflow:auto;max-height:46vh;}
+.rc-linha{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--linha);font-size:13px;cursor:default;flex-wrap:wrap;}
+label.rc-linha{cursor:pointer;}
+.rc-linha:last-child{border-bottom:none;}
+.rc-linha input{width:16px;height:16px;accent-color:var(--amarelo);flex-shrink:0;}
+.rc-tit{flex:1 1 220px;font-weight:600;}
+.rc-troca{font-family:var(--mono);font-size:12px;color:var(--papel2);}
+.rc-troca s{color:var(--papel3);}
+.rc-troca b{color:var(--amarelo);}
+.rc-fonte{font-family:var(--mono);font-size:10px;color:var(--papel3);text-transform:uppercase;letter-spacing:.05em;min-width:60px;text-align:right;}
+.rc-resumo{font-family:var(--mono);font-size:11px;color:var(--papel3);}
+
 /* ── celular, regras que precisam vir por último ─────────────────
    Estas brigavam com blocos antigos de 640px escritos mais abaixo no
    arquivo, que as anulavam: a capa ficava com 190px em vez de 118.
@@ -1303,7 +1321,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.5", data: "22/09/2026", nota: "aba Lançamentos com as pré-vendas da Panini" };
+const VERSAO = { numero: "3.6", data: "22/09/2026", nota: "relatório do que mudou ao completar dados; conferência de páginas" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -3046,6 +3064,80 @@ function Modal({ titulo, aoFechar, children, rodape }) {
         {rodape && <div className="modal-pe">{rodape}</div>}
       </div>
     </div>
+  );
+}
+
+/* O que mudou ao completar dados ou conferir páginas. Campos vazios que
+   foram preenchidos já estão aplicados — é o comportamento de sempre. Número
+   de páginas diferente do que você tinha é a única exceção que mexe em dado
+   já preenchido, e por isso passa por aqui antes: as bases erram, e cada
+   troca fica marcada para você desmarcar a que não quiser. */
+function RelatorioCompletar({ rel, aoAplicar, aoFechar }) {
+  const [marcados, setMarcados] = useState(() => new Set(rel.paginas.map((x) => x.id)));
+  const alternar = (id) => setMarcados((p) => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
+  const todos = marcados.size === rel.paginas.length;
+  const ROT = { autor: "autor", editora: "editora", paginas: "páginas", ano: "ano", capaUrl: "capa", origem: "origem" };
+  return (
+    <Modal
+      titulo={rel.origem === "paginas" ? "Conferência de páginas" : "Completar dados — o que mudou"}
+      aoFechar={aoFechar}
+      rodape={
+        <>
+          <span className="rc-resumo">
+            {rel.total} consultado(s) · {rel.achados} com resposta
+            {rel.parado ? " · interrompido" : ""}
+          </span>
+          <span style={{ flex: 1 }} />
+          <button className="btn" onClick={aoFechar}>{rel.paginas.length ? "Não trocar páginas" : "Fechar"}</button>
+          {rel.paginas.length > 0 && (
+            <button className="btn btn-primario" disabled={!marcados.size}
+                    onClick={() => aoAplicar(rel.paginas.filter((x) => marcados.has(x.id)))}>
+              Trocar {marcados.size} página(s)
+            </button>
+          )}
+        </>
+      }
+    >
+      {rel.paginas.length > 0 && (
+        <section className="rc-secao">
+          <div className="rc-cab">
+            <h3>Páginas diferentes do que você tinha <span>{rel.paginas.length}</span></h3>
+            <button className="btn-mini-link" onClick={() => setMarcados(todos ? new Set() : new Set(rel.paginas.map((x) => x.id)))}>
+              {todos ? "desmarcar todas" : "marcar todas"}
+            </button>
+          </div>
+          <div className="rc-lista">
+            {rel.paginas.map((x) => (
+              <label key={x.id} className="rc-linha">
+                <input type="checkbox" checked={marcados.has(x.id)} onChange={() => alternar(x.id)} />
+                <span className="rc-tit">{x.titulo}</span>
+                <span className="rc-troca">
+                  {x.de != null ? <><s>{x.de}</s> → </> : "vazio → "}<b>{x.para}</b>
+                </span>
+                <span className="rc-fonte">{x.fonte}</span>
+              </label>
+            ))}
+          </div>
+        </section>
+      )}
+      {rel.preenchidos.length > 0 && (
+        <section className="rc-secao">
+          <div className="rc-cab"><h3>Campos vazios preenchidos <span>{rel.preenchidos.length}</span></h3></div>
+          <p className="rc-nota">Já aplicados. Nada que estava preenchido foi trocado.</p>
+          <div className="rc-lista">
+            {rel.preenchidos.map((x) => (
+              <div key={x.id} className="rc-linha">
+                <span className="rc-tit">{x.titulo}</span>
+                <span className="rc-troca">{x.campos.map((c) => (c === "paginas" && x.paginas ? `páginas ${x.paginas}` : ROT[c] || c)).join(" · ")}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+      {!rel.paginas.length && !rel.preenchidos.length && (
+        <p className="rc-nota">Nada mudou: as bases não trouxeram nenhum dado novo nem páginas diferentes das que você tem.</p>
+      )}
+    </Modal>
   );
 }
 
@@ -6916,6 +7008,50 @@ function Acervo() {
     [itens]
   );
 
+  const [relCompletar, setRelCompletar] = useState(null);
+  const [conferindo, setConferindo] = useState(null);
+  const pararConferir = useRef(false);
+
+  // páginas que a base trouxe e que diferem do cadastro (ou preenchem o vazio)
+  const trocasDePaginas = (alvos, achados, incluirVazias) => {
+    const out = [];
+    for (const it of alvos) {
+      const r = achados.get(it.id);
+      const nova = r && Number(r.paginas);
+      if (!nova) continue;
+      const atual = Number(it.paginas) || null;
+      if (atual === nova || (!atual && !incluirVazias)) continue;
+      out.push({ id: it.id, titulo: it.titulo || "Sem título", de: atual, para: nova, fonte: r.origem || "" });
+    }
+    return out.sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR"));
+  };
+
+  const aplicarPaginas = (lista) => {
+    const porId = new Map(lista.map((x) => [x.id, x.para]));
+    setItens((p) => p.map((x) => (porId.has(x.id) ? { ...x, paginas: porId.get(x.id) } : x)));
+    setRelCompletar(null);
+    avisar(`Páginas trocadas em ${lista.length} item(ns).`);
+  };
+
+  /* Consulta o ISBN só para as páginas, em todos os itens da tela atual —
+     os filtros valem, então dá para conferir por editora ou coleção. */
+  const conferirPaginas = async (lista) => {
+    const alvos = lista.filter((i) => i.isbn && ehIsbn((i.isbn.split(",")[0] || "").trim()));
+    if (!alvos.length) return avisar("Nenhum item com ISBN nesta tela.");
+    pararConferir.current = false;
+    setConferindo({ feitos: 0, total: alvos.length });
+    const achados = new Map();
+    await emFila(alvos, 3, async (it) => {
+      const { reg } = await buscarIsbn(soIsbn(it.isbn.split(",")[0]));
+      if (reg) achados.set(it.id, reg);
+    }, (n) => setConferindo({ feitos: n, total: alvos.length }), () => pararConferir.current);
+    setConferindo(null);
+    setRelCompletar({
+      origem: "paginas", total: alvos.length, achados: achados.size, parado: pararConferir.current,
+      preenchidos: [], paginas: trocasDePaginas(alvos, achados, true),
+    });
+  };
+
   const completarDados = async () => {
     const alvos = semDados;
     setCompletando({ feitos: 0, total: alvos.length });
@@ -6925,6 +7061,15 @@ function Acervo() {
       const { reg } = await buscarIsbn(isbn);
       if (reg) achados.set(it.id, reg);
     }, (n) => setCompletando({ feitos: n, total: alvos.length }));
+
+    // o que foi preenchido, para o relatório (só campos que estavam vazios)
+    const preenchidos = [];
+    for (const it of alvos) {
+      const r = achados.get(it.id);
+      if (!r) continue;
+      const campos = ["autor", "editora", "paginas", "ano", "capaUrl"].filter((c) => !it[c] && r[c]);
+      if (campos.length) preenchidos.push({ id: it.id, titulo: it.titulo || "Sem título", campos, paginas: r.paginas });
+    }
 
     if (achados.size) {
       setItens((p) => p.map((x) => {
@@ -6942,7 +7087,11 @@ function Acervo() {
       }));
     }
     setCompletando(null);
-    avisar(achados.size ? `${achados.size} item(ns) completado(s).` : "Nada novo encontrado nas bases.");
+    setRelCompletar({
+      origem: "completar", total: alvos.length, achados: achados.size,
+      preenchidos: preenchidos.sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR")),
+      paginas: trocasDePaginas(alvos, achados, false),
+    });
   };
 
   const isbnsExistentes = useMemo(
@@ -8381,6 +8530,18 @@ function Acervo() {
           </button>
         )}
 
+        {(aba === "estante" || aba === "desejos") && visiveis.length > 0 && (
+          <button
+            className="btn btn-mini"
+            onClick={conferindo ? () => { pararConferir.current = true; } : () => conferirPaginas(visiveis)}
+            disabled={!!completando}
+            title="Consulta o ISBN dos itens desta tela (respeita os filtros) e mostra onde o número de páginas é diferente. Nada é trocado sem você confirmar."
+          >
+            <BookOpen size={13} />
+            {conferindo ? `Conferindo ${conferindo.feitos}/${conferindo.total} · parar` : `Conferir páginas (${visiveis.length})`}
+          </button>
+        )}
+
         {!emColecoes && !emRelatorio && !emListas && !emSeries && !emPersonagens && !emLinhas && (semCapaSalva.length > 0 || salvandoCapas) && (
           <button
             className="btn btn-mini"
@@ -9298,6 +9459,14 @@ function Acervo() {
             </>
           )}
         </Modal>
+      )}
+
+      {relCompletar && (
+        <RelatorioCompletar
+          rel={relCompletar}
+          aoAplicar={aplicarPaginas}
+          aoFechar={() => setRelCompletar(null)}
+        />
       )}
 
       {modalReset && (
