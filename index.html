@@ -102,6 +102,7 @@ const CSS = `
   --linha:#372F52;
   --papel:#EFE9DE; --papel2:#A79FBC; --papel3:#6F6889;
   --ciano:#31BBD9; --magenta:#E5487F; --amarelo:#F2B33D; --verde:#4FC98B; --vermelho:#F04438;
+  --violeta:#A58CFF; /* comprado, ainda não chegou */
   --disp:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;
   --corpo:'Instrument Sans',system-ui,-apple-system,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
@@ -220,6 +221,7 @@ const CSS = `
 .selo.ok{background:rgba(242,179,61,.92);color:#2A1E02;}
 .selo.falta{background:rgba(229,72,127,.92);color:#fff;}
 .selo.desejo{background:rgba(49,187,217,.92);color:#04222A;}
+.selo.caminho{background:rgba(165,140,255,.95);color:#1A1238;}
 .selo.vol{top:auto;bottom:7px;left:7px;right:auto;background:rgba(20,17,32,.88);color:var(--papel);border:1px solid var(--linha);}
 .selo.tema{background:rgba(167,159,188,.9);color:#1A1526;}
 .card-capa.pilha{
@@ -302,6 +304,7 @@ const CSS = `
 .lomb.cheia{background:var(--amarelo);}
 .lomb.vazia{background:transparent;border:1px dashed var(--magenta);opacity:.55;height:70%;}
 .lomb.desejo{background:var(--ciano);opacity:.35;}
+.lomb.caminho{background:var(--violeta);}
 .prog{height:5px;border-radius:3px;background:var(--tinta3);overflow:hidden;}
 .prog i{display:block;height:100%;background:var(--amarelo);}
 .lomb-legenda{font-family:var(--mono);font-size:9.5px;color:var(--papel3);letter-spacing:.05em;}
@@ -1159,6 +1162,16 @@ const CSS = `
 }
 
 
+/* ---------- compra a caminho ---------- */
+.slot.caminho{border-color:var(--violeta);}
+.slot.caminho img{opacity:.55;}
+.compra-bloco{display:flex;flex-direction:column;gap:10px;margin:14px 0 4px;padding:12px 14px;border-radius:10px;border:1px dashed var(--linha);}
+.compra-bloco.caminho{border:1px solid rgba(165,140,255,.45);background:rgba(165,140,255,.07);}
+.compra-bloco .dica{margin:0;}
+.compra-info{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:13px;color:var(--papel2);}
+.compra-acoes{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+.lc-rel.caminho{color:var(--violeta);}
+
 /* ---------- lançamentos da Panini ---------- */
 .lc-recarregar{display:inline-flex;align-items:center;gap:5px;}
 .lc-recarregar:disabled{opacity:.7;cursor:progress;}
@@ -1326,7 +1339,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.7", data: "23/09/2026", nota: "lançamentos: aviso ao recarregar e atalho para buscar na Panini" };
+const VERSAO = { numero: "3.8", data: "26/09/2026", nota: "desejos já comprados marcados como “a caminho”, também nas coleções" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -2081,6 +2094,11 @@ const itemVazio = (lista = "estante") => ({
   origem: "",
   aquisicao: lista === "estante" ? hoje() : "",
   precoPago: null,
+  /* Desejo já comprado que ainda não chegou. A data do pedido, o preço e
+     a loja ficam em aquisicao / precoPago / lojaCompra — quando chega e
+     vai para a estante, nada precisa ser copiado. */
+  aCaminho: false,
+  lojaCompra: "",
   leitura: "nao_lido",
   marco: false,      // ponto-chave: vira uma linha vertical no mapa temporal
   dataLeitura: "",
@@ -2124,12 +2142,15 @@ function estadoColecao(col, itens) {
   const noDesejo = membros.filter((i) => i.lista === "desejos");
   const tenho = new Set(naEstante.map((i) => i.volume).filter((v) => v != null));
   const querendo = new Set(noDesejo.map((i) => i.volume).filter((v) => v != null));
+  const caminho = new Set(noDesejo.filter((i) => i.aCaminho).map((i) => i.volume).filter((v) => v != null));
   const total = col.tipo === "serie" ? Number(col.total) || 0 : 0;
   const faltam = total > 0
     ? Array.from({ length: total }, (_, i) => i + 1).filter((v) => !tenho.has(v))
     : [];
+  // "faltam" segue sendo o que não está na estante; "faltamComprar" tira o que já está a caminho
+  const faltamComprar = faltam.filter((v) => !caminho.has(v));
   return {
-    membros, naEstante, noDesejo, tenho, querendo, total, faltam,
+    membros, naEstante, noDesejo, tenho, querendo, caminho, total, faltam, faltamComprar,
     completa: total > 0 && faltam.length === 0,
   };
 }
@@ -3006,15 +3027,16 @@ function Capa({ item, src }) {
 /* A assinatura da interface: cada volume da coleção é uma lombada.
    Cheia = está na estante. Ciano = já está na lista de desejos.
    Contorno tracejado = buraco na coleção. */
-function Lombadas({ total, tenho, querendo, legenda }) {
+function Lombadas({ total, tenho, querendo, caminho, legenda }) {
   const q = querendo || new Set();
+  const c = caminho || new Set();
   if (!total || total < 2) return null;
 
   if (total > 40) {
     return (
       <>
         <div className="prog"><i style={{ width: `${Math.min(100, (tenho.size / total) * 100)}%` }} /></div>
-        {legenda && <div className="lomb-legenda">{tenho.size} de {total} volumes</div>}
+        {legenda && <div className="lomb-legenda">{tenho.size} de {total} volumes{c.size ? ` · ${c.size} a caminho` : ""}</div>}
       </>
     );
   }
@@ -3022,9 +3044,98 @@ function Lombadas({ total, tenho, querendo, legenda }) {
     <div className="lombadas" aria-hidden="true">
       {Array.from({ length: total }, (_, i) => {
         const v = i + 1;
-        const cls = tenho.has(v) ? "cheia" : q.has(v) ? "desejo" : "vazia";
+        const cls = tenho.has(v) ? "cheia" : c.has(v) ? "caminho" : q.has(v) ? "desejo" : "vazia";
         return <span key={v} className={`lomb ${cls}`} />;
       })}
+    </div>
+  );
+}
+
+/* Desejo já comprado: marca, guarda data do pedido, preço e loja, e leva
+   para a estante quando chega (a data de aquisição continua sendo a do
+   pedido). */
+const diasDesde = (iso) => {
+  if (!iso) return null;
+  const d = Math.floor((Date.now() - new Date(`${iso}T12:00:00`).getTime()) / 86400000);
+  return d >= 0 ? d : null;
+};
+
+function CompraACaminho({ item, lojas, aoAtualizar, aoChegou }) {
+  const [editando, setEditando] = useState(false);
+  const [data, setData] = useState("");
+  const [preco, setPreco] = useState("");
+  const [loja, setLoja] = useState("");
+  const abrir = () => {
+    setData(item.aquisicao || hoje());
+    setPreco(item.precoPago != null ? String(item.precoPago).replace(".", ",") : "");
+    setLoja(item.lojaCompra || "");
+    setEditando(true);
+  };
+  const salvar = () => {
+    aoAtualizar({ ...item, aCaminho: true, aquisicao: data || hoje(), precoPago: numero(preco), lojaCompra: loja.trim() });
+    setEditando(false);
+  };
+  const desfazer = () => {
+    if (!window.confirm("Desfazer a compra? O item volta a ser só um desejo, sem data, preço e loja.")) return;
+    aoAtualizar({ ...item, aCaminho: false, aquisicao: "", precoPago: null, lojaCompra: "" });
+  };
+
+  if (editando) {
+    return (
+      <div className="compra-bloco">
+        <p className="secao-tit" style={{ margin: 0 }}><Package size={12} /> Compra</p>
+        <div className="grade-form">
+          <div className="campo">
+            <label>Data do pedido</label>
+            <input type="date" value={data} onChange={(e) => setData(e.target.value)} />
+          </div>
+          <div className="campo">
+            <label>Preço pago (R$)</label>
+            <input inputMode="decimal" value={preco} onChange={(e) => setPreco(e.target.value)} placeholder="49,90" />
+          </div>
+          <div className="campo">
+            <label>Loja</label>
+            <input list="lojas-compra" value={loja} onChange={(e) => setLoja(e.target.value)} placeholder="Panini, Amazon…" />
+            <datalist id="lojas-compra">{lojas.map((l) => <option key={l} value={l} />)}</datalist>
+          </div>
+        </div>
+        <div className="compra-acoes">
+          <button className="btn btn-primario" onClick={salvar}>
+            <Check size={14} /> {item.aCaminho ? "Salvar compra" : "Marcar como a caminho"}
+          </button>
+          <button className="btn" onClick={() => setEditando(false)}>Cancelar</button>
+        </div>
+      </div>
+    );
+  }
+  if (!item.aCaminho) {
+    return (
+      <div className="compra-bloco">
+        <div className="compra-acoes">
+          <button className="btn" onClick={abrir}><Package size={14} /> Já comprei — está a caminho</button>
+        </div>
+        <p className="dica">Para pedido que ainda não chegou: fica nos desejos, marcado, até você confirmar a entrega.</p>
+      </div>
+    );
+  }
+  const dias = diasDesde(item.aquisicao);
+  return (
+    <div className="compra-bloco caminho">
+      <div className="compra-info">
+        <span className="selo caminho" style={{ position: "static" }}>A caminho</span>
+        <span>
+          pedido em {dataCurta(item.aquisicao)}
+          {dias != null ? (dias === 0 ? " · hoje" : ` · há ${dias} dia${dias === 1 ? "" : "s"}`) : ""}
+        </span>
+        {(item.precoPago != null || item.lojaCompra) && (
+          <span>{[item.precoPago != null ? brl(item.precoPago) : "", item.lojaCompra].filter(Boolean).join(" · ")}</span>
+        )}
+      </div>
+      <div className="compra-acoes">
+        <button className="btn btn-primario" onClick={aoChegou}><Library size={14} /> Chegou → Estante</button>
+        <button className="btn" onClick={abrir}><Pencil size={14} /> Editar compra</button>
+        <button className="btn-mini-link" onClick={desfazer}>não comprei</button>
+      </div>
     </div>
   );
 }
@@ -3810,6 +3921,10 @@ function Formulario({ inicial, capaAtual, colecoes, sugestoesOrig, aoAbrirLote, 
                 placeholder="64,90"
               />
             </div>
+            <div className="campo">
+              <label>Loja (opcional)</label>
+              <input value={it.lojaCompra || ""} onChange={(e) => set("lojaCompra", e.target.value)} placeholder="Panini, Amazon…" />
+            </div>
             {it.leitura === "lido" && (
               <div className="campo">
                 <label>Terminei em (opcional)</label>
@@ -4105,7 +4220,7 @@ function Formulario({ inicial, capaAtual, colecoes, sugestoesOrig, aoAbrirLote, 
 /* ══════════════════════════════════════════════════════════════
    DETALHE — ficha completa, lombadas clicáveis e preços
    ══════════════════════════════════════════════════════════════ */
-function Detalhe({ item, capaSrc, colecoes, navLista, capasPers, aoAbrirPersonagem, aoFechar, aoEditar, aoRemover, aoAtualizar, aoMover, aoNavegar, aoAbrirColecao }) {
+function Detalhe({ item, capaSrc, colecoes, navLista, capasPers, aoAbrirPersonagem, aoFechar, aoEditar, aoRemover, aoAtualizar, aoMover, aoNavegar, aoAbrirColecao, lojas }) {
   const [abaOrig, setAbaOrig] = useState(0);
   const [verEds, setVerEds] = useState(null);
   const [buscaIsbn, setBuscaIsbn] = useState(false);
@@ -4143,7 +4258,9 @@ function Detalhe({ item, capaSrc, colecoes, navLista, capasPers, aoAbrirPersonag
           <button className="btn" onClick={aoEditar}><Pencil size={14} /> Editar</button>
           <button className="btn" onClick={aoMover}>
             <ArrowRightLeft size={14} />
-            {item.lista === "desejos" ? "Já comprei — mover para a estante" : "Mover para a lista de desejos"}
+            {item.lista === "desejos"
+              ? (item.aCaminho ? "Chegou — mover para a estante" : "Já tenho — mover para a estante")
+              : "Mover para a lista de desejos"}
           </button>
           <button className="btn btn-perigo" style={{ marginLeft: "auto" }} onClick={() => {
             if (window.confirm(`Excluir "${item.titulo}" do acervo inteiro? Isso não afeta só esta coleção — o item some de vez, sem volta.`)) aoRemover();
@@ -4210,6 +4327,7 @@ function Detalhe({ item, capaSrc, colecoes, navLista, capasPers, aoAbrirPersonag
             <div><dt>Gêneros</dt><dd>{(item.generos || []).join(", ") || "—"}</dd></div>
             {item.lista === "estante" && <div><dt>Aquisição</dt><dd>{dataCurta(item.aquisicao)}</dd></div>}
             {item.lista === "estante" && <div><dt>Preço pago</dt><dd>{brl(item.precoPago)}</dd></div>}
+            {item.lista === "estante" && item.lojaCompra && <div><dt>Loja</dt><dd>{item.lojaCompra}</dd></div>}
             {item.leitura === "lido" && (
               <div><dt>Terminei em</dt><dd>{item.dataLeitura ? dataCurta(item.dataLeitura) : "não anotado"}</dd></div>
             )}
@@ -4226,6 +4344,10 @@ function Detalhe({ item, capaSrc, colecoes, navLista, capasPers, aoAbrirPersonag
               </>
             )}
           </div>
+
+          {item.lista === "desejos" && (
+            <CompraACaminho item={item} lojas={lojas || []} aoAtualizar={aoAtualizar} aoChegou={aoMover} />
+          )}
 
           {item.lista === "estante" && (
             <div style={{ marginTop: 14 }}>
@@ -4596,14 +4718,19 @@ function Card({ item, capaSrc, colecoes, aoAbrir, indice, selecao, selecionado, 
           </span>
         )}
         {item.volume != null && <span className="selo vol">#{item.volume}</span>}
-        {desejo && abaixoDoAlvo && <span className="selo alvo">{brl(melhor)}</span>}
-        {desejo && !abaixoDoAlvo && lanc && (
+        {desejo && item.aCaminho && (
+          <span className="selo caminho">
+            {`A caminho${lanc && lanc.estado === "pre-venda" && lanc.previsao ? ` · ${lanc.previsao.curto}` : ""}`}
+          </span>
+        )}
+        {desejo && !item.aCaminho && abaixoDoAlvo && <span className="selo alvo">{brl(melhor)}</span>}
+        {desejo && !item.aCaminho && !abaixoDoAlvo && lanc && (
           <span className={`selo ${lanc.estado === "a-venda" ? "lanc-venda" : "lanc-pre"}`}
                 title={`Panini: ${lanc.titulo}${lanc.previsao ? ` · previsão: ${lanc.previsao.txt}` : ""}`}>
             {lanc.estado === "a-venda" ? "À venda" : `Pré-venda${lanc.previsao ? ` · ${lanc.previsao.curto}` : ""}`}
           </span>
         )}
-        {desejo && !abaixoDoAlvo && !lanc && <span className="selo desejo">Quero</span>}
+        {desejo && !item.aCaminho && !abaixoDoAlvo && !lanc && <span className="selo desejo">Quero</span>}
       </div>
       <div>
         <div className="card-titulo">{item.titulo || "Sem título"}</div>
@@ -6123,21 +6250,23 @@ function CardColecao({ col, itens, capaDe, aoAbrir, indice, arrastavel, arrastan
         <Capa item={{ ...primeiro, titulo: col.nome }} src={capa} />
         <span className="capa-vinco" />
         {col.tipo === "serie" ? (
-          <span className={`selo ${e.completa ? "ok" : e.total > 0 ? "falta" : "tema"}`}>
-            {e.total > 0 ? (e.completa ? "Completa" : `Faltam ${e.faltam.length}`) : "Sem total"}
+          <span className={`selo ${e.completa ? "ok" : e.total > 0 ? (e.faltamComprar.length ? "falta" : "caminho") : "tema"}`}>
+            {e.total > 0
+              ? (e.completa ? "Completa" : e.faltamComprar.length ? `Faltam ${e.faltamComprar.length}` : `${e.caminho.size} a caminho`)
+              : "Sem total"}
           </span>
         ) : (
           <span className="selo tema">{e.membros.length} itens</span>
         )}
       </div>
-      {col.tipo === "serie" && <Lombadas total={e.total} tenho={e.tenho} querendo={e.querendo} legenda />}
+      {col.tipo === "serie" && <Lombadas total={e.total} tenho={e.tenho} querendo={e.querendo} caminho={e.caminho} legenda />}
       <div>
         <div className="card-titulo">{col.nome}</div>
         <div className="card-sub">
           {col.tipo === "serie"
             ? e.total > 0
-              ? `${e.tenho.size} de ${e.total} volumes`
-              : `${e.naEstante.length} volumes · defina o total`
+              ? `${e.tenho.size} de ${e.total} volumes${e.caminho.size ? ` · ${e.caminho.size} a caminho` : ""}`
+              : `${e.naEstante.length} volumes${e.caminho.size ? ` · ${e.caminho.size} a caminho` : ""} · defina o total`
             : `${e.membros.length} ${e.membros.length === 1 ? "item" : "itens"}`}
         </div>
       </div>
@@ -6238,6 +6367,7 @@ function Acervo() {
   const [importando, setImportando] = useState(false);
   const [completando, setCompletando] = useState(null);
   const [fLeitura, setFLeitura] = useState("");
+  const [fCaminho, setFCaminho] = useState(false);
   const [trocaEditora, setTrocaEditora] = useState(null);
   const [arquivo, setArquivo] = useState(null);
   const [permPendente, setPermPendente] = useState(false);
@@ -6741,7 +6871,8 @@ function Acervo() {
     if (sessao && dados) { try { await enviarCapaNuvem(id, dados); } catch (e) { /* vai no envio em massa */ } }
   };
 
-  const salvarItem = async (item, capaNova, continuar) => {
+  const salvarItem = async (itemBruto, capaNova, continuar) => {
+    const item = itemBruto.lista === "estante" && itemBruto.aCaminho ? { ...itemBruto, aCaminho: false } : itemBruto;
     setItens((p) => (p.some((x) => x.id === item.id) ? p.map((x) => (x.id === item.id ? item : x)) : [item, ...p]));
     if (capaNova !== undefined) await guardarCapa(item.id, capaNova);
     // continuar: a janela fica aberta e o próprio formulário se limpa
@@ -6895,6 +7026,7 @@ function Acervo() {
     atualizarItem({
       ...item,
       lista: destino,
+      aCaminho: false, // chegou (ou voltou a ser só desejo); a data do pedido vira a aquisição
       aquisicao: destino === "estante" && !item.aquisicao ? hoje() : item.aquisicao,
     });
     setAba(destino);
@@ -7874,7 +8006,7 @@ function Acervo() {
   const exportarCsv = () => {
     const COLS = ["ISBN","TITULO","VOLUME","COLECAO","EDITORA","AUTOR","TIPO","GENERO","DATA AQUISICAO",
       "PRECO PAGO","LEITURA","DATA LEITURA","QTD PAGINAS","LINK DE IMAGEM DE CAPA","NOTAS","LISTA",
-      "PUBLICACAO ORIGINAL","PONTO CHAVE"];
+      "PUBLICACAO ORIGINAL","PONTO CHAVE","A CAMINHO","LOJA"];
     const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
     const nomeCol = (id) => (colecoes.find((c) => c.id === id) || {}).nome || "";
     const linhas = itens.map((i) => [
@@ -7896,6 +8028,8 @@ function Acervo() {
       i.lista === "desejos" ? "Desejos" : "Estante",
       origensParaTexto(i),
       i.marco ? "Sim" : "",
+      i.lista === "desejos" && i.aCaminho ? "Sim" : "",
+      i.lojaCompra || "",
     ].map(esc).join(";"));
     const blob = new Blob(["\uFEFF" + [COLS.map(esc).join(";"), ...linhas].join("\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
@@ -7999,6 +8133,7 @@ function Acervo() {
       if (fEditora && i.editora !== fEditora) return false;
       if (fGenero && !(i.generos || []).includes(fGenero)) return false;
       if (fLeitura && (i.leitura || "nao_lido") !== fLeitura) return false;
+      if (fCaminho && !(i.lista === "desejos" && i.aCaminho)) return false;
       if (fColecao === "__sem__" && (i.colecoes || []).length) return false;
       if (fColecao && fColecao !== "__sem__" && !(i.colecoes || []).includes(fColecao)) return false;
       return true;
@@ -8018,7 +8153,12 @@ function Acervo() {
     const base = cmp[fColecao ? "volume" : ordem] || cmp.recentes;
     const dir = ordemInv ? -1 : 1;
     return [...r].sort((a, b) => dir * base(a, b));
-  }, [daLista, busca, fTipo, fEditora, fGenero, fColecao, fLeitura, ordem, ordemInv]);
+  }, [daLista, busca, fTipo, fEditora, fGenero, fColecao, fLeitura, fCaminho, ordem, ordemInv]);
+  const nCaminho = useMemo(() => itens.filter((i) => i.lista === "desejos" && i.aCaminho).length, [itens]);
+  const lojasUsadas = useMemo(() => [...new Set([
+    ...itens.map((i) => (i.lojaCompra || "").trim()),
+    ...itens.flatMap((i) => (i.precos || []).map((p) => (p.loja || "").trim())),
+  ].filter((l) => l && l !== "Não informada"))].sort((a, b) => a.localeCompare(b, "pt-BR")), [itens]);
 
   /* Todas as coleções na ordem manual — base pro arrasto. Quem nunca foi
      arrastada (ordem null) cai no fim, em ordem alfabética. */
@@ -8096,7 +8236,7 @@ function Acervo() {
   };
 
   const limparFiltros = () => {
-    setFSit("todas"); setFTipo(""); setFEditora(""); setFGenero(""); setFColecao(""); setFLeitura(""); setBusca(""); };
+    setFSit("todas"); setFTipo(""); setFEditora(""); setFGenero(""); setFColecao(""); setFLeitura(""); setFCaminho(false); setBusca(""); };
   const temFiltro = fTipo || fEditora || fGenero || fColecao || fLeitura || busca;
   const emSeries = aba === "series";
   /* Precisa vir depois de "emSeries": declarado antes, o React lia a
@@ -8507,6 +8647,13 @@ function Acervo() {
               <ChevronDown size={14} style={{ transform: ordemInv ? "rotate(180deg)" : "none", transition: "transform .15s" }} />
             </button>
 
+            {aba === "desejos" && nCaminho > 0 && (
+              <div className="chips">
+                <button className={`chip ${fCaminho ? "ativo" : ""}`} onClick={() => setFCaminho((v) => !v)}>
+                  <span className="pt" style={{ background: "var(--violeta)" }} />A caminho ({nCaminho})
+                </button>
+              </div>
+            )}
             {aba === "estante" && (
               <div className="chips">
                 {LEITURAS.map((l) => (
@@ -9098,6 +9245,7 @@ function Acervo() {
           aoAtualizar={atualizarItem}
           aoMover={() => moverItem(aberto)}
           aoNavegar={setAberto}
+          lojas={lojasUsadas}
           aoAbrirColecao={(c) => { setAberto(null); setAba("colecoes"); setColAberta(c); }}
         />
       )}
@@ -9635,13 +9783,14 @@ function previsaoLanc(p) {
 function indiceSeriesDoAcervo(itens, colecoes) {
   const m = new Map();
   const pegar = (chave, nome) => {
-    if (!m.has(chave)) m.set(chave, { chave, nome, tenho: new Set(), querendo: new Set(), tenhoAlt: new Set(), querendoAlt: new Set(), itens: [], cols: new Map() });
+    if (!m.has(chave)) m.set(chave, { chave, nome, tenho: new Set(), querendo: new Set(), caminho: new Set(), tenhoAlt: new Set(), querendoAlt: new Set(), itens: [], cols: new Map() });
     return m.get(chave);
   };
   const colSerie = new Map((colecoes || []).filter((c) => c.tipo === "serie").map((c) => [c.id, c]));
   const guardar = (g, it, vol) => {
     if (!g.itens.includes(it)) g.itens.push(it);
     if (vol != null && Number.isFinite(vol)) (it.lista === "desejos" ? g.querendo : g.tenho).add(vol);
+    if (vol != null && Number.isFinite(vol) && it.lista === "desejos" && it.aCaminho) g.caminho.add(vol);
     for (const cid of it.colecoes || []) if (colSerie.has(cid)) g.cols.set(cid, (g.cols.get(cid) || 0) + 1);
   };
   for (const it of itens) {
@@ -9674,8 +9823,9 @@ function numeroMaisProvavel(numeros, g) {
   return numeros.reduce((a, b) => (Math.abs(b - alvo) < Math.abs(a - alvo) ? b : a));
 }
 
-function compararNumero(n, tenho, querendo) {
+function compararNumero(n, tenho, querendo, caminho) {
   if (tenho.has(n)) return { tipo: "tenho", txt: `você já tem o nº ${n} — reimpressão?`, n };
+  if (caminho && caminho.has(n)) return { tipo: "caminho", txt: "você já comprou · a caminho", n };
   if (querendo.has(n)) return { tipo: "desejo", txt: "está nos seus desejos", n };
   if (!tenho.size) return { tipo: "serie", txt: querendo.size ? "série da sua lista de desejos" : "série do seu acervo", n };
   const max = Math.max(...tenho);
@@ -9703,7 +9853,7 @@ function relacaoComSerie(g, numeros, alt) {
       ? { tipo: "tenho", txt: "você já tem este título" }
       : { tipo: "desejo", txt: "está nos seus desejos" };
   }
-  return compararNumero(n, g.tenho, g.querendo);
+  return compararNumero(n, g.tenho, g.querendo, g.caminho);
 }
 
 /* Junta variantes de capa num card só, cruza com o acervo e com os
@@ -9820,6 +9970,8 @@ function CardLancamento({ g, desejado, aoConfirmar, aoRecusar, aoDesvincular, ao
             ? <button className="btn btn-mini btn-primario" onClick={() => aoComprei(g)}>Comprei → Estante</button>
             : g.rel && g.rel.tipo === "tenho" && g.situacao === "minha"
               ? <button className="btn btn-mini" disabled><Check size={12} /> Já tenho</button>
+            : g.rel && g.rel.tipo === "caminho"
+              ? <button className="btn btn-mini" disabled><Package size={12} /> A caminho</button>
             : desejado
               ? <button className="btn btn-mini" disabled><Check size={12} /> Nos desejos</button>
               : <button className="btn btn-mini btn-primario" onClick={() => aoDesejar(g)}><Heart size={12} /> Desejos</button>}
@@ -10026,6 +10178,8 @@ const COLUNAS = {
   lista: ["lista", "destino", "estante ou desejos", "estante/desejos", "wishlist", "lista de desejos", "acervo"],
   publicacaoOriginal: ["publicacao original", "publicação original", "original", "serie original", "série original", "publicacao originais"],
   marco: ["ponto chave", "ponto-chave", "ponto chave?", "marco", "chave"],
+  aCaminho: ["a caminho", "comprado a caminho", "ja comprei"],
+  lojaCompra: ["loja", "loja da compra", "comprado em loja", "onde comprei"],
 };
 
 /* "Desejos", "wishlist", "quero" → lista de desejos. "Estante", "tenho",
@@ -11326,6 +11480,9 @@ function lerPlanilha(texto) {
       reg.original = textoParaOrigens(pega("publicacaoOriginal"));
       const mk = semAcento(pega("marco").trim());
       reg.marco = mk ? /^(s|1|sim|x|true|v)/.test(mk) : undefined;
+      const ac = semAcento(pega("aCaminho").trim());
+      reg.aCaminho = ac ? /^(s|1|sim|x|true|v)/.test(ac) : undefined;
+      reg.lojaCompra = pega("lojaCompra").trim();
     } else {
       const iCod = campos.findIndex((c) => ehIsbn(c));
       reg.isbn = iCod >= 0 ? soIsbn(campos[iCod]) : "";
@@ -11356,6 +11513,8 @@ function itemDaImportacao(sheet, destino, tipoPadrao, colecaoId) {
     ...itemVazio(alvo),
     original: (sheet.original && sheet.original.length) ? sheet.original : null,
     marco: !!sheet.marco,
+    aCaminho: alvo === "desejos" && !!sheet.aCaminho,
+    lojaCompra: sheet.lojaCompra || "",
     id: uid(),
     titulo,
     volume: sheet.volume ?? separarVolume(titulo).vol,
@@ -11675,6 +11834,8 @@ function ImportarLote({ isbnsExistentes, itensExistentes, colecoesExistentes, ao
       if (r.lista === "estante" || r.lista === "desejos") campos.lista = r.lista;
       if (r.original && r.original.length) campos.original = r.original;
       if (r.marco !== undefined) campos.marco = r.marco;
+      if (r.aCaminho !== undefined) campos.aCaminho = r.aCaminho;
+      if (r.lojaCompra) campos.lojaCompra = r.lojaCompra;
       return campos;
     };
 
@@ -13460,8 +13621,8 @@ function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoA
       <p className="autor" style={{ margin: "0 0 14px" }}>
         {col.tipo === "serie"
           ? e.total > 0
-            ? `${e.tenho.size} de ${e.total} volumes na estante`
-            : `${e.naEstante.length} volumes, série em andamento`
+            ? `${e.tenho.size} de ${e.total} volumes na estante${e.caminho.size ? ` · ${e.caminho.size} a caminho` : ""}`
+            : `${e.naEstante.length} volumes, série em andamento${e.caminho.size ? ` · ${e.caminho.size} a caminho` : ""}`
           : `${e.membros.length} ${e.membros.length === 1 ? "item" : "itens"}`}
         {col.editora ? ` · ${col.editora}` : ""}
       </p>
@@ -13480,7 +13641,7 @@ function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoA
           <span style={{ fontSize: 13 }}>volumes</span>
           <span className="dica">
             {e.total
-              ? `Você tem ${e.tenho.size}. Faltam ${e.faltam.length}.`
+              ? `Você tem ${e.tenho.size}.${e.caminho.size ? ` ${e.caminho.size} a caminho.` : ""} Faltam ${e.faltamComprar.length}.`
               : "Preencha para o app calcular o que falta. Deixe vazio se a série ainda está saindo."}
           </span>
         </div>
@@ -13525,16 +13686,25 @@ function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoA
 
       {col.tipo === "serie" && e.total > 1 && (
         <div style={{ marginBottom: 6 }}>
-          <Lombadas total={e.total} tenho={e.tenho} querendo={e.querendo} />
+          <Lombadas total={e.total} tenho={e.tenho} querendo={e.querendo} caminho={e.caminho} />
         </div>
       )}
 
-      {col.tipo === "serie" && e.faltam.length > 0 && (
+      {col.tipo === "serie" && e.faltamComprar.length > 0 && (
         <div className="aviso" style={{ marginTop: 14, borderColor: "rgba(229,72,127,.3)", background: "rgba(229,72,127,.07)" }}>
           <TriangleAlert size={15} style={{ color: "var(--magenta)" }} />
           <span>
             Faltam os volumes{" "}
-            <b style={{ fontFamily: "var(--mono)", color: "var(--papel)" }}>{e.faltam.join(", ")}</b>.
+            <b style={{ fontFamily: "var(--mono)", color: "var(--papel)" }}>{e.faltamComprar.join(", ")}</b>.
+          </span>
+        </div>
+      )}
+      {col.tipo === "serie" && e.caminho.size > 0 && (
+        <div className="aviso" style={{ marginTop: 10, borderColor: "rgba(165,140,255,.35)", background: "rgba(165,140,255,.07)" }}>
+          <Package size={15} style={{ color: "var(--violeta)" }} />
+          <span>
+            Comprados, a caminho:{" "}
+            <b style={{ fontFamily: "var(--mono)", color: "var(--papel)" }}>{[...e.caminho].sort((a, b) => a - b).join(", ")}</b>.
           </span>
         </div>
       )}
@@ -13558,10 +13728,11 @@ function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoA
                     </button>
                   );
                 return (
-                  <button key={v} className="slot" onClick={() => aoAbrirItem(m)} title={m.titulo}>
+                  <button key={v} className={`slot ${m.lista === "desejos" && m.aCaminho ? "caminho" : ""}`} onClick={() => aoAbrirItem(m)} title={m.titulo}>
                     <Capa item={m} src={capaDe(m)} />
-                    <span className="slot-num" style={m.lista === "desejos" ? { color: "var(--ciano)" } : undefined}>
-                      {m.lista === "desejos" ? `#${v} · desejo` : `#${v}`}
+                    <span className="slot-num"
+                          style={m.lista === "desejos" ? { color: m.aCaminho ? "var(--violeta)" : "var(--ciano)" } : undefined}>
+                      {m.lista === "desejos" ? `#${v} · ${m.aCaminho ? "a caminho" : "desejo"}` : `#${v}`}
                     </span>
                   </button>
                 );
