@@ -1164,6 +1164,13 @@ const CSS = `
 
 /* ---------- compra a caminho ---------- */
 .slot.caminho{border-color:var(--violeta);}
+/* situação na Panini, por cima da capa: pré-venda (com a previsão) ou já lançado */
+.slot-lanc{position:absolute;top:4px;left:4px;right:4px;display:flex;flex-direction:column;align-items:center;gap:0;
+  padding:2px 3px;border-radius:4px;font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;line-height:1.25;text-align:center;}
+.slot-lanc.pre{background:rgba(242,179,61,.95);color:#241B05;}
+.slot-lanc.lancou{background:rgba(79,201,139,.95);color:#062014;}
+.slot-lanc small{font-size:8px;font-weight:600;letter-spacing:.03em;opacity:.85;}
 .slot.caminho img{opacity:.55;}
 .compra-bloco{display:flex;flex-direction:column;gap:10px;margin:14px 0 4px;padding:12px 14px;border-radius:10px;border:1px dashed var(--linha);}
 .compra-bloco.caminho{border:1px solid rgba(165,140,255,.45);background:rgba(165,140,255,.07);}
@@ -1339,7 +1346,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.8", data: "26/09/2026", nota: "desejos já comprados marcados como “a caminho”, também nas coleções" };
+const VERSAO = { numero: "3.9", data: "26/09/2026", nota: "coleções mostram se o volume desejado está em pré-venda ou já lançou" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -9311,6 +9318,7 @@ function Acervo() {
           aoNovoVolume={novoVolume}
           aoEscolherParaVolume={escolherParaVolume}
           aoDesejarLacunas={desejarLacunas}
+          lancDe={(i) => infoLanc.porDesejo.get(i.id)}
           aoAjustar={ajustarColecao}
         />
       )}
@@ -13577,7 +13585,7 @@ function DetalheSerie({ serie, capaSrc, aoFechar, aoEditar, aoLimpar, aoAbrirIte
   );
 }
 
-function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoAbrirItem, aoVincular, aoDesvincular, aoNovoVolume, aoDesejarLacunas, aoAjustar, aoEscolherParaVolume }) {
+function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoAbrirItem, aoVincular, aoDesvincular, aoNovoVolume, aoDesejarLacunas, aoAjustar, aoEscolherParaVolume, lancDe }) {
   const [busca, setBusca] = useState("");
   const [escolhendoVol, setEscolhendoVol] = useState(null);
   const e = estadoColecao(col, itens);
@@ -13696,6 +13704,23 @@ function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoA
           <span>
             Faltam os volumes{" "}
             <b style={{ fontFamily: "var(--mono)", color: "var(--papel)" }}>{e.faltamComprar.join(", ")}</b>.
+            {(() => {
+              if (!lancDe) return null;
+              const pre = [], lancou = [];
+              for (const v of e.faltamComprar) {
+                const m = e.noDesejo.find((i) => i.volume === v);
+                const l = m ? lancDe(m) : null;
+                if (!l) continue;
+                if (l.estado === "pre-venda") pre.push(l.previsao ? `${v} (${l.previsao.curto})` : `${v}`);
+                else if (l.estado === "a-venda") lancou.push(v);
+              }
+              return (
+                <>
+                  {lancou.length > 0 && <> Já lançado, falta comprar: <b style={{ fontFamily: "var(--mono)", color: "var(--verde)" }}>{lancou.join(", ")}</b>.</>}
+                  {pre.length > 0 && <> Em pré-venda: <b style={{ fontFamily: "var(--mono)", color: "var(--amarelo)" }}>{pre.join(", ")}</b>.</>}
+                </>
+              );
+            })()}
           </span>
         </div>
       )}
@@ -13730,6 +13755,19 @@ function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoA
                 return (
                   <button key={v} className={`slot ${m.lista === "desejos" && m.aCaminho ? "caminho" : ""}`} onClick={() => aoAbrirItem(m)} title={m.titulo}>
                     <Capa item={m} src={capaDe(m)} />
+                    {(() => {
+                      /* Só aparece o que a leitura da Panini confirmou: volume que
+                         lançou antes do acompanhamento começar fica sem selo. */
+                      const l = m.lista === "desejos" && lancDe ? lancDe(m) : null;
+                      if (!l || l.estado === "fora-do-site") return null;
+                      return l.estado === "pre-venda"
+                        ? <span className="slot-lanc pre" title={`Ainda não lançou${l.previsao ? ` — previsão: ${l.previsao.txt}` : ""}`}>
+                            pré-venda{l.previsao && <small>{l.previsao.curto}</small>}
+                          </span>
+                        : <span className="slot-lanc lancou" title={m.aCaminho ? "Já lançou — seu pedido deve sair em breve" : "Já lançou — falta comprar"}>
+                            lançou{!m.aCaminho && <small>falta comprar</small>}
+                          </span>;
+                    })()}
                     <span className="slot-num"
                           style={m.lista === "desejos" ? { color: m.aCaminho ? "var(--violeta)" : "var(--ciano)" } : undefined}>
                       {m.lista === "desejos" ? `#${v} · ${m.aCaminho ? "a caminho" : "desejo"}` : `#${v}`}
