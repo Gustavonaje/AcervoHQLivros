@@ -733,8 +733,11 @@ const CSS = `
 .lt-op.on i{background:var(--ciano);border-color:var(--ciano);}
 .lt-op b{flex:1;font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 /* o atributo title só aparece depois de um instante parado, que é o
-   comportamento que você pediu */
-[title]{cursor:inherit;}
+   comportamento que você pediu. Vale só para o que não é clicável: antes
+   isso pegava também botões e links com title, que perdiam a mãozinha. */
+[title]:not(button):not(a):not(select):not(summary):not([role="button"]){cursor:inherit;}
+:where(.acv select),:where(.acv input[type="checkbox"]),:where(.acv input[type="radio"]),
+:where(.acv input[type="date"])::-webkit-calendar-picker-indicator{cursor:pointer;}
 .lt-op em{font-family:var(--mono);font-size:9px;font-style:normal;color:var(--papel3);}
 .lt-op small{font-family:var(--mono);font-size:8.5px;color:var(--papel3);min-width:46px;text-align:right;}
 
@@ -1346,7 +1349,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.9", data: "26/09/2026", nota: "coleções mostram se o volume desejado está em pré-venda ou já lançou" };
+const VERSAO = { numero: "3.10", data: "26/09/2026", nota: "campos de data editáveis no celular; cursor de clique e título completo ao passar o mouse" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -3094,7 +3097,7 @@ function CompraACaminho({ item, lojas, aoAtualizar, aoChegou }) {
         <div className="grade-form">
           <div className="campo">
             <label>Data do pedido</label>
-            <input type="date" value={data} onChange={(e) => setData(e.target.value)} />
+            <CampoData valor={data} aoMudar={setData} />
           </div>
           <div className="campo">
             <label>Preço pago (R$)</label>
@@ -3144,6 +3147,46 @@ function CompraACaminho({ item, lojas, aoAtualizar, aoChegou }) {
         <button className="btn-mini-link" onClick={desfazer}>não comprei</button>
       </div>
     </div>
+  );
+}
+
+/* Campo de data que funciona no celular.
+   Enquanto você digita dia/mês/ano, o navegador informa valor vazio até a
+   data ficar completa; repassar esse vazio apagava a data a cada toque.
+   Aqui o campo guarda o que está sendo digitado e só entrega a data quando
+   ela está completa (ou quando você realmente limpa o campo). No celular,
+   tocar no campo abre o calendário do próprio aparelho. */
+function CampoData({ valor, aoMudar, ...resto }) {
+  const [v, setV] = useState(valor || "");
+  const focado = useRef(false);
+  useEffect(() => { if (!focado.current) setV(valor || ""); }, [valor]);
+  const entregar = (x) => { if ((x || "") !== (valor || "")) aoMudar(x || ""); };
+  return (
+    <input
+      type="date"
+      {...resto}
+      value={v}
+      onFocus={() => { focado.current = true; }}
+      onClick={(e) => {
+        const el = e.currentTarget;
+        try {
+          if (el.showPicker && window.matchMedia && window.matchMedia("(pointer: coarse)").matches) el.showPicker();
+        } catch (err) { /* navegador sem showPicker: segue o comportamento normal */ }
+      }}
+      onChange={(e) => {
+        const x = e.target.value;
+        setV(x);
+        if (/^\d{4}-\d{2}-\d{2}$/.test(x)) entregar(x);
+        else if (!x && !(e.target.validity && e.target.validity.badInput)) entregar("");
+      }}
+      onBlur={(e) => {
+        focado.current = false;
+        const x = e.target.value;
+        if (e.target.validity && e.target.validity.badInput) { setV(valor || ""); return; } // data pela metade: volta ao que estava
+        setV(x);
+        entregar(x);
+      }}
+    />
   );
 }
 
@@ -3917,7 +3960,7 @@ function Formulario({ inicial, capaAtual, colecoes, sugestoesOrig, aoAbrirLote, 
           <div className="grade-form">
             <div className="campo">
               <label>Data de aquisição</label>
-              <input type="date" value={it.aquisicao || ""} onChange={(e) => set("aquisicao", e.target.value)} />
+              <CampoData valor={it.aquisicao || ""} aoMudar={(x) => set("aquisicao", x)} />
             </div>
             <div className="campo">
               <label>Preço pago (R$)</label>
@@ -3935,7 +3978,7 @@ function Formulario({ inicial, capaAtual, colecoes, sugestoesOrig, aoAbrirLote, 
             {it.leitura === "lido" && (
               <div className="campo">
                 <label>Terminei em (opcional)</label>
-                <input type="date" value={it.dataLeitura || ""} onChange={(e) => set("dataLeitura", e.target.value)} />
+                <CampoData valor={it.dataLeitura || ""} aoMudar={(x) => set("dataLeitura", x)} />
               </div>
             )}
             <div className="campo">
@@ -4374,10 +4417,9 @@ function Detalhe({ item, capaSrc, colecoes, navLista, capasPers, aoAbrirPersonag
                   </button>
                 ))}
                 {item.leitura === "lido" && (
-                  <input
-                    type="date"
-                    value={item.dataLeitura || ""}
-                    onChange={(ev) => aoAtualizar({ ...item, dataLeitura: ev.target.value })}
+                  <CampoData
+                    valor={item.dataLeitura || ""}
+                    aoMudar={(x) => aoAtualizar({ ...item, dataLeitura: x })}
                     title="Quando terminou — pode deixar em branco"
                     style={{ padding: "5px 9px", borderRadius: 20, background: "var(--tinta)", border: "1px solid var(--linha)", color: "var(--papel2)", fontSize: 12 }}
                   />
@@ -4740,7 +4782,7 @@ function Card({ item, capaSrc, colecoes, aoAbrir, indice, selecao, selecionado, 
         {desejo && !item.aCaminho && !abaixoDoAlvo && !lanc && <span className="selo desejo">Quero</span>}
       </div>
       <div>
-        <div className="card-titulo">{item.titulo || "Sem título"}</div>
+        <div className="card-titulo" title={item.titulo || undefined}>{item.titulo || "Sem título"}</div>
         <div className="card-sub">
           {!desejo && item.leitura && item.leitura !== "nao_lido" && (
             <span className="pt" style={{ background: (LEITURAS.find((l) => l.v === item.leitura) || {}).cor }} />
@@ -6268,7 +6310,7 @@ function CardColecao({ col, itens, capaDe, aoAbrir, indice, arrastavel, arrastan
       </div>
       {col.tipo === "serie" && <Lombadas total={e.total} tenho={e.tenho} querendo={e.querendo} caminho={e.caminho} legenda />}
       <div>
-        <div className="card-titulo">{col.nome}</div>
+        <div className="card-titulo" title={col.nome || undefined}>{col.nome}</div>
         <div className="card-sub">
           {col.tipo === "serie"
             ? e.total > 0
@@ -9963,7 +10005,7 @@ function CardLancamento({ g, desejado, aoConfirmar, aoRecusar, aoDesvincular, ao
         )}
         {g.rel && g.situacao === "minha" && <div className={`lc-rel ${g.rel.tipo}`}>{g.rel.txt}</div>}
         {g.rel && g.situacao === "sugerida" && <div className={`lc-rel ${g.rel.tipo} palpite`}>se for: {g.rel.txt}</div>}
-        <div className="lc-titulo">{g.titulo}</div>
+        <div className="lc-titulo" title={g.titulo}>{g.titulo}</div>
         {g.variantes.length > 0 && <div className="lc-var">+ {g.variantes.length} capa{g.variantes.length > 1 ? "s" : ""} variante{g.variantes.length > 1 ? "s" : ""}</div>}
         <div className="lc-prev">
           {g.estado === "a-venda"
@@ -13872,7 +13914,7 @@ function CardListaLeitura({ lista, itens, capaDe, aoAbrir, indice }) {
         )}
       </div>
       <div>
-        <div className="card-titulo">{lista.nome || "Sem nome"}</div>
+        <div className="card-titulo" title={lista.nome || undefined}>{lista.nome || "Sem nome"}</div>
         <div className="card-sub">{membros.length} {membros.length === 1 ? "item" : "itens"}</div>
       </div>
     </button>
@@ -14302,10 +14344,10 @@ function Relatorios({ itens, colecoes, series, aoAbrirItem, aoIrParaSeries }) {
               <option value="">Tudo</option>
             </select>
           </div>
-          <div className="campo"><label>Comprado a partir de</label><input type="date" value={f.de} onChange={(e) => set("de", e.target.value)} /></div>
-          <div className="campo"><label>Comprado até</label><input type="date" value={f.ate} onChange={(e) => set("ate", e.target.value)} /></div>
-          <div className="campo"><label>Lido a partir de</label><input type="date" value={f.leDe} onChange={(e) => set("leDe", e.target.value)} /></div>
-          <div className="campo"><label>Lido até</label><input type="date" value={f.leAte} onChange={(e) => set("leAte", e.target.value)} /></div>
+          <div className="campo"><label>Comprado a partir de</label><CampoData valor={f.de} aoMudar={(x) => set("de", x)} /></div>
+          <div className="campo"><label>Comprado até</label><CampoData valor={f.ate} aoMudar={(x) => set("ate", x)} /></div>
+          <div className="campo"><label>Lido a partir de</label><CampoData valor={f.leDe} aoMudar={(x) => set("leDe", x)} /></div>
+          <div className="campo"><label>Lido até</label><CampoData valor={f.leAte} aoMudar={(x) => set("leAte", x)} /></div>
           <div className="campo">
             <label>Leitura</label>
             <select value={f.leitura} onChange={(e) => set("leitura", e.target.value)}>
