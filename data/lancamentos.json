@@ -1,29 +1,29 @@
 {
  "versao": 1,
- "gerado_em": "2026-09-30T15:26:12+00:00",
+ "gerado_em": "2026-10-01T15:47:48+00:00",
  "fonte": [
   "https://panini.com.br/dc-comics",
   "https://panini.com.br/panini-comics"
  ],
  "execucao": {
-  "requisicoes": 17,
-  "novos": 0,
-  "lancados": 3,
-  "fora_do_site": 0,
+  "requisicoes": 47,
+  "novos": 28,
+  "lancados": 1,
+  "fora_do_site": 1,
   "categorias": [
    {
     "categoria": "DC Comics",
     "ordem_usada": "most_recent",
-    "paginas_lidas": 6,
-    "total_na_categoria": 1748,
-    "itens_lidos": 222
+    "paginas_lidas": 9,
+    "total_na_categoria": 1763,
+    "itens_lidos": 333
    },
    {
     "categoria": "Panini Comics",
     "ordem_usada": "most_recent",
-    "paginas_lidas": 4,
-    "total_na_categoria": 669,
-    "itens_lidos": 148
+    "paginas_lidas": 3,
+    "total_na_categoria": 676,
+    "itens_lidos": 111
    }
   ]
  },
@@ -51,7 +51,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "JSA (2026) VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "vingadores-lja-04-capa-variante-1",
@@ -76,7 +76,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "vingadores-lja-04-capa-variante-2",
@@ -101,7 +101,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "vingadores-lja-04",
@@ -126,7 +126,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "os-piores-do-mundo-apresentando-bat-mirim-e-mr-mxyzptlk",
@@ -151,32 +151,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "SUPERMAN & BATMAN: OS PIORES DO MUNDO",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
-  },
-  {
-   "slug": "o-mercenario-e-o-cavaleiro-outras-historias",
-   "url": "https://panini.com.br/o-mercenario-e-o-cavaleiro-outras-historias",
-   "titulo": "O Mercenário E O Cavaleiro & Outras Histórias",
-   "categoria": "DC Comics",
-   "preco": "R$ 105,90",
-   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_6t96k4fost55rcsmm5vjrfsu0g/-S170-FWEBP",
-   "serie": "O Mercenário E O Cavaleiro & Outras Histórias",
-   "serie_norm": "o mercenario e o cavaleiro outras historias",
-   "numero": null,
-   "numero_total": null,
-   "variante": null,
-   "estado": "pre-venda",
-   "pre_venda_desde": "2026-09-23",
-   "lancou_em": null,
-   "referencia": "ADBCD001",
-   "autores": "Brad Meltzer, Greg Capullo, Pepe Larraz, Zeb Wells",
-   "ano": "2026",
-   "mes": "Novembro",
-   "paginas": 192,
-   "encadernacao": "Capa dura",
-   "colecao": "DEADPOOL/BATMAN - CAPA DURA",
-   "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "dc-ko-especial-combate-02",
@@ -201,7 +176,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "DC: REI OMEGA COMPENDIUM",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "box-batman-um-dia-ruim",
@@ -226,7 +201,7 @@
    "encadernacao": "Capa dura",
    "colecao": "BATMAN: UM DIA RUIM BOXSET",
    "tipo_publicacao": "Pack, kit & box",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "novos-deuses-vol-02",
@@ -251,7 +226,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "NOVOS DEUSES (2026) VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "as-aventuras-do-superman-livro-de-el-vol-01",
@@ -276,7 +251,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "AS AVENTURAS DO SUPERMAN: LIVRO DE EL",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "mulher-maravilha-por-mike-deodato-jr",
@@ -301,7 +276,7 @@
    "encadernacao": "Capa dura",
    "colecao": "MULHER-MARAVILHA POR MIKE DEODATO JR. (DC VINTAGE)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-gotham-1893-uma-liga-pela-justica",
@@ -326,7 +301,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "BATMAN: GOTHAM 1893 - UMA LIGA PELA JUSTICA",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-robin-ano-um-vol-02",
@@ -351,7 +326,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "BATMAN & ROBIN: ANO UM",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "dc-ko-04",
@@ -376,7 +351,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "DC KO",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-a-gargula-de-gotham-edicao-de-luxo",
@@ -401,7 +376,7 @@
    "encadernacao": "Capa dura",
    "colecao": "BATMAN: A GARGULA DE GOTHAM - EDIÇÃO COMPLETA",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-por-tom-king-vol-15",
@@ -426,7 +401,7 @@
    "encadernacao": "Capa dura",
    "colecao": "BATMAN POR TOM KING",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "crise-nas-infinitas-terras-vol-07-crise-nas-infinitas-terras",
@@ -451,7 +426,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "CRISE NAS INFINITAS TERRAS VOL.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-cacador-de-marte-06",
@@ -476,7 +451,7 @@
    "encadernacao": "Canoa",
    "colecao": "ABSOLUTE CACADOR DE MARTE N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-arqueiro-verde-01",
@@ -501,7 +476,7 @@
    "encadernacao": "Canoa",
    "colecao": "ABSOLUTE ARQUEIRO VERDE N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-superman-vol-4-47",
@@ -526,7 +501,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO SUPERMAN",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-lanterna-verde-12",
@@ -551,7 +526,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO LANTERNA VERDE. 01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-batman-vol-12-68",
@@ -576,7 +551,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "jovens-titas-em-acao-15",
@@ -602,7 +577,7 @@
    "colecao": "TEEN TITANS GO!",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "jovens-titas-em-acao-14",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "superman-por-geoff-johns-vol-04",
@@ -628,7 +603,7 @@
    "colecao": "SUPERMAN POR GEOFF JOHNS VOL. 01",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "superman-por-geoff-johns-vol-03-o-ultimo-filho",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-padroes-sombrios-vol-02",
@@ -654,7 +629,7 @@
    "colecao": "BATMAN: PADROES SOMBRIOS VOL.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "batman-padroes-sombrios-vol-01",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "dc-de-ouro-mulher-maravilha",
@@ -679,7 +654,7 @@
    "encadernacao": "Capa dura",
    "colecao": "MULHER-MARAVILHA - EDIÇÃO DE OURO",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "vingadores-lja-03-capa-variante",
@@ -705,7 +680,7 @@
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "vingadores-lja-02-capa-variante",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "vingadores-lja-03",
@@ -731,7 +706,7 @@
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "vingadores-lja-02-capa-variante",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "wonder-woman-01-fac-simile",
@@ -757,7 +732,7 @@
    "colecao": "ADVENTURE COMICS 210 - FAC-SIMILE",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "detective-comics-27-fac-simile",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "superman-o-legado-das-estrelas-dc-de-bolso",
@@ -783,7 +758,7 @@
    "colecao": "REINO DO AMANHA (DC POCKET)",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "batman-o-cavaleiro-das-trevas-dc-de-bolso",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-batman-02-abatm002r",
@@ -810,7 +785,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-batman-01-capa-variante",
    "proximo_volume": "absolute-batman-03",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-batman-01-capa-variante",
@@ -836,7 +811,7 @@
    "colecao": "ABSOLUTE BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "absolute-batman-02-abatm002r",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "liga-da-justica-sem-limites-2025-15",
@@ -862,7 +837,7 @@
    "colecao": "LIGA DA JUSTIÇA: SEM LIMITES N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "liga-da-justica-sem-limites-2025-14",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-superman-os-melhores-do-mundo-2025-13",
@@ -888,7 +863,7 @@
    "colecao": "BATMAN/SUPERMAN: OS MELHORES DO MUNDO (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "batman-superman-os-melhores-do-mundo-2025-12",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "superman-2025-15",
@@ -914,7 +889,7 @@
    "colecao": "SUPERMAN (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "superman-2025-14",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-2025-14",
@@ -940,7 +915,7 @@
    "colecao": "BATMAN (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "batman-2025-13",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "mulher-maravilha-flash-2025-15",
@@ -966,7 +941,7 @@
    "colecao": "MULHER-MARAVILHA/FLASH (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "mulher-maravilha-flash-2025-14",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "lanterna-verde-2025-15",
@@ -992,7 +967,7 @@
    "colecao": "LANTERNA VERDE (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "lanterna-verde-2025-14",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-batman-08",
@@ -1018,7 +993,7 @@
    "colecao": "ABSOLUTE BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-batman-07-capa-variante",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-mulher-maravilha-07",
@@ -1044,7 +1019,7 @@
    "colecao": "ABSOLUTE MULHER-MARAVILHA",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-mulher-maravilha-06",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "watchmen-edicao-absoluta",
@@ -1069,7 +1044,7 @@
    "encadernacao": "Capa dura com estojo",
    "colecao": "WATCHMEN (EDICAO ABSOLUTA)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-batman-vol-11-67",
@@ -1095,7 +1070,7 @@
    "colecao": "A SAGA DO BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-batman-vol-10-66",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-flash-22",
@@ -1121,7 +1096,7 @@
    "colecao": "A SAGA DO FLASH VOL. 1",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-flash-21",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "mulher-maravilha-o-espirito-da-verdade",
@@ -1146,7 +1121,7 @@
    "encadernacao": "Capa dura",
    "colecao": "MULHER-MARAVILHA: ESPIRITO DA VERDADE",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "sja-2026-01",
@@ -1171,7 +1146,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "JSA (2026) VOL.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-52-mulher-maravilha-ossos",
@@ -1197,7 +1172,7 @@
    "colecao": "SUPER-EROES AS LENDAS DC",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-51-arqueiro-verde-a-queda",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-superman-vol-3-46",
@@ -1223,7 +1198,7 @@
    "colecao": "A SAGA DO SUPERMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-superman-vol-2-45",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-nova-historia-do-universo-dc",
@@ -1248,7 +1223,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "A NOVA HISTÓRIA DO UNIVERSO DC",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "sr-incrivel-ano-um",
@@ -1273,7 +1248,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "SENHOR INCRÍVEL: ANO UM",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "vingadores-lja-02",
@@ -1300,7 +1275,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "lja-vingadores-01-capa-variante",
    "proximo_volume": "vingadores-lja-03-capa-variante",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "vingadores-lja-02-capa-variante",
@@ -1327,7 +1302,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "lja-vingadores-01-capa-variante",
    "proximo_volume": "vingadores-lja-03-capa-variante",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "dc-ko-03",
@@ -1353,7 +1328,7 @@
    "colecao": "DC KO",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "dc-ko-02",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "crise-nas-infinitas-terras-vol-06-crise-nas-multiplas-terras-parte-06",
@@ -1379,7 +1354,7 @@
    "colecao": "CRISE NAS INFINITAS TERRAS VOL.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "crise-nas-infinitas-terras-vol-05-crise-nas-multiplas-terras-parte-05",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batgirl-2026-vol-01",
@@ -1404,7 +1379,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "BATGIRL (2026) VOL.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-lenda-imortal",
@@ -1429,7 +1404,7 @@
    "encadernacao": "Capa dura",
    "colecao": "BATMAN: LENDA IMORTAL",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-rumo-a-terra-de-ninguem-vol-01",
@@ -1454,7 +1429,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "BATMAN: RUMO À TERRA DE NINGUÉM VOL. 01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-51-arqueiro-verde-a-queda",
@@ -1481,7 +1456,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-50-batman-robin-a-busca-por-robin",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-52-mulher-maravilha-ossos",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "mulher-maravilha-flash-2025-14",
@@ -1508,7 +1483,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "mulher-maravilha-flash-2025-13",
    "proximo_volume": "mulher-maravilha-flash-2025-15",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "superman-2025-14",
@@ -1535,7 +1510,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "superman-2025-13",
    "proximo_volume": "superman-2025-15",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "liga-da-justica-sem-limites-2025-14",
@@ -1562,7 +1537,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "liga-da-justica-sem-limites-2025-13",
    "proximo_volume": "liga-da-justica-sem-limites-2025-15",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "lanterna-verde-2025-14",
@@ -1589,7 +1564,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "lanterna-verde-2025-13",
    "proximo_volume": "lanterna-verde-2025-15",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "os-misterios-de-batman-e-scooby-doo-11",
@@ -1615,7 +1590,7 @@
    "colecao": "BATMAN E SCOOBY DOO VOL. 1",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "os-misterios-de-batman-e-scooby-doo-10",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-2025-13",
@@ -1642,7 +1617,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "batman-2025-12",
    "proximo_volume": "batman-2025-14",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-superman-07",
@@ -1668,7 +1643,7 @@
    "colecao": "ABSOLUTE SUPERMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-superman-06",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-lanterna-verde-05",
@@ -1694,7 +1669,7 @@
    "colecao": "ABSOLUTE LANTERNA VERDE N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-lanterna-verde-04",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-flash-05",
@@ -1720,7 +1695,7 @@
    "colecao": "ABSOLUTE FLASH N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-flash-04",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-superman-os-melhores-do-mundo-2025-12",
@@ -1747,7 +1722,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "batman-superman-os-melhores-do-mundo-2025-11",
    "proximo_volume": "batman-superman-os-melhores-do-mundo-2025-13",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "lja-vingadores-01-capa-variante",
@@ -1773,7 +1748,7 @@
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "vingadores-lja-02-capa-variante",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "jovens-titas-em-acao-14",
@@ -1800,7 +1775,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "jovens-titas-em-acao-13",
    "proximo_volume": "jovens-titas-em-acao-15",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "superman-sem-limites-01",
@@ -1825,7 +1800,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "SUPERMAN SEM LIMITES VOL. 01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-50-batman-robin-a-busca-por-robin",
@@ -1852,7 +1827,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-49-liga-da-justica-o-virus-amazo",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-51-arqueiro-verde-a-queda",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "lja-vingadores-01",
@@ -1878,7 +1853,7 @@
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "vingadores-lja-02-capa-variante",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "lanterna-verde-a-origem-de-kyle-rayner-compendium",
@@ -1903,7 +1878,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "LANTERNA VERDE: O SURGIMENTO DE KYLE RAYNER COMPEN",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-batman-vol-10-66",
@@ -1930,7 +1905,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-batman-vol-9-65",
    "proximo_volume": "a-saga-do-batman-vol-11-67",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-superman-vol-2-45",
@@ -1957,7 +1932,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-superman-vol-1-44",
    "proximo_volume": "a-saga-do-superman-vol-3-46",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-lanterna-verde-11",
@@ -1983,7 +1958,7 @@
    "colecao": "A SAGA DO LANTERNA VERDE. 01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-lanterna-verde-10",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-por-neal-adams-edicao-absoluta-vol-3",
@@ -2009,7 +1984,7 @@
    "colecao": "BATMAN POR NEAL ADAMS VOL. 01 (EDICAO ABSOLUTA)",
    "tipo_publicacao": "Omnibus & Edições de luxo",
    "volume_anterior": "batman-por-neal-adams-edicao-absoluta-vol-2",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-vilania-01",
@@ -2034,7 +2009,7 @@
    "encadernacao": "Canoa",
    "colecao": "ABSOLUTE VILOES",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-49-liga-da-justica-o-virus-amazo",
@@ -2061,34 +2036,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-48-batman-robin-duas-caras",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-50-batman-robin-a-busca-por-robin",
-   "visto_em": "2026-09-30"
-  },
-  {
-   "slug": "absolute-batman-07-capa-variante",
-   "url": "https://panini.com.br/absolute-batman-07-capa-variante",
-   "titulo": "Absolute Batman 07 - Capa Variante",
-   "categoria": "DC Comics",
-   "preco": "R$ 24,90",
-   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_u4ibk37rad23be5r12dpr1vh1q/-S170-FWEBP",
-   "serie": "Absolute Batman",
-   "serie_norm": "absolute batman",
-   "numero": 7,
-   "numero_total": null,
-   "variante": "Capa Variante",
-   "estado": "pre-venda",
-   "pre_venda_desde": "2026-09-23",
-   "lancou_em": null,
-   "referencia": "ABATM007V",
-   "autores": "Nick Dragotta, Scott Snyder",
-   "ano": "2026",
-   "mes": "Setembro",
-   "paginas": 48,
-   "encadernacao": "Canoa",
-   "colecao": "ABSOLUTE BATMAN",
-   "tipo_publicacao": "Revistas Periódicas",
-   "volume_anterior": "absolute-batman-06-capa-variante",
-   "proximo_volume": "absolute-batman-08",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "superman-2025-13",
@@ -2115,7 +2063,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "superman-2025-12",
    "proximo_volume": "superman-2025-14",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-2025-12",
@@ -2142,7 +2090,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "batman-2025-11",
    "proximo_volume": "batman-2025-13",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-48-batman-robin-duas-caras",
@@ -2169,7 +2117,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-47-liga-da-justica-a-liga-da-injustica",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-49-liga-da-justica-o-virus-amazo",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "os-misterios-de-batman-e-scooby-doo-10",
@@ -2196,7 +2144,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "os-misterios-de-batman-e-scooby-doo-09",
    "proximo_volume": "os-misterios-de-batman-e-scooby-doo-11",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-batman-vol-9-65",
@@ -2223,7 +2171,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-batman-vol-8-64",
    "proximo_volume": "a-saga-do-batman-vol-10-66",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-flash-21",
@@ -2250,7 +2198,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-flash-20",
    "proximo_volume": "a-saga-do-flash-22",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-superman-vol-1-44",
@@ -2277,7 +2225,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-superman-vol-19-43",
    "proximo_volume": "a-saga-do-superman-vol-2-45",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-47-liga-da-justica-a-liga-da-injustica",
@@ -2304,7 +2252,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-46-batman-o-homem-que-nao-estava-la",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-48-batman-robin-duas-caras",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-46-batman-o-homem-que-nao-estava-la",
@@ -2331,7 +2279,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-45-flash-licoes-de-historia",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-47-liga-da-justica-a-liga-da-injustica",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "dc-ko-especial-combate-01",
@@ -2356,7 +2304,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "DC: REI OMEGA COMPENDIUM",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-saga-do-batman-vol-8-64",
@@ -2383,7 +2331,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-batman-vol-7-63",
    "proximo_volume": "a-saga-do-batman-vol-9-65",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-45-flash-licoes-de-historia",
@@ -2410,7 +2358,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-44-mulher-maravilha-pele",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-46-batman-o-homem-que-nao-estava-la",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-44-mulher-maravilha-pele",
@@ -2437,7 +2385,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-43-batman-robin-requiem",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-45-flash-licoes-de-historia",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-padroes-sombrios-vol-01",
@@ -2463,7 +2411,7 @@
    "colecao": "BATMAN: PADROES SOMBRIOS VOL.01",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "batman-padroes-sombrios-vol-02",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "superman-vs-homem-aranha-edicao-comemorativa-50-anos-encontros-classicos-dc-e-marvel",
@@ -2488,7 +2436,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "ENCONTROS CLÁSSICOS DC E MARVEL: SUPERMAN VS. HOME",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "star-wars-doutora-aphra-agente-do-caos",
@@ -2513,7 +2461,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "STAR WARS: DOUTORA APHRA - AGENTE DO CAOS",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "tio-patinhas-o-pato-mais-poderoso-da-terra",
@@ -2538,7 +2486,7 @@
    "encadernacao": "Capa dura",
    "colecao": "TIO PATINHAS: O PATO MAIS PODEROSO DO MUNDO",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "rei-spawn-vol-5",
@@ -2563,7 +2511,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "REI SPAWN",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "transformers-03-universo-energon-10",
@@ -2588,7 +2536,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "UNIVERSO ENERGON",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "um-circulo-vicioso-edicao-de-luxo",
@@ -2613,7 +2561,7 @@
    "encadernacao": "Capa dura",
    "colecao": "UM CIRCULO VICIOSO (COMPLETO)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "nocterra-vol-3",
@@ -2638,7 +2586,7 @@
    "encadernacao": "Capa dura",
    "colecao": "NOCTERRA VOL. 1",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "invencivel-apresenta-03-brit",
@@ -2663,7 +2611,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "INVENCIVEL APRESENTA",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "conan-o-barbaro-2024-15",
@@ -2688,7 +2636,7 @@
    "encadernacao": "Canoa",
    "colecao": "CONAN (2023) VOL. 01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "epic-mickey-a-colecao-completa",
@@ -2713,7 +2661,7 @@
    "encadernacao": "Capa dura",
    "colecao": "EPIC MICKEY THE COMICS COLLECTION",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "star-wars-saindo-da-escuridao-vol-1",
@@ -2738,7 +2686,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "STAR WARS (2026) VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "star-wars-historias-do-hiperespaco-grievous",
@@ -2764,7 +2712,7 @@
    "colecao": "STAR WARS - HYPERSPACE: QUI-GON",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "star-wars-historias-do-hiperespaco-qui-gon",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "spawn-mata-todos-os-spawns",
@@ -2789,7 +2737,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "SPAWN MATA TODOS OS SPAWNS",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "invencivel-vol-04-o-melhor-da-classe",
@@ -2816,7 +2764,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-03-perfeitos-estranhos-ainve003r",
    "proximo_volume": "invencivel-vol-05-os-fatos-da-vida",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "invencivel-vol-05-os-fatos-da-vida",
@@ -2843,7 +2791,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-04-o-melhor-da-classe",
    "proximo_volume": "invencivel-vol-06-um-mundo-diferente",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "invencivel-vol-03-perfeitos-estranhos-ainve003r",
@@ -2870,7 +2818,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-02-oito-e-demais",
    "proximo_volume": "invencivel-vol-04-o-melhor-da-classe",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "invencivel-vol-01-negocios-de-familia",
@@ -2896,7 +2844,7 @@
    "colecao": "INVENCIVEL - 1",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "invencivel-vol-02-oito-e-demais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "invencivel-vol-21",
@@ -2922,7 +2870,7 @@
    "colecao": "INVENCIVEL - 1",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-20",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "a-espada-selvagem-de-conan-2024-07",
@@ -2948,7 +2896,7 @@
    "colecao": "A ESPADA SELVAGEM DE CONAN (2023) VOL. 01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-espada-selvagem-de-conan-2024-06",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "rivais-cosmicos-03-universo-energon-09",
@@ -2974,7 +2922,7 @@
    "colecao": "UNIVERSO ENERGON",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "destro-universo-energon-08",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "spawn-origens-vol-28",
@@ -3000,7 +2948,7 @@
    "colecao": "SPAWN: ORIGENS",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "spawn-origens-vol-27",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "mickey-e-minnie-em-casablanca",
@@ -3025,7 +2973,7 @@
    "encadernacao": "Não disponível",
    "colecao": "CASABALNCA (GRAPHIC DISNEY)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "aliens-versus-vingadores",
@@ -3050,7 +2998,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "ALIENS VS VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "star-wars-a-ascencao-skywalker",
@@ -3075,7 +3023,7 @@
    "encadernacao": "Capa dura",
    "colecao": "STAR WARS: A ASCENCAO SKYWALKER",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "star-wars-the-high-republic-o-pavor-dos-jedi",
@@ -3101,7 +3049,7 @@
    "colecao": "STAR WARS: HIGH REPUBLIC ADVENTURES",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "star-wars-the-high-republic-a-cacada",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "o-pequeno-principe",
@@ -3126,7 +3074,7 @@
    "encadernacao": "Capa dura",
    "colecao": "MICKEY PRINCIPE (GRAPHIC DISNEY)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "invencivel-apresenta-02-capas-ltda",
@@ -3152,7 +3100,7 @@
    "colecao": "INVENCIVEL APRESENTA",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-apresenta-01-eve-atomica-e-rex-plosao",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "little-nightmares-descida-ao-lugar-nenhum",
@@ -3177,7 +3125,7 @@
    "encadernacao": "Capa dura",
    "colecao": "LITTLE NIGHTMARES: DESCIDA AO LUGAR NENHUM",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "espectadores",
@@ -3202,7 +3150,7 @@
    "encadernacao": "Capa dura",
    "colecao": "ESPECTADORES",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "conan-o-barbaro-2024-14",
@@ -3228,7 +3176,7 @@
    "colecao": "CONAN (2023) VOL. 01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "conan-o-barbaro-2024-13",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "pato-donald-o-farol-do-cabo-quac-colecao-carl-barks",
@@ -3254,7 +3202,7 @@
    "colecao": "COLEÇÃO CARL BARKS",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "pato-donald-o-tesouro-do-pirata-colecao-carl-barks-vol-1",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "alien-vol-4",
@@ -3280,7 +3228,7 @@
    "colecao": "ALIEN VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "alien-vol-3-icarus",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "mickey-contra-a-alianca-malefica",
@@ -3306,7 +3254,7 @@
    "colecao": "BD DISNEY",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "um-trabalho-para-o-superpato",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "star-wars-legado-de-vader-vol-01",
@@ -3331,7 +3279,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "STAR WARS: LEGADO DE VADER",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "invencivel-vol-20",
@@ -3358,7 +3306,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-19",
    "proximo_volume": "invencivel-vol-21",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "folhas-vermelhas-graphic-disney",
@@ -3383,7 +3331,7 @@
    "encadernacao": "Capa dura",
    "colecao": "FOLHAS VERMELHAS (GRAPHIC DISNEY)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "kull-a-era-classica-vol-3-omnibus",
@@ -3409,7 +3357,7 @@
    "colecao": "KULL, A ERA CLASSICA (OMNIBUS)",
    "tipo_publicacao": "Omnibus & Edições de luxo",
    "volume_anterior": "kull-a-era-classica-vol-2-omnibus",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "destro-universo-energon-08",
@@ -3436,7 +3384,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "scarlett-universo-energon-07",
    "proximo_volume": "rivais-cosmicos-03-universo-energon-09",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "spawn-origens-vol-27",
@@ -3463,7 +3411,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "spawn-origens-vol-26",
    "proximo_volume": "spawn-origens-vol-28",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "invencivel-apresenta-01-eve-atomica-e-rex-plosao",
@@ -3489,7 +3437,7 @@
    "colecao": "INVENCIVEL APRESENTA",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "invencivel-apresenta-02-capas-ltda",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "spawn-vol-13",
@@ -3515,7 +3463,7 @@
    "colecao": "SPAWN",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "spawn-vol-12",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "invencivel-vol-19",
@@ -3542,7 +3490,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-18",
    "proximo_volume": "invencivel-vol-20",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "invencivel-vol-02-oito-e-demais",
@@ -3569,7 +3517,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-01-negocios-de-familia",
    "proximo_volume": "invencivel-vol-03-perfeitos-estranhos-ainve003r",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-cacador-de-marte-02",
@@ -3596,7 +3544,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-cacador-de-marte-01",
    "proximo_volume": "absolute-cacador-de-marte-03",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-flash-01",
@@ -3622,7 +3570,7 @@
    "colecao": "ABSOLUTE FLASH N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "absolute-flash-02",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-batman-03",
@@ -3649,7 +3597,737 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-batman-02-abatm002r",
    "proximo_volume": "absolute-batman-04",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "grandes-herois-dc-os-novos-52-vol-53-batman-robin-robin-vive",
+   "url": "https://panini.com.br/grandes-herois-dc-os-novos-52-vol-53-batman-robin-robin-vive",
+   "titulo": "Grandes Heróis DC: Os Novos 52 Vol. 53 - Batman & Robin: Robin Vive",
+   "categoria": "DC Comics",
+   "preco": "R$ 52,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_nlrvjkol2t38h9ik3plo4fqu67/-S170-FWEBP",
+   "serie": "Grandes Heróis DC: Os Novos 52",
+   "serie_norm": "grandes herois dc os novos 52",
+   "numero": 53,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ASULE053",
+   "autores": "Patrick Gleason, Peter J. Tomasi",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 240,
+   "encadernacao": "Capa Cartão",
+   "colecao": "SUPER-EROES AS LENDAS DC",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "dc-marvel-o-caso-do-chamego-cosmico-outras-historias",
+   "url": "https://panini.com.br/dc-marvel-o-caso-do-chamego-cosmico-outras-historias",
+   "titulo": "DC/Marvel: O Caso Do Chamego Cósmico & Outras Histórias",
+   "categoria": "DC Comics",
+   "preco": "R$ 122,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_rq44hldf1l1dp51lqkvhnfpr0r/-S170-FWEBP",
+   "serie": "DC/Marvel: O Caso Do Chamego Cósmico & Outras Histórias",
+   "serie_norm": "dc marvel o caso do chamego cosmico outras historias",
+   "numero": null,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ASACD001",
+   "autores": "Amanda Conner, Bruno Redondo, Dan Mora, G. Willow Wilson, Grant Morrison, Greg Rucka, Jim Lee, Jorge Jiménez, Mark Waid, Scott Snyder, Tom King",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 224,
+   "encadernacao": "Capa dura",
+   "colecao": "SUPERMAN/HOMEM-ARANHA - CAPA DURA",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "mulher-maravilha-flash-2025-16",
+   "url": "https://panini.com.br/mulher-maravilha-flash-2025-16",
+   "titulo": "Mulher-Maravilha/Flash (2025) 16",
+   "categoria": "DC Comics",
+   "preco": "R$ 19,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_b5tdsvh5h95eh48je86rrvgg7g/-S170-FWEBP",
+   "serie": "Mulher-Maravilha/Flash (2025)",
+   "serie_norm": "mulher maravilha flash 2025",
+   "numero": 16,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "AMMFL016",
+   "autores": "Christopher Cantwell, Daniel Sampere, Jorge Fornés, Mark Waid, Tom King, Vasco Georgiev",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 48,
+   "encadernacao": "Canoa",
+   "colecao": "MULHER-MARAVILHA/FLASH (2025) N.01",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "lanterna-verde-2025-16",
+   "url": "https://panini.com.br/lanterna-verde-2025-16",
+   "titulo": "Lanterna Verde (2025) 16",
+   "categoria": "DC Comics",
+   "preco": "R$ 19,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_ok4nkq5e011e56ovg32qmtr41p/-S170-FWEBP",
+   "serie": "Lanterna Verde (2025)",
+   "serie_norm": "lanterna verde 2025",
+   "numero": 16,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ALAVE016",
+   "autores": "Jeremy Adams, Morgan Hampton",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 48,
+   "encadernacao": "Capa Cartão",
+   "colecao": "LANTERNA VERDE (2025) N.01",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "jovens-titas-unidos",
+   "url": "https://panini.com.br/jovens-titas-unidos",
+   "titulo": "Jovens Titãs: Unidos",
+   "categoria": "DC Comics",
+   "preco": "R$ 60,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_tuhu4215a16bf8h5sq5eeagc2k/-S170-FWEBP",
+   "serie": "Jovens Titãs: Unidos",
+   "serie_norm": "jovens titas unidos",
+   "numero": null,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "AJTTO001",
+   "autores": "Gabriel Picolo, Kami Garcia",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 200,
+   "encadernacao": "Capa Cartão",
+   "colecao": "JOVENS TITAS: TOGETHER",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "a-casa-dos-misterios-vol-02",
+   "url": "https://panini.com.br/a-casa-dos-misterios-vol-02",
+   "titulo": "A Casa Dos Mistérios Vol. 02",
+   "categoria": "DC Comics",
+   "preco": "R$ 141,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_n7lcvr0gt13373a7pmjq2fbh36/-S170-FWEBP",
+   "serie": "A Casa Dos Mistérios",
+   "serie_norm": "a casa dos misterios",
+   "numero": 2,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ACMIS002",
+   "autores": "José Marzán Junior, Lilah Sturges, Luca Rossi, Werther Dell’Edera",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 256,
+   "encadernacao": "Capa dura",
+   "colecao": "A CASA DOS MISTERIOS VOL.01",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "absolute-flash-06",
+   "url": "https://panini.com.br/absolute-flash-06",
+   "titulo": "Absolute Flash 06",
+   "categoria": "DC Comics",
+   "preco": "R$ 24,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_3b3i6r3b8p1k99gapejhnpfc4m/-S170-FWEBP",
+   "serie": "Absolute Flash",
+   "serie_norm": "absolute flash",
+   "numero": 6,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ABFLA006",
+   "autores": "A.L. Kaplan, Jeff Lemire, Nick Robles",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 48,
+   "encadernacao": "Capa Cartão",
+   "colecao": "ABSOLUTE FLASH N.01",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "absolute-lanterna-verde-06",
+   "url": "https://panini.com.br/absolute-lanterna-verde-06",
+   "titulo": "Absolute Lanterna Verde 06",
+   "categoria": "DC Comics",
+   "preco": "R$ 24,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_iu92ignf096vn340dvcarih31a/-S170-FWEBP",
+   "serie": "Absolute Lanterna Verde",
+   "serie_norm": "absolute lanterna verde",
+   "numero": 6,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ABLAV006",
+   "autores": "Al Ewing, Jahnoy Lindsay, Sid Kotian",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 48,
+   "encadernacao": "Canoa",
+   "colecao": "ABSOLUTE LANTERNA VERDE N.01",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "absolute-superman-08",
+   "url": "https://panini.com.br/absolute-superman-08",
+   "titulo": "Absolute Superman 08",
+   "categoria": "DC Comics",
+   "preco": "R$ 24,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_0h59v9i0n50df5bnpa7ffsua0k/-S170-FWEBP",
+   "serie": "Absolute Superman",
+   "serie_norm": "absolute superman",
+   "numero": 8,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ABSUP008",
+   "autores": "Jason Aaron, Juan Ferreyra",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 48,
+   "encadernacao": "Canoa",
+   "colecao": "ABSOLUTE SUPERMAN",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "batman-asilo-arkham-dc-de-bolso",
+   "url": "https://panini.com.br/batman-asilo-arkham-dc-de-bolso",
+   "titulo": "Batman: Asilo Arkham (DC De Bolso)",
+   "categoria": "DC Comics",
+   "preco": "R$ 32,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_3tnprocatp05rbpnd72u95kj0j/-S170-FWEBP",
+   "serie": "Batman: Asilo Arkham (DC De Bolso)",
+   "serie_norm": "batman asilo arkham dc de bolso",
+   "numero": null,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ADCPO008R",
+   "autores": "Dave McKean, Grant Morrison",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 136,
+   "encadernacao": "Capa Cartão",
+   "colecao": "REINO DO AMANHA (DC POCKET)",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "monstro-do-pantano-licao-de-anatomia-dc-de-bolso",
+   "url": "https://panini.com.br/monstro-do-pantano-licao-de-anatomia-dc-de-bolso",
+   "titulo": "Monstro Do Pântano: Lição De Anatomia (DC De Bolso)",
+   "categoria": "DC Comics",
+   "preco": "R$ 49,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_uf85ju6gnh16h2jqe95mbh6v5i/-S170-FWEBP",
+   "serie": "Monstro Do Pântano: Lição De Anatomia (DC De Bolso)",
+   "serie_norm": "monstro do pantano licao de anatomia dc de bolso",
+   "numero": null,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ADCPO009R",
+   "autores": "Alan Moore, Dan Day, Stephen Bissette",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 208,
+   "encadernacao": "Capa Cartão",
+   "colecao": "REINO DO AMANHA (DC POCKET)",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "liga-da-justica-sem-limites-2025-16",
+   "url": "https://panini.com.br/liga-da-justica-sem-limites-2025-16",
+   "titulo": "Liga Da Justiça Sem Limites (2025) 16",
+   "categoria": "DC Comics",
+   "preco": "R$ 19,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_6euptn1bil09dfcgncbnt78a1b/-S170-FWEBP",
+   "serie": "Liga Da Justiça Sem Limites (2025)",
+   "serie_norm": "liga da justica sem limites 2025",
+   "numero": 16,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ALJSL016",
+   "autores": "Dan Mora, Daniel Warren Johnson, John McCrea, Lyndon Radchenka, Mark Waid, Riley Rossmo, Sean Izaakse",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 48,
+   "encadernacao": "Canoa",
+   "colecao": "LIGA DA JUSTIÇA: SEM LIMITES N.01",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "batman-2025-15",
+   "url": "https://panini.com.br/batman-2025-15",
+   "titulo": "Batman (2025) 15",
+   "categoria": "DC Comics",
+   "preco": "R$ 19,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_9ockqepftd76bf0qu6cp76ea60/-S170-FWEBP",
+   "serie": "Batman (2025)",
+   "serie_norm": "batman 2025",
+   "numero": 15,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ABTMN015",
+   "autores": "Jorge Jiménez, Matt Fraction, Mikel Janín, Tom Taylor",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 56,
+   "encadernacao": "Canoa",
+   "colecao": "BATMAN (2025) N.01",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "batman-2025-01",
+   "url": "https://panini.com.br/batman-2025-01",
+   "titulo": "Batman (2025) 01",
+   "categoria": "DC Comics",
+   "preco": "R$ 14,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_g5agsqio6h6glc7qvi9f9mgu7j/-S170-FWEBP",
+   "serie": "Batman (2025)",
+   "serie_norm": "batman 2025",
+   "numero": 1,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ABTMN001R",
+   "autores": "Chip Zdarsky, Jorge Jiménez, Mikel Janin, Tom Taylor",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 48,
+   "encadernacao": "Canoa",
+   "colecao": "BATMAN (2025) N.01",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "batman-superman-os-melhores-do-mundo-2025-14",
+   "url": "https://panini.com.br/batman-superman-os-melhores-do-mundo-2025-14",
+   "titulo": "Batman/Superman: Os Melhores Do Mundo (2025) 14",
+   "categoria": "DC Comics",
+   "preco": "R$ 17,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_4b62bo96mp2gjdr5qbr802c11m/-S170-FWEBP",
+   "serie": "Batman/Superman: Os Melhores Do Mundo (2025)",
+   "serie_norm": "batman superman os melhores do mundo 2025",
+   "numero": 14,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ABSMM014",
+   "autores": "Adrián Gutiérrez, Dan Mora, Mark Waid",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 32,
+   "encadernacao": "Canoa",
+   "colecao": "BATMAN/SUPERMAN: OS MELHORES DO MUNDO (2025) N.01",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "absolute-batman-01",
+   "url": "https://panini.com.br/absolute-batman-01",
+   "titulo": "Absolute Batman 01",
+   "categoria": "DC Comics",
+   "preco": "R$ 19,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_5rbg6ugoe106t3hvmr1p15um5m/-S170-FWEBP",
+   "serie": "Absolute Batman",
+   "serie_norm": "absolute batman",
+   "numero": 1,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ABATM001R",
+   "autores": "Nick Dragotta, Scott Snyder",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 72,
+   "encadernacao": "Canoa",
+   "colecao": "ABSOLUTE BATMAN",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "superman-2025-16",
+   "url": "https://panini.com.br/superman-2025-16",
+   "titulo": "Superman (2025) 16",
+   "categoria": "DC Comics",
+   "preco": "R$ 19,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_rua9av959l51h66gsstk14kg11/-S170-FWEBP",
+   "serie": "Superman (2025)",
+   "serie_norm": "superman 2025",
+   "numero": 16,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ASPMN016",
+   "autores": "Eber Ferreira, Eddy Barrows, Joshua Williamson, Julio Ferreira, Mark Waid, Skylar Patridge",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 48,
+   "encadernacao": "Canoa",
+   "colecao": "SUPERMAN (2025) N.01",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "marvel-dc-o-mercenario-e-o-cavaleiro-outras-historias",
+   "url": "https://panini.com.br/marvel-dc-o-mercenario-e-o-cavaleiro-outras-historias",
+   "titulo": "Marvel/DC: O Mercenário E O Cavaleiro & Outras Histórias",
+   "categoria": "DC Comics",
+   "preco": "R$ 105,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_6t96k4fost55rcsmm5vjrfsu0g/-S170-FWEBP",
+   "serie": "Marvel/DC: O Mercenário E O Cavaleiro & Outras Histórias",
+   "serie_norm": "marvel dc o mercenario e o cavaleiro outras historias",
+   "numero": null,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ADBCD001",
+   "autores": "Brad Meltzer, Greg Capullo, Pepe Larraz, Zeb Wells",
+   "ano": "2026",
+   "mes": "Novembro",
+   "paginas": 192,
+   "encadernacao": "Capa dura",
+   "colecao": "DEADPOOL/BATMAN - CAPA DURA",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "detective-comics-27-fac-simile",
+   "url": "https://panini.com.br/detective-comics-27-fac-simile",
+   "titulo": "Detective Comics 27 - Fac-Símile",
+   "categoria": "DC Comics",
+   "preco": "R$ 29,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_1rke1t971l23l0f287o4k65d50/-S170-FWEBP",
+   "serie": "Detective Comics",
+   "serie_norm": "detective comics",
+   "numero": 27,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "AFSDC005",
+   "autores": "Bill Finger, Bob Kane, Homer Fleming, Jerry Siegel",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 68,
+   "encadernacao": "Canoa",
+   "colecao": "ADVENTURE COMICS 210 - FAC-SIMILE",
+   "tipo_publicacao": "Revistas Periódicas",
+   "volume_anterior": "action-comics-252-fac-simile",
+   "proximo_volume": "wonder-woman-01-fac-simile",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "batman-a-piada-mortal-dc-de-bolso-adcpo003r2",
+   "url": "https://panini.com.br/batman-a-piada-mortal-dc-de-bolso-adcpo003r2",
+   "titulo": "Batman: A Piada Mortal (DC De Bolso)",
+   "categoria": "DC Comics",
+   "preco": "R$ 32,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_4jkf0kko8p6lvccbvien6kp139/-S170-FWEBP",
+   "serie": "Batman: A Piada Mortal (DC De Bolso)",
+   "serie_norm": "batman a piada mortal dc de bolso",
+   "numero": null,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ADCPO003R2",
+   "autores": "Alan Moore, Brian Bolland, Doug Mahnke, Ed Brubaker",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 136,
+   "encadernacao": "Capa Cartão",
+   "colecao": "REINO DO AMANHA (DC POCKET)",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "volume_anterior": "watchmen-dc-de-bolso-adcpo002r3",
+   "proximo_volume": "batman-silencio-dc-de-bolso",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "os-sacrificados-vol-3",
+   "url": "https://panini.com.br/os-sacrificados-vol-3",
+   "titulo": "Os Sacrificados Vol. 3",
+   "categoria": "Panini Comics",
+   "preco": "R$ 84,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_i9ed9pv0hd71f2ojvk88mqft4o/-S170-FWEBP",
+   "serie": "Os Sacrificados",
+   "serie_norm": "os sacrificados",
+   "numero": 3,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ASACR003",
+   "autores": "Dave McCaig, Max Fiumara, Rick Remender",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 112,
+   "encadernacao": "Capa dura",
+   "colecao": "OS SACRIFICADORES VOL.01",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "star-wars-cavaleiros-jedi-vol-1",
+   "url": "https://panini.com.br/star-wars-cavaleiros-jedi-vol-1",
+   "titulo": "Star Wars: Cavaleiros Jedi Vol. 1",
+   "categoria": "Panini Comics",
+   "preco": "R$ 41,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_jkaiqu4hr53p38c1bad1uiet7a/-S170-FWEBP",
+   "serie": "Star Wars: Cavaleiros Jedi",
+   "serie_norm": "star wars cavaleiros jedi",
+   "numero": 1,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ASWJE001",
+   "autores": "Madibek Musabekov, Marc Guggenheim",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 136,
+   "encadernacao": "Capa Cartão",
+   "colecao": "STAR WARS: CAVALEIROS JEDI VOL.01",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "spawn-pistoleiro-vol-5",
+   "url": "https://panini.com.br/spawn-pistoleiro-vol-5",
+   "titulo": "Spawn Pistoleiro Vol. 5",
+   "categoria": "Panini Comics",
+   "preco": "R$ 47,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_d5vpfo1r790md5v499d171pi5l/-S170-FWEBP",
+   "serie": "Spawn Pistoleiro",
+   "serie_norm": "spawn pistoleiro",
+   "numero": 5,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ASPPI005",
+   "autores": "Carlo Barberi",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 144,
+   "encadernacao": "Capa Cartão",
+   "colecao": "SPAWN PISTOLEIRO VOL.01",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "spawn-apresenta-sam-twitch-vol-4",
+   "url": "https://panini.com.br/spawn-apresenta-sam-twitch-vol-4",
+   "titulo": "Spawn Apresenta: Sam & Twitch Vol. 4",
+   "categoria": "Panini Comics",
+   "preco": "R$ 81,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_g550ct5pap4cbfpf5nfo7ckn0b/-S170-FWEBP",
+   "serie": "Spawn Apresenta: Sam & Twitch",
+   "serie_norm": "spawn apresenta sam twitch",
+   "numero": 4,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ASATW004",
+   "autores": "Jordan Barel, Thomas Nachlik",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 224,
+   "encadernacao": "Capa Cartão",
+   "colecao": "SAM E TWITCH - 1",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "a-espada-selvagem-de-conan-2024-078",
+   "url": "https://panini.com.br/a-espada-selvagem-de-conan-2024-078",
+   "titulo": "A Espada Selvagem De Conan (2024) 078",
+   "categoria": "Panini Comics",
+   "preco": "R$ 29,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_bkldk39fpp3nb15khioc2lka61/-S170-FWEBP",
+   "serie": "A Espada Selvagem De Conan (2024)",
+   "serie_norm": "a espada selvagem de conan 2024",
+   "numero": 78,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "AESPC008",
+   "autores": "Chris Burnham, Dennis Culver, Fred Kennedy, Marco Rudy, Max Von Fafner, Zack Davisson",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 64,
+   "encadernacao": "Capa Cartão",
+   "colecao": "A ESPADA SELVAGEM DE CONAN (2023) VOL. 01",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "invencivel-vol-22",
+   "url": "https://panini.com.br/invencivel-vol-22",
+   "titulo": "Invencível Vol. 22",
+   "categoria": "Panini Comics",
+   "preco": "R$ 49,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_d0glohlbql2tn0h3j9mshe244a/-S170-FWEBP",
+   "serie": "Invencível",
+   "serie_norm": "invencivel",
+   "numero": 22,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "AINVE022",
+   "autores": "Robert Kirkman, Ryan Ottley",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 152,
+   "encadernacao": "Capa dura",
+   "colecao": "INVENCIVEL - 1",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "spawn-origens-vol-29",
+   "url": "https://panini.com.br/spawn-origens-vol-29",
+   "titulo": "Spawn: Origens Vol. 29",
+   "categoria": "Panini Comics",
+   "preco": "R$ 49,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_0mgihr554t4c73298qku8okq3u/-S170-FWEBP",
+   "serie": "Spawn: Origens",
+   "serie_norm": "spawn origens",
+   "numero": 29,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ABRSP029",
+   "autores": "Rob Liefeld, Whilce Portacio",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 168,
+   "encadernacao": "Capa Cartão",
+   "colecao": "SPAWN: ORIGENS",
+   "tipo_publicacao": "Revistas Periódicas",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "pato-donald-o-misterio-do-pantano-colecao-carl-barks-vol-3",
+   "url": "https://panini.com.br/pato-donald-o-misterio-do-pantano-colecao-carl-barks-vol-3",
+   "titulo": "Pato Donald: O Mistério Do Pântano (Coleção Carl Barks Vol. 3)",
+   "categoria": "Panini Comics",
+   "preco": "R$ 119,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_4pdih6qe493q117sd03utshq6b/-S170-FWEBP",
+   "serie": "Pato Donald: O Mistério Do Pântano (Coleção Carl Barks Vol. 3)",
+   "serie_norm": "pato donald o misterio do pantano colecao carl barks vol 3",
+   "numero": null,
+   "numero_total": null,
+   "variante": null,
+   "estado": "pre-venda",
+   "pre_venda_desde": "2026-10-01",
+   "lancou_em": null,
+   "referencia": "ADIAB019R",
+   "autores": "Carl Barks",
+   "ano": "2026",
+   "mes": "Dezembro",
+   "paginas": 248,
+   "encadernacao": "Capa dura",
+   "colecao": "COLEÇÃO CARL BARKS",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "o-mercenario-e-o-cavaleiro-outras-historias",
+   "url": "https://panini.com.br/o-mercenario-e-o-cavaleiro-outras-historias",
+   "titulo": "O Mercenário E O Cavaleiro & Outras Histórias",
+   "categoria": "DC Comics",
+   "preco": "R$ 105,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_6t96k4fost55rcsmm5vjrfsu0g/-S170-FWEBP",
+   "serie": "O Mercenário E O Cavaleiro & Outras Histórias",
+   "serie_norm": "o mercenario e o cavaleiro outras historias",
+   "numero": null,
+   "numero_total": null,
+   "variante": null,
+   "estado": "fora-do-site",
+   "pre_venda_desde": "2026-09-23",
+   "lancou_em": null,
+   "referencia": "ADBCD001",
+   "autores": "Brad Meltzer, Greg Capullo, Pepe Larraz, Zeb Wells",
+   "ano": "2026",
+   "mes": "Novembro",
+   "paginas": 192,
+   "encadernacao": "Capa dura",
+   "colecao": "DEADPOOL/BATMAN - CAPA DURA",
+   "tipo_publicacao": "Livros e Edições Especiais",
+   "visto_em": "2026-09-30",
+   "saiu_em": "2026-10-01"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-43-batman-robin-requiem",
@@ -3676,7 +4354,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-42-arqueiro-verde-a-guerra-dos-renegados",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-44-mulher-maravilha-pele",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-cacador-de-marte-05",
@@ -3702,7 +4380,7 @@
    "colecao": "ABSOLUTE CACADOR DE MARTE N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-cacador-de-marte-04",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "lanterna-verde-2025-13",
@@ -3729,7 +4407,7 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "lanterna-verde-2025-12",
    "proximo_volume": "lanterna-verde-2025-14",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "sandman-teatro-do-misterio-vol-02",
@@ -3755,7 +4433,7 @@
    "colecao": "SANDMAN: TEATRO DO MISTÉRIO VOL. 01 (DC VINTAGE)",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "sandman-teatro-do-misterio-vol-01",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "aquaman-as-cronicas-de-atlantida",
@@ -3780,7 +4458,7 @@
    "encadernacao": "Capa dura",
    "colecao": "AQUAMAN: AS CRÔNICAS DE ATLANTIDA",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "batman-robin-ano-um-vol-01",
@@ -3805,7 +4483,7 @@
    "encadernacao": "Capa Cartão",
    "colecao": "BATMAN & ROBIN: ANO UM",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
   },
   {
    "slug": "absolute-batman-07",
@@ -3832,7 +4510,34 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-batman-06-capa-variante",
    "proximo_volume": "absolute-batman-08",
-   "visto_em": "2026-09-30"
+   "visto_em": "2026-10-01"
+  },
+  {
+   "slug": "absolute-batman-07-capa-variante",
+   "url": "https://panini.com.br/absolute-batman-07-capa-variante",
+   "titulo": "Absolute Batman 07 - Capa Variante",
+   "categoria": "DC Comics",
+   "preco": "R$ 24,90",
+   "capa": "https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_u4ibk37rad23be5r12dpr1vh1q/-S170-FWEBP",
+   "serie": "Absolute Batman",
+   "serie_norm": "absolute batman",
+   "numero": 7,
+   "numero_total": null,
+   "variante": "Capa Variante",
+   "estado": "a-venda",
+   "pre_venda_desde": "2026-09-23",
+   "lancou_em": "2026-10-01",
+   "referencia": "ABATM007V",
+   "autores": "Nick Dragotta, Scott Snyder",
+   "ano": "2026",
+   "mes": "Setembro",
+   "paginas": 48,
+   "encadernacao": "Canoa",
+   "colecao": "ABSOLUTE BATMAN",
+   "tipo_publicacao": "Revistas Periódicas",
+   "volume_anterior": "absolute-batman-06-capa-variante",
+   "proximo_volume": "absolute-batman-08",
+   "visto_em": "2026-10-01"
   }
  ]
 }
