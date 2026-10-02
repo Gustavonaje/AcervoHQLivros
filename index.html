@@ -73,7 +73,6 @@ const Package = fazerIcone('<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0
 const Pencil = fazerIcone('<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>');
 const Plus = fazerIcone('<path d="M5 12h14"/><path d="M12 5v14"/>');
 const Minus = fazerIcone('<path d="M5 12h14"/>');
-const Bookmark = fazerIcone('<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>');
 const Search = fazerIcone('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>');
 const Sparkles = fazerIcone('<path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.13-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.13a.5.5 0 0 1 .96 0L14.06 8.5A2 2 0 0 0 15.5 9.94l6.13 1.58a.5.5 0 0 1 0 .96L15.5 14.06a2 2 0 0 0-1.44 1.44l-1.58 6.13a.5.5 0 0 1-.96 0z"/>');
 const Star = fazerIcone('<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>');
@@ -647,18 +646,6 @@ const CSS = `
 .barra-prog span{position:relative;padding-left:14px;font-family:var(--mono);font-size:10px;color:var(--papel2);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-.rev-topo{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
-.rev-retrato{width:56px;height:56px;border-radius:50%;overflow:hidden;background:var(--tinta3);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  font-family:var(--mono);font-size:17px;color:var(--papel3);}
-.rev-retrato img{width:100%;height:100%;object-fit:cover;object-position:center top;}
-.rev-nome{font-family:var(--disp);font-size:20px;font-weight:700;margin:0;}
-.rev-ops{display:flex;flex-direction:column;gap:6px;}
-.rev-op{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:9px;
-  border:1px solid var(--linha);background:var(--tinta2);cursor:pointer;text-align:left;color:var(--papel);}
-.rev-op:hover{border-color:var(--ciano);background:rgba(49,187,217,.08);}
-.rev-op b{font-size:15px;font-weight:600;flex:1;}
-.rev-op em{font-family:var(--mono);font-size:9px;font-style:normal;color:var(--papel3);}
 
 /* gaveta que sobe de baixo: o menu de abas do celular */
 .gaveta-fundo{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.55);
@@ -759,8 +746,6 @@ const CSS = `
 .cont-chip{margin-left:6px;font-family:var(--mono);font-size:10px;opacity:.65;}
 
 /* ── mapa por editora ─────────────────────────────────────── */
-/* ponto-chave: losango na régua e veio vertical atravessando os mapas */
-.mrc.chave{background:rgba(240,68,56,.18);color:var(--vermelho);}
 
 .abas-origem{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
 .aba-origem{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:7px 12px;border-radius:8px;
@@ -1206,7 +1191,6 @@ const CSS = `
 .lc-secao-cab{display:flex;justify-content:space-between;align-items:center;gap:12px;}
 .lc-ajuda,.lc-vazio{margin:0;font-size:13px;color:var(--papel2);}
 .lc-grade{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));}
-.lc-card{display:flex;flex-direction:column;border:1px solid var(--linha);border-radius:12px;background:var(--tinta2);overflow:hidden;animation:surge .4s ease both;}
 .lc-capa{position:relative;aspect-ratio:2/3;max-height:300px;background:var(--tinta3);display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .lc-capa img{width:100%;height:100%;object-fit:contain;display:block;}
 .lc-capa-vazia{padding:16px;font-family:var(--disp);font-weight:700;font-size:16px;color:var(--papel2);text-align:center;}
@@ -1216,12 +1200,10 @@ const CSS = `
 .lc-estado.fora-do-site{background:var(--tinta4);color:var(--papel2);}
 .lc-estado.mini{position:static;flex-shrink:0;}
 .lc-corpo{display:flex;flex-direction:column;gap:7px;padding:12px;}
-.lc-pergunta{display:flex;flex-direction:column;gap:7px;padding:8px 10px;border-radius:9px;border:1px dashed rgba(242,179,61,.5);font-size:12.5px;color:var(--papel2);}
-.lc-pergunta b{color:var(--papel);}
-.lc-pergunta div{display:flex;gap:6px;}
 .lc-rel{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--amarelo);}
 .lc-rel.atrasado{color:var(--magenta);}
-.lc-rel.tenho{color:var(--papel3);}
+.lc-rel.tenho{color:var(--verde);}
+.lc-rel.talvez{color:var(--papel2);text-transform:none;letter-spacing:0;font-family:var(--corpo);font-size:12px;}
 .lc-rel.desejo{color:var(--ciano);}
 .lc-rel.palpite{opacity:.75;}
 .lc-titulo{font-family:var(--disp);font-size:15px;font-weight:700;line-height:1.25;}
@@ -1230,20 +1212,35 @@ const CSS = `
 .lc-prev span{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--papel3);}
 .lc-prev b{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--amarelo);line-height:1.2;}
 .lc-prev b.vd{color:var(--verde);}
-.lc-linha{font-size:12px;color:var(--papel3);}
-.lc-acoes{display:flex;gap:6px;padding-top:2px;}
-.lc-acoes .btn{padding:6px 9px;}
-.lc-acoes > :first-child{flex:1;justify-content:center;}
-.lc-acoes a{text-decoration:none;}
-.lc-desvincular{align-self:flex-start;font-size:10px;}
 .lc-lista{display:flex;flex-direction:column;border:1px solid var(--linha);border-radius:12px;overflow:hidden;}
-.lc-row{display:flex;align-items:center;gap:12px;padding:9px 14px;background:var(--tinta2);border-bottom:1px solid var(--linha);flex-wrap:wrap;}
+.lc-row{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--tinta2);border:none;border-bottom:1px solid var(--linha);flex-wrap:wrap;width:100%;text-align:left;color:inherit;font:inherit;cursor:pointer;}
+.lc-row:hover{background:var(--tinta3);}
+.lc-row.estatico{cursor:default;}
+.lc-row.estatico:hover{background:var(--tinta2);}
+.lc-row-qtd{font-family:var(--mono);font-size:11px;color:var(--papel3);}
+/* card de série */
+.lc-bloco{display:flex;flex-direction:column;border:1px solid var(--linha);border-radius:12px;background:var(--tinta2);overflow:hidden;animation:surge .4s ease both;
+  padding:0;text-align:left;color:inherit;font:inherit;cursor:pointer;transition:border-color .15s,transform .15s;}
+.lc-bloco:hover{border-color:rgba(242,179,61,.55);transform:translateY(-2px);}
+.lc-qtd{position:absolute;right:8px;bottom:8px;padding:3px 8px;border-radius:6px;background:rgba(10,10,20,.82);color:var(--papel);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.05em;}
+.lc-chips{display:flex;gap:6px;flex-wrap:wrap;}
+/* janela da série: um volume por linha */
+.lc-vols{display:flex;flex-direction:column;gap:10px;}
+.lc-vol{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:10px;border:1px solid var(--linha);border-radius:10px;background:var(--tinta2);}
+.lc-vol-capa{width:56px;height:84px;border-radius:5px;overflow:hidden;background:var(--tinta3);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;color:var(--papel3);}
+.lc-vol-capa img{width:100%;height:100%;object-fit:cover;}
+.lc-vol-info{display:flex;flex-direction:column;gap:5px;min-width:0;}
+.lc-vol-tit{font-weight:700;font-size:14px;line-height:1.25;}
+.lc-vol-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;}
+.lc-vol-meta b{color:var(--amarelo);font-weight:700;}
+.lc-vol-meta b.vd{color:var(--verde);}
+.lc-vol-preco{color:var(--papel3);font-size:12px;}
+.lc-vol-acoes{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
+.lc-vol-acoes a{text-decoration:none;}
 .lc-row:last-child{border-bottom:none;}
 .lc-row-tit{flex:1 1 240px;font-weight:600;font-size:13.5px;color:var(--papel);text-decoration:none;}
 .lc-row-tit:hover{text-decoration:underline;}
-.lc-row-data{font-family:var(--mono);font-size:11px;color:var(--papel3);}
 .lc-row-prev{font-family:var(--mono);font-size:12px;color:var(--amarelo);min-width:84px;text-align:right;text-transform:uppercase;}
-.lc-row select{max-width:210px;padding:5px 8px;border-radius:7px;background:var(--tinta);border:1px solid var(--linha);color:var(--papel2);font-size:12px;}
 .selo.lanc-pre{background:rgba(242,179,61,.95);color:#241B05;}
 .selo.lanc-venda{background:rgba(79,201,139,.95);color:#062014;}
 @media (max-width:640px){
@@ -1251,32 +1248,19 @@ const CSS = `
   .lc-nums{width:100%;}
   .lc-nums div{flex:1;min-width:0;padding:8px 10px;}
   .lc-busca{margin-left:0;flex:1 1 100%;}
+  .lc-fonte .btn-mini-link{padding:10px 6px;}
   .lc-filtros .chips{flex-wrap:nowrap;overflow-x:auto;max-width:100%;padding-bottom:2px;}
   .lc-filtros .chip{flex-shrink:0;}
   .lc-grade{grid-template-columns:1fr;}
-  .lc-card{flex-direction:row;}
+  .lc-bloco{flex-direction:row;}
   .lc-capa{width:96px;flex-shrink:0;aspect-ratio:auto;max-height:none;}
+  .lc-vol{grid-template-columns:48px 1fr;}
+  .lc-vol-capa{width:48px;height:72px;}
+  .lc-vol-acoes{grid-column:1 / -1;justify-content:flex-start;}
+  .lc-vol-acoes .btn{min-height:40px;}
   .lc-capa img{object-fit:cover;}
-  .lc-row select{max-width:100%;flex:1 1 100%;}
 }
 
-/* ---------- relatório de completar dados ---------- */
-.rc-secao{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
-.rc-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
-.rc-cab h3{margin:0;font-family:var(--disp);font-size:15px;font-weight:700;}
-.rc-cab h3 span{font-family:var(--mono);font-size:11px;color:var(--papel3);font-weight:400;margin-left:4px;}
-.rc-nota{margin:0;font-size:12.5px;color:var(--papel2);}
-.rc-lista{display:flex;flex-direction:column;border:1px solid var(--linha);border-radius:10px;overflow:auto;max-height:46vh;}
-.rc-linha{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--linha);font-size:13px;cursor:default;flex-wrap:wrap;}
-label.rc-linha{cursor:pointer;}
-.rc-linha:last-child{border-bottom:none;}
-.rc-linha input{width:16px;height:16px;accent-color:var(--amarelo);flex-shrink:0;}
-.rc-tit{flex:1 1 220px;font-weight:600;}
-.rc-troca{font-family:var(--mono);font-size:12px;color:var(--papel2);}
-.rc-troca s{color:var(--papel3);}
-.rc-troca b{color:var(--amarelo);}
-.rc-fonte{font-family:var(--mono);font-size:10px;color:var(--papel3);text-transform:uppercase;letter-spacing:.05em;min-width:60px;text-align:right;}
-.rc-resumo{font-family:var(--mono);font-size:11px;color:var(--papel3);}
 
 /* ── celular, regras que precisam vir por último ─────────────────
    Estas brigavam com blocos antigos de 640px escritos mais abaixo no
@@ -1349,7 +1333,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.10", data: "26/09/2026", nota: "campos de data editáveis no celular; cursor de clique e título completo ao passar o mouse" };
+const VERSAO = { numero: "3.12", data: "30/09/2026", nota: "saem Completar dados, Conferir páginas, ponto-chave, Buscar fichas e Revisar um a um" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -2110,7 +2094,6 @@ const itemVazio = (lista = "estante") => ({
   aCaminho: false,
   lojaCompra: "",
   leitura: "nao_lido",
-  marco: false,      // ponto-chave: vira uma linha vertical no mapa temporal
   dataLeitura: "",
   original: null,
   nota: 0,
@@ -2551,6 +2534,13 @@ function candidatasCapa(item, src) {
   }
   return [...new Set(c)].filter((u) => /^https?:/i.test(u));
 }
+
+/* Capas da Panini (CDN deles) aparecem na tela, mas o servidor não deixa o
+   app copiar a imagem — tentar "salvar" sempre falha. Ficam de fora do
+   "Salvar capas"; quando o item for completado com ISBN, a capa salvável
+   vem pelos caminhos normais. */
+const ehCapaSoExibicao = (u) => /\/\/d14d9vp3wdof84\.cloudfront\.net\//i.test(String(u || ""));
+const candidatasSalvaveis = (item) => candidatasCapa(item, item.capaUrl).filter((u) => !ehCapaSoExibicao(u));
 
 // Capa de livro é sempre bem mais alta que larga. Imagem quadradinha ou
 // minúscula é o "sem capa" genérico da Amazon — não vale guardar.
@@ -3230,80 +3220,6 @@ function Modal({ titulo, aoFechar, children, rodape }) {
         {rodape && <div className="modal-pe">{rodape}</div>}
       </div>
     </div>
-  );
-}
-
-/* O que mudou ao completar dados ou conferir páginas. Campos vazios que
-   foram preenchidos já estão aplicados — é o comportamento de sempre. Número
-   de páginas diferente do que você tinha é a única exceção que mexe em dado
-   já preenchido, e por isso passa por aqui antes: as bases erram, e cada
-   troca fica marcada para você desmarcar a que não quiser. */
-function RelatorioCompletar({ rel, aoAplicar, aoFechar }) {
-  const [marcados, setMarcados] = useState(() => new Set(rel.paginas.map((x) => x.id)));
-  const alternar = (id) => setMarcados((p) => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
-  const todos = marcados.size === rel.paginas.length;
-  const ROT = { autor: "autor", editora: "editora", paginas: "páginas", ano: "ano", capaUrl: "capa", origem: "origem" };
-  return (
-    <Modal
-      titulo={rel.origem === "paginas" ? "Conferência de páginas" : "Completar dados — o que mudou"}
-      aoFechar={aoFechar}
-      rodape={
-        <>
-          <span className="rc-resumo">
-            {rel.total} consultado(s) · {rel.achados} com resposta
-            {rel.parado ? " · interrompido" : ""}
-          </span>
-          <span style={{ flex: 1 }} />
-          <button className="btn" onClick={aoFechar}>{rel.paginas.length ? "Não trocar páginas" : "Fechar"}</button>
-          {rel.paginas.length > 0 && (
-            <button className="btn btn-primario" disabled={!marcados.size}
-                    onClick={() => aoAplicar(rel.paginas.filter((x) => marcados.has(x.id)))}>
-              Trocar {marcados.size} página(s)
-            </button>
-          )}
-        </>
-      }
-    >
-      {rel.paginas.length > 0 && (
-        <section className="rc-secao">
-          <div className="rc-cab">
-            <h3>Páginas diferentes do que você tinha <span>{rel.paginas.length}</span></h3>
-            <button className="btn-mini-link" onClick={() => setMarcados(todos ? new Set() : new Set(rel.paginas.map((x) => x.id)))}>
-              {todos ? "desmarcar todas" : "marcar todas"}
-            </button>
-          </div>
-          <div className="rc-lista">
-            {rel.paginas.map((x) => (
-              <label key={x.id} className="rc-linha">
-                <input type="checkbox" checked={marcados.has(x.id)} onChange={() => alternar(x.id)} />
-                <span className="rc-tit">{x.titulo}</span>
-                <span className="rc-troca">
-                  {x.de != null ? <><s>{x.de}</s> → </> : "vazio → "}<b>{x.para}</b>
-                </span>
-                <span className="rc-fonte">{x.fonte}</span>
-              </label>
-            ))}
-          </div>
-        </section>
-      )}
-      {rel.preenchidos.length > 0 && (
-        <section className="rc-secao">
-          <div className="rc-cab"><h3>Campos vazios preenchidos <span>{rel.preenchidos.length}</span></h3></div>
-          <p className="rc-nota">Já aplicados. Nada que estava preenchido foi trocado.</p>
-          <div className="rc-lista">
-            {rel.preenchidos.map((x) => (
-              <div key={x.id} className="rc-linha">
-                <span className="rc-tit">{x.titulo}</span>
-                <span className="rc-troca">{x.campos.map((c) => (c === "paginas" && x.paginas ? `páginas ${x.paginas}` : ROT[c] || c)).join(" · ")}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-      {!rel.paginas.length && !rel.preenchidos.length && (
-        <p className="rc-nota">Nada mudou: as bases não trouxeram nenhum dado novo nem páginas diferentes das que você tem.</p>
-      )}
-    </Modal>
   );
 }
 
@@ -4602,14 +4518,6 @@ function Detalhe({ item, capaSrc, colecoes, navLista, capasPers, aoAbrirPersonag
                 </p>
               ) : null;
             })()}
-            <button
-              className={`btn btn-mini ${item.marco ? "ativo" : ""}`}
-              style={{ marginTop: 10, marginRight: 8 }}
-              onClick={() => aoAtualizar({ ...item, marco: !item.marco })}
-              title="Pontos-chave viram uma linha vertical no Mapa por editora, atravessando todas as faixas"
-            >
-              <Bookmark size={13} /> {item.marco ? "É um ponto-chave" : "Marcar como ponto-chave"}
-            </button>
             <button className="btn btn-mini btn-perigo" style={{ marginTop: 10 }} onClick={() => aoAtualizar({ ...item, original: null })}>
               <X size={12} /> Limpar
             </button>
@@ -4820,102 +4728,6 @@ const MATIZES = [200, 268, 96, 232, 300, 130, 172, 250];
 
 /* Mesma cor, com alfa só no fundo. Usar opacity no elemento apagava também
    o rótulo da era, que era o que deixava o texto ilegível. */
-function RevisarNomes({ fila, retratoDe, aoDecidir, aoFechar }) {
-  const [i, setI] = useState(0);
-  const [cands, setCands] = useState(null);
-  const [erro, setErro] = useState("");
-  const [manual, setManual] = useState("");
-  const atual = fila[i];
-
-  useEffect(() => {
-    if (!atual) return;
-    let vivo = true;
-    setCands(null); setErro(""); setManual("");
-    candidatosPt(atual.nome)
-      .then((c) => { if (vivo) { setCands(c); if (!c.length) setErro("Nenhum candidato encontrado."); } })
-      .catch(() => { if (vivo) setErro("A busca falhou."); });
-    return () => { vivo = false; };
-  }, [atual && atual.id]);
-
-  const seguir = () => {
-    if (i + 1 >= fila.length) return aoFechar();
-    setI(i + 1);
-  };
-
-  const escolher = (nome) => { aoDecidir(atual.id, nome); seguir(); };
-
-  if (!atual) return null;
-
-  return (
-    <Modal
-      titulo={`Nomes em português · ${i + 1} de ${fila.length}`}
-      aoFechar={aoFechar}
-      rodape={
-        <>
-          {/* manter é uma decisão, não um adiamento: ele não pergunta de novo */}
-          <button className="btn" onClick={() => escolher(atual.nome)}>
-            Manter “{semIdentidade(atual.nome)}”
-          </button>
-          <button className="btn" onClick={seguir}>Pular</button>
-          <button className="btn btn-mini" style={{ marginLeft: "auto" }} onClick={aoFechar}>Encerrar</button>
-        </>
-      }
-    >
-      <div className="rev-topo">
-        <div className="rev-retrato">
-          {retratoDe(atual.id)
-            ? <img src={retratoDe(atual.id)} alt="" />
-            : <span>{atual.nome.slice(0, 2).toUpperCase()}</span>}
-        </div>
-        <div>
-          <h3 className="rev-nome">{atual.nome}</h3>
-          <p className="dica" style={{ margin: "2px 0 0" }}>
-            {atual.volumes.length} volume(s) · {atual.series.length} série(s)
-          </p>
-        </div>
-      </div>
-
-      {cands === null ? (
-        <p className="dica">Procurando…</p>
-      ) : (
-        <>
-          {cands.length > 0 && (
-            <div className="rev-ops">
-              {cands.map((c) => (
-                <button key={c.nome} className="rev-op" onClick={() => escolher(c.nome)}>
-                  <b>{c.nome}</b>
-                  <em>{c.fonte}</em>
-                </button>
-              ))}
-            </div>
-          )}
-          {erro && <p className="dica" style={{ color: "var(--papel3)" }}>{erro}</p>}
-
-          <div className="campo largo" style={{ marginTop: 10 }}>
-            <label>ou escreva o nome</label>
-            <div className="lote-topo" style={{ marginTop: 4 }}>
-              <input
-                value={manual}
-                onChange={(e) => setManual(e.target.value)}
-                placeholder="Amazonas de Themyscira"
-                onKeyDown={(e) => { if (e.key === "Enter" && manual.trim()) escolher(manual.trim()); }}
-                style={{ flex: 1, minWidth: 200 }}
-              />
-              <button className="btn btn-primario btn-mini" disabled={!manual.trim()}
-                      onClick={() => escolher(manual.trim())}>
-                <Check size={13} /> Usar
-              </button>
-            </div>
-            <span className="dica">
-              Os candidatos vêm da Wikipédia em português e do Wikidata — nenhum é tradução automática.
-            </span>
-          </div>
-        </>
-      )}
-    </Modal>
-  );
-}
-
 function CardPersonagem({ pers, retrato, indice, aoAbrir }) {
   return (
     <button className="card card-pers" onClick={aoAbrir} style={{ animationDelay: `${Math.min(indice, 24) * 22}ms` }}>
@@ -6414,7 +6226,6 @@ function Acervo() {
   const [listaEditando, setListaEditando] = useState(null);
   const [listaAberta, setListaAberta] = useState(null);
   const [importando, setImportando] = useState(false);
-  const [completando, setCompletando] = useState(null);
   const [fLeitura, setFLeitura] = useState("");
   const [fCaminho, setFCaminho] = useState(false);
   const [trocaEditora, setTrocaEditora] = useState(null);
@@ -6968,7 +6779,8 @@ function Acervo() {
     [lanc.dados, itens, colecoes, vincPanini]
   );
   const nLanc = useMemo(
-    () => infoLanc.grupos.filter((g) => g.situacao === "minha" || g.situacao === "sugerida").length,
+    // conta séries (cards), não volumes — o mesmo número que a aba mostra no topo
+    () => blocosDeLancamento(infoLanc.grupos).filter((b) => b.situacao === "minha" || b.situacao === "sugerida").length,
     [infoLanc]
   );
 
@@ -7196,98 +7008,6 @@ function Acervo() {
     if (atualizacoes && atualizacoes.length) partes.push(`${atualizacoes.length} item(ns) atualizados`);
     if (novasCols && novasCols.length) partes.push(`${novasCols.length} coleção(ões) nova(s)`);
     avisar(partes.length ? partes.join(", ") + "." : "Nada para importar.");
-  };
-
-  /* ---- completar cadastros pela metade ---- */
-  const semDados = useMemo(
-    () => itens.filter((i) => i.isbn && ehIsbn((i.isbn.split(",")[0] || "").trim()) && (!i.autor || !i.editora || !i.capaUrl)),
-    [itens]
-  );
-
-  const [relCompletar, setRelCompletar] = useState(null);
-  const [conferindo, setConferindo] = useState(null);
-  const pararConferir = useRef(false);
-
-  // páginas que a base trouxe e que diferem do cadastro (ou preenchem o vazio)
-  const trocasDePaginas = (alvos, achados, incluirVazias) => {
-    const out = [];
-    for (const it of alvos) {
-      const r = achados.get(it.id);
-      const nova = r && Number(r.paginas);
-      if (!nova) continue;
-      const atual = Number(it.paginas) || null;
-      if (atual === nova || (!atual && !incluirVazias)) continue;
-      out.push({ id: it.id, titulo: it.titulo || "Sem título", de: atual, para: nova, fonte: r.origem || "" });
-    }
-    return out.sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR"));
-  };
-
-  const aplicarPaginas = (lista) => {
-    const porId = new Map(lista.map((x) => [x.id, x.para]));
-    setItens((p) => p.map((x) => (porId.has(x.id) ? { ...x, paginas: porId.get(x.id) } : x)));
-    setRelCompletar(null);
-    avisar(`Páginas trocadas em ${lista.length} item(ns).`);
-  };
-
-  /* Consulta o ISBN só para as páginas, em todos os itens da tela atual —
-     os filtros valem, então dá para conferir por editora ou coleção. */
-  const conferirPaginas = async (lista) => {
-    const alvos = lista.filter((i) => i.isbn && ehIsbn((i.isbn.split(",")[0] || "").trim()));
-    if (!alvos.length) return avisar("Nenhum item com ISBN nesta tela.");
-    pararConferir.current = false;
-    setConferindo({ feitos: 0, total: alvos.length });
-    const achados = new Map();
-    await emFila(alvos, 3, async (it) => {
-      const { reg } = await buscarIsbn(soIsbn(it.isbn.split(",")[0]));
-      if (reg) achados.set(it.id, reg);
-    }, (n) => setConferindo({ feitos: n, total: alvos.length }), () => pararConferir.current);
-    setConferindo(null);
-    setRelCompletar({
-      origem: "paginas", total: alvos.length, achados: achados.size, parado: pararConferir.current,
-      preenchidos: [], paginas: trocasDePaginas(alvos, achados, true),
-    });
-  };
-
-  const completarDados = async () => {
-    const alvos = semDados;
-    setCompletando({ feitos: 0, total: alvos.length });
-    const achados = new Map();
-    await emFila(alvos, 3, async (it) => {
-      const isbn = soIsbn(it.isbn.split(",")[0]);
-      const { reg } = await buscarIsbn(isbn);
-      if (reg) achados.set(it.id, reg);
-    }, (n) => setCompletando({ feitos: n, total: alvos.length }));
-
-    // o que foi preenchido, para o relatório (só campos que estavam vazios)
-    const preenchidos = [];
-    for (const it of alvos) {
-      const r = achados.get(it.id);
-      if (!r) continue;
-      const campos = ["autor", "editora", "paginas", "ano", "capaUrl"].filter((c) => !it[c] && r[c]);
-      if (campos.length) preenchidos.push({ id: it.id, titulo: it.titulo || "Sem título", campos, paginas: r.paginas });
-    }
-
-    if (achados.size) {
-      setItens((p) => p.map((x) => {
-        const r = achados.get(x.id);
-        if (!r) return x;
-        return {
-          ...x,
-          autor: x.autor || r.autor,
-          editora: x.editora || r.editora,
-          paginas: x.paginas || r.paginas,
-          ano: x.ano || r.ano,
-          capaUrl: x.capaUrl || r.capaUrl,
-          origem: x.origem || r.origem,
-        };
-      }));
-    }
-    setCompletando(null);
-    setRelCompletar({
-      origem: "completar", total: alvos.length, achados: achados.size,
-      preenchidos: preenchidos.sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR")),
-      paginas: trocasDePaginas(alvos, achados, false),
-    });
   };
 
   const isbnsExistentes = useMemo(
@@ -7755,7 +7475,6 @@ function Acervo() {
   /* Busca os nomes em português de quem ainda não tem. Uma requisição por
      lote de 40, e o original fica guardado. */
   const [traduzindoNomes, setTraduzindoNomes] = useState(null);
-  const [revisandoNomes, setRevisandoNomes] = useState(null);
 
   const buscarNomesPt = async () => {
     const faltam = personagens.filter((p) => !p.nomePt);
@@ -7785,14 +7504,6 @@ function Acervo() {
     }
     setTraduzindoNomes(null);
     avisar(`${achados} nome(s) em português encontrados de ${faltam.length}.`);
-  };
-
-  const decidirNomePt = (id, nome) => {
-    setMetaPers((p) => {
-      const tem = p.some((x) => x.id === id);
-      const campos = { nomePt: nome, nomeRevisado: true };
-      return tem ? p.map((x) => (x.id === id ? { ...x, ...campos } : x)) : [...p, { id, ...campos }];
-    });
   };
 
   const salvarPersonagem = async (id, campos, retratoNovo) => {
@@ -7844,55 +7555,6 @@ function Acervo() {
     }
     setPersCarregando(false);
     setPersErro("não achei a página dele nas bases");
-  };
-
-  /* Busca em massa: percorre quem ainda não tem ficha e traz resumo e
-     retrato. Uma consulta por personagem, então roda com calma e dá para
-     interromper — o que já foi trazido fica. */
-  const [buscandoFichas, setBuscandoFichas] = useState(null);
-  const abortarFichas = useRef(false);
-
-  const semFicha = useMemo(
-    () => personagens.filter((p) => p.pagina && (!fichaBoa(p) || !capas[p.id])),
-    [personagens, capas]
-  );
-
-  const buscarFichasEmMassa = async () => {
-    const alvos = semFicha;
-    if (!alvos.length || buscandoFichas) return;
-    abortarFichas.current = false;
-    setBuscandoFichas({ feitos: 0, total: alvos.length });
-    let ok = 0, falhas = 0;
-
-    for (const p of alvos) {
-      if (abortarFichas.current) break;
-      let achou = false;
-      for (const w of WIKIS) {
-        try {
-          if (!fichaBoa(p)) {
-            const f = await fichaPersonagemDaWiki(w, p.pagina);
-            if (f.resumo || f.nomeReal) {
-              setMetaPers((prev) => [...prev.filter((x) => x.id !== p.id),
-                { id: p.id, nome: p.nome, pagina: p.pagina, ...f }]);
-              achou = true;
-            }
-          }
-          if (!capas[p.id]) {
-            const r = await retratosDaWiki(w, [p.pagina]);
-            const src = r[p.pagina];
-            if (src) { await salvarRetrato(p.nome, src); achou = true; }
-          }
-          if (achou) break;
-        } catch (e) { /* tenta a outra base */ }
-      }
-      achou ? ok++ : falhas++;
-      setBuscandoFichas((x) => x && { ...x, feitos: x.feitos + 1 });
-    }
-
-    setBuscandoFichas(null);
-    avisar(falhas
-      ? `${ok} ficha(s) trazida(s). ${falhas} não foram encontradas nas bases.`
-      : `${ok} ficha(s) trazida(s).`);
   };
 
   /* Em quais volumes do acervo o personagem aparece — o dado que nenhuma
@@ -7982,7 +7644,7 @@ function Acervo() {
 
   /* ---- capas guardadas de vez ---- */
   const semCapaSalva = useMemo(
-    () => itens.filter((i) => !capas[i.id] && candidatasCapa(i, i.capaUrl).length),
+    () => itens.filter((i) => !capas[i.id] && candidatasSalvaveis(i).length),
     [itens, capas]
   );
   const capasSalvas = useMemo(() => Object.keys(capas).length, [capas]);
@@ -8013,7 +7675,7 @@ function Acervo() {
       while (i < alvos.length && !abortarCapas.current) {
         const it = alvos[i++];
         let dados = null;
-        for (const url of candidatasCapa(it, it.capaUrl)) {
+        for (const url of candidatasSalvaveis(it)) {
           try { dados = await baixarCapaComoBase64(url); break; }
           catch (e) { /* tenta o próximo endereço */ }
         }
@@ -8055,7 +7717,7 @@ function Acervo() {
   const exportarCsv = () => {
     const COLS = ["ISBN","TITULO","VOLUME","COLECAO","EDITORA","AUTOR","TIPO","GENERO","DATA AQUISICAO",
       "PRECO PAGO","LEITURA","DATA LEITURA","QTD PAGINAS","LINK DE IMAGEM DE CAPA","NOTAS","LISTA",
-      "PUBLICACAO ORIGINAL","PONTO CHAVE","A CAMINHO","LOJA"];
+      "PUBLICACAO ORIGINAL","A CAMINHO","LOJA"];
     const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
     const nomeCol = (id) => (colecoes.find((c) => c.id === id) || {}).nome || "";
     const linhas = itens.map((i) => [
@@ -8076,7 +7738,6 @@ function Acervo() {
       i.notas || "",
       i.lista === "desejos" ? "Desejos" : "Estante",
       origensParaTexto(i),
-      i.marco ? "Sim" : "",
       i.lista === "desejos" && i.aCaminho ? "Sim" : "",
       i.lojaCompra || "",
     ].map(esc).join(";"));
@@ -8516,16 +8177,6 @@ function Acervo() {
           ) : null
         )}
 
-        {emPersonagens && !traduzindoNomes && personagens.some((p) => !p.nomePt) && (
-          <button
-            className="btn btn-mini"
-            onClick={() => setRevisandoNomes(personagens.filter((p) => !p.nomePt).slice(0, 300))}
-            title="Passa um a um pelos que sobraram, propondo candidatos"
-          >
-            <Pencil size={13} /> Revisar um a um
-          </button>
-        )}
-
         {emPersonagens && (
           <>
             <div className="stat"><b>{personagens.length}</b><small>personagens</small></div>
@@ -8729,30 +8380,6 @@ function Acervo() {
           </button>
         )}
 
-        {semDados.length > 0 && !emColecoes && !emRelatorio && !emListas && !emSeries && !emPersonagens && !emLinhas && (
-          <button
-            className="btn btn-mini"
-            onClick={completarDados}
-            disabled={!!completando}
-            title="Consulta o ISBN e preenche autor, editora, páginas e capa que estiverem faltando"
-          >
-            <Sparkles size={13} />
-            {completando ? `Completando ${completando.feitos}/${completando.total}` : `Completar dados (${semDados.length})`}
-          </button>
-        )}
-
-        {(aba === "estante" || aba === "desejos") && visiveis.length > 0 && (
-          <button
-            className="btn btn-mini"
-            onClick={conferindo ? () => { pararConferir.current = true; } : () => conferirPaginas(visiveis)}
-            disabled={!!completando}
-            title="Consulta o ISBN dos itens desta tela (respeita os filtros) e mostra onde o número de páginas é diferente. Nada é trocado sem você confirmar."
-          >
-            <BookOpen size={13} />
-            {conferindo ? `Conferindo ${conferindo.feitos}/${conferindo.total} · parar` : `Conferir páginas (${visiveis.length})`}
-          </button>
-        )}
-
         {!emColecoes && !emRelatorio && !emListas && !emSeries && !emPersonagens && !emLinhas && (semCapaSalva.length > 0 || salvandoCapas) && (
           <button
             className="btn btn-mini"
@@ -8869,19 +8496,6 @@ function Acervo() {
             ))}
           </div>
         )}
-        {emPersonagens && (semFicha.length > 0 || buscandoFichas) && (
-          <button
-            className="btn btn-mini"
-            onClick={buscandoFichas ? () => { abortarFichas.current = true; } : buscarFichasEmMassa}
-            title="Traz resumo, nome real e retrato de quem ainda não tem, direto do DC/Marvel Database"
-          >
-            <Search size={13} />
-            {buscandoFichas
-              ? `Buscando ${buscandoFichas.feitos}/${buscandoFichas.total} — parar`
-              : `Buscar fichas (${semFicha.length})`}
-          </button>
-        )}
-
         {emSeries && vistaSeries === "lista" && (
           <div className="sel">
             <select value={ordemSerie} onChange={(e) => setOrdemSerie(e.target.value)} aria-label="Ordenar séries">
@@ -9040,7 +8654,6 @@ function Acervo() {
         <PainelLancamentos
           info={infoLanc}
           estado={lanc}
-          vinculos={vincPanini}
           aoRecarregar={() => carregarLanc(true)}
           aoVincular={vincularLanc}
           aoIgnorar={ignorarLanc}
@@ -9516,15 +9129,6 @@ function Acervo() {
         />
       )}
 
-      {revisandoNomes && revisandoNomes.length > 0 && (
-        <RevisarNomes
-          fila={revisandoNomes}
-          retratoDe={(id) => capas[id] || ""}
-          aoDecidir={decidirNomePt}
-          aoFechar={() => setRevisandoNomes(null)}
-        />
-      )}
-
       {persEditando && (
         <FormPersonagem
           pers={persEditando}
@@ -9672,14 +9276,6 @@ function Acervo() {
             </>
           )}
         </Modal>
-      )}
-
-      {relCompletar && (
-        <RelatorioCompletar
-          rel={relCompletar}
-          aoAplicar={aplicarPaginas}
-          aoFechar={() => setRelCompletar(null)}
-        />
       )}
 
       {modalReset && (
@@ -9906,6 +9502,13 @@ function relacaoComSerie(g, numeros, alt) {
   return compararNumero(n, g.tenho, g.querendo, g.caminho);
 }
 
+/* Mesma obra, outra edição: "Watchmen - Edição Absoluta" e "Watchmen -
+   Edição Definitiva" são o mesmo título para saber se você já tem.
+   Tiramos só descritores de edição; nome de série (Absolute Batman, DC de
+   Ouro…) fica intacto. */
+const RX_EDICAO_OBRA = /\b(edicao (definitiva|de luxo|absoluta|especial|economica|historica|de colecionador|comemorativa( \d+ anos)?)|nova edicao|\d+ ?a edicao|\d+ edicao|capa (dura|cartao|variante( \d+)?)|reimpressao|omnibus|compendium|volume unico|dc (vintage|maxvintage|omnibus|deluxe)|deluxe|grandes classicos dc)\b/g;
+const chaveObra = (serie) => normSerie(serie).replace(RX_EDICAO_OBRA, " ").replace(/\s+/g, " ").trim();
+
 /* Junta variantes de capa num card só, cruza com o acervo e com os
    vínculos confirmados. Também devolve, por item dos desejos, o lançamento
    que corresponde a ele — é o que vira a etiqueta no card. */
@@ -9914,6 +9517,20 @@ function montarLancamentos(dados, itens, colecoes, vinculos) {
   if (!dados || !Array.isArray(dados.itens)) return vazio;
   const indice = indiceSeriesDoAcervo(itens, colecoes);
   const vinc = new Map((vinculos || []).map((v) => [v.id, v]));
+
+  /* O que você tem (estante) ou já comprou (a caminho), por obra e número.
+     É o que reconhece reimpressão e relançamento mesmo sem a série estar
+     vinculada. */
+  const posses = new Map();
+  for (const it of itens) {
+    if (it.lista !== "estante" && !(it.lista === "desejos" && it.aCaminho)) continue;
+    const t = analisarTituloPanini(it.titulo);
+    const k = chaveObra(t.serie);
+    if (!k) continue;
+    const vol = it.volume != null && it.volume !== "" ? Number(it.volume) : t.numero;
+    if (!posses.has(k)) posses.set(k, []);
+    posses.get(k).push({ it, num: Number.isFinite(vol) ? vol : null, alt: t.alt });
+  }
 
   const porChave = new Map();
   for (const l of dados.itens) {
@@ -9949,6 +9566,26 @@ function montarLancamentos(dados, itens, colecoes, vinculos) {
          confirmação. */
       situacao = numeros.length ? "sugerida" : "minha";
     }
+    let rel = relacaoComSerie(alvo, numeros, alt);
+    /* Mesma obra e mesmo número no seu acervo = você já tem, venha a
+       edição com o nome que vier. Com contagem geral ("Vol. 4 (47)"), só
+       ela decide — evita confundir temporadas. Nome de uma palavra só com
+       número ("Batman 01") é genérico demais para afirmar. */
+    const kObra = chaveObra(g.t.serie);
+    const cands = posses.get(kObra) || [];
+    const casa = (c) => {
+      if (!numeros.length) return c.num == null;
+      if (alt != null) return c.alt != null && c.alt === alt;
+      return c.num != null && numeros.includes(c.num);
+    };
+    const exato = cands.find(casa);
+    if (exato && (!numeros.length || kObra.includes(" "))) {
+      const aCam = exato.it.lista === "desejos";
+      rel = { tipo: aCam ? "caminho" : "tenho", txt: aCam ? `já comprado, a caminho: ${exato.it.titulo}` : `você já tem: ${exato.it.titulo}`, n: rel && rel.n };
+      if (situacao === "outra" && !numeros.length) situacao = "minha";
+    } else if (!rel && cands.length) {
+      rel = { tipo: "talvez", txt: `você tem “${cands[0].it.titulo}” — mesma obra?` };
+    }
     const todos = [...g.lista, ...g.variantes];
     const estado = todos.some((x) => x.estado === "pre-venda") ? "pre-venda"
       : todos.some((x) => x.estado === "a-venda") ? "a-venda" : "fora-do-site";
@@ -9958,7 +9595,7 @@ function montarLancamentos(dados, itens, colecoes, vinculos) {
       estado, data: estado === "a-venda" ? p.lancou_em : estado === "fora-do-site" ? p.saiu_em : p.pre_venda_desde,
       categoria: p.categoria, preco: p.preco, previsao: previsaoLanc(p), capa: p.capa ? String(p.capa).replace(/-S\d+-/, "-S265-") : "",
       url: p.url, vinculo: v || null, situacao: ignorado ? "ignorada" : situacao, alvo,
-      rel: relacaoComSerie(alvo, numeros, alt),
+      rel,
     });
   }
 
@@ -9983,67 +9620,186 @@ function montarLancamentos(dados, itens, colecoes, vinculos) {
 const ROT_ESTADO_LANC = { "pre-venda": "Pré-venda", "a-venda": "Lançou", "fora-do-site": "Saiu do site" };
 const dataCurtaLanc = (iso) => (iso ? String(iso).slice(0, 10).split("-").reverse().slice(0, 2).join("/") : "");
 
-function CardLancamento({ g, desejado, aoConfirmar, aoRecusar, aoDesvincular, aoIgnorar, aoDesejar, aoComprei }) {
+/* Séries mensais longas geram um lançamento por mês. Em vez de um card por
+   volume, a tela agrupa por série (o código de coleção da Panini, ou o
+   vínculo que você confirmou) e mostra um card só — os volumes ficam na
+   janela que abre ao clicar. */
+function blocosDeLancamento(grupos) {
+  const m = new Map();
+  for (const g of grupos) {
+    const chave = g.situacao === "ignorada" ? `x:${g.id}`
+      : g.vinculo && g.vinculo.chave ? `v:${g.vinculo.chave}` : g.codigo;
+    if (!m.has(chave)) m.set(chave, { id: chave, vols: [] });
+    m.get(chave).vols.push(g);
+  }
+  const PESO = { "a-venda": 0, "pre-venda": 1, "fora-do-site": 2 };
+  const ordemVol = (a, b) =>
+    PESO[a.estado] - PESO[b.estado]
+    || (a.estado === "a-venda" ? String(b.data || "").localeCompare(String(a.data || "")) : 0)
+    || ((a.previsao ? a.previsao.chave : 999999) - (b.previsao ? b.previsao.chave : 999999))
+    || ((a.numeros[0] ?? 0) - (b.numeros[0] ?? 0));
+  const blocos = [];
+  for (const b of m.values()) {
+    b.vols.sort(ordemVol);
+    const nomes = new Map();
+    for (const v of b.vols) nomes.set(v.serieP, (nomes.get(v.serieP) || 0) + 1);
+    const nomeComum = [...nomes.entries()].sort((x, y) => y[1] - x[1])[0][0];
+    const situacoes = new Set(b.vols.map((v) => v.situacao));
+    const situacao = situacoes.has("minha") ? "minha" : situacoes.has("sugerida") ? "sugerida"
+      : situacoes.has("ignorada") ? "ignorada" : "outra";
+    const alvo = (b.vols.find((v) => v.alvo) || {}).alvo || null;
+    const conta = (e) => b.vols.filter((v) => v.estado === e).length;
+    const proximo = b.vols.find((v) => v.estado === "pre-venda") || null;
+    const lancados = b.vols.filter((v) => v.estado === "a-venda");
+    blocos.push({
+      ...b, nome: b.vols.length === 1 ? b.vols[0].titulo : nomeComum, situacao, alvo,
+      vinculo: (b.vols.find((v) => v.vinculo) || {}).vinculo || null,
+      capa: (proximo || b.vols[0]).capa, nPre: conta("pre-venda"), nLancou: conta("a-venda"),
+      proximo, lancados, categoria: b.vols[0].categoria,
+      jaTem: b.vols.filter((v) => v.rel && (v.rel.tipo === "tenho" || v.rel.tipo === "caminho")).length,
+    });
+  }
+  return blocos;
+}
+
+// resumo da relação da série com o seu acervo, para o card
+function resumoDaSerie(bl) {
+  const a = bl.alvo;
+  if (!a) return "";
+  if (a.tenho.size) return `você tem até o ${Math.max(...a.tenho)}`;
+  if (a.querendo.size) return "série da sua lista de desejos";
+  return a.itens.some((i) => i.lista === "estante") ? "você já tem este título" : "está nos seus desejos";
+}
+
+function LinhaLancamento({ g, desejado, aoIgnorar, aoDesejar, aoComprei }) {
   const [semCapa, setSemCapa] = useState(false);
+  const tem = g.rel && g.rel.tipo === "tenho";
+  const caminho = g.rel && g.rel.tipo === "caminho";
   return (
-    <article className={`lc-card ${g.estado}`}>
-      <div className="lc-capa">
+    <div className={`lc-vol ${g.estado}`}>
+      <div className="lc-vol-capa">
         {g.capa && !semCapa
           ? <img src={g.capa} alt="" loading="lazy" onError={() => setSemCapa(true)} />
-          : <span className="lc-capa-vazia">{g.titulo}</span>}
-        <span className={`lc-estado ${g.estado}`}>{ROT_ESTADO_LANC[g.estado]}</span>
+          : <span>{g.numeros.length ? `#${g.numeros[0]}` : "—"}</span>}
       </div>
-      <div className="lc-corpo">
-        {g.situacao === "sugerida" && g.alvo && (
-          <div className="lc-pergunta">
-            <span>É a mesma série de <b>{g.alvo.nome}</b>, do seu acervo?</span>
-            <div>
-              <button className="btn btn-mini btn-ok" onClick={() => aoConfirmar(g)}><Check size={12} /> É sim</button>
-              <button className="btn btn-mini" onClick={() => aoRecusar(g)}>Não é</button>
-            </div>
-          </div>
-        )}
-        {g.rel && g.situacao === "minha" && <div className={`lc-rel ${g.rel.tipo}`}>{g.rel.txt}</div>}
-        {g.rel && g.situacao === "sugerida" && <div className={`lc-rel ${g.rel.tipo} palpite`}>se for: {g.rel.txt}</div>}
-        <div className="lc-titulo" title={g.titulo}>{g.titulo}</div>
+      <div className="lc-vol-info">
+        <div className="lc-vol-tit" title={g.titulo}>{g.titulo}</div>
+        <div className="lc-vol-meta">
+          <span className={`lc-estado mini ${g.estado}`}>{ROT_ESTADO_LANC[g.estado]}</span>
+          <b className={g.estado === "a-venda" ? "vd" : ""}>
+            {g.estado === "a-venda" ? `lançou em ${dataCurtaLanc(g.data)}`
+              : g.estado === "fora-do-site" ? `saiu em ${dataCurtaLanc(g.data)}`
+              : g.previsao ? `previsão: ${g.previsao.txt}` : "sem previsão"}
+          </b>
+          {g.preco && <span className="lc-vol-preco">{g.preco}</span>}
+        </div>
+        {g.rel && <div className={`lc-rel ${g.rel.tipo}`}>{g.rel.txt}</div>}
         {g.variantes.length > 0 && <div className="lc-var">+ {g.variantes.length} capa{g.variantes.length > 1 ? "s" : ""} variante{g.variantes.length > 1 ? "s" : ""}</div>}
-        <div className="lc-prev">
-          {g.estado === "a-venda"
-            ? <><span>lançou em</span><b className="vd">{dataCurtaLanc(g.data)}</b></>
-            : g.estado === "fora-do-site"
-              ? <><span>saiu do site em</span><b>{dataCurtaLanc(g.data)}</b></>
-              : <><span>previsão</span><b>{g.previsao ? g.previsao.txt : "sem data"}</b></>}
-        </div>
-        <div className="lc-linha"><span>{g.preco || ""}</span></div>
-        <div className="lc-acoes">
-          {g.estado === "a-venda"
-            ? <button className="btn btn-mini btn-primario" onClick={() => aoComprei(g)}>Comprei → Estante</button>
-            : g.rel && g.rel.tipo === "tenho" && g.situacao === "minha"
-              ? <button className="btn btn-mini" disabled><Check size={12} /> Já tenho</button>
-            : g.rel && g.rel.tipo === "caminho"
-              ? <button className="btn btn-mini" disabled><Package size={12} /> A caminho</button>
-            : desejado
-              ? <button className="btn btn-mini" disabled><Check size={12} /> Nos desejos</button>
-              : <button className="btn btn-mini btn-primario" onClick={() => aoDesejar(g)}><Heart size={12} /> Desejos</button>}
-          <a className="btn btn-mini" href={g.url} target="_blank" rel="noopener noreferrer">Panini</a>
-          <button className="btn btn-mini btn-icone" aria-label="Ignorar este lançamento" title="Ignorar" onClick={() => aoIgnorar(g)}><X size={12} /></button>
-        </div>
-        {g.situacao === "minha" && (
-          <button className="btn-mini-link lc-desvincular" onClick={() => aoDesvincular(g)}>
-            {g.numeros.length ? "não é desta série" : "não é este título"}
-          </button>
-        )}
       </div>
-    </article>
+      <div className="lc-vol-acoes">
+        {tem ? <button className="btn btn-mini" disabled><Check size={12} /> Já tenho</button>
+          : caminho ? <button className="btn btn-mini" disabled><Package size={12} /> A caminho</button>
+          : g.estado === "a-venda" ? <button className="btn btn-mini btn-primario" onClick={() => aoComprei(g)}>Comprei → Estante</button>
+          : desejado ? <button className="btn btn-mini" disabled><Check size={12} /> Nos desejos</button>
+          : g.estado !== "fora-do-site" ? <button className="btn btn-mini btn-primario" onClick={() => aoDesejar(g)}><Heart size={12} /> Desejos</button>
+          : null}
+        <a className="btn btn-mini" href={g.url} target="_blank" rel="noopener noreferrer">Panini</a>
+        <button className="btn btn-mini btn-icone" aria-label={`Ignorar ${g.titulo}`} title="Ignorar este volume" onClick={() => aoIgnorar(g)}><X size={12} /></button>
+      </div>
+    </div>
   );
 }
 
-function PainelLancamentos({ info, estado, vinculos, aoRecarregar, aoVincular, aoIgnorar, aoDesfazerIgnorar, aoDesejar, aoComprei }) {
+function CardSerieLancamento({ bl, aoAbrir }) {
+  const [semCapa, setSemCapa] = useState(false);
+  const p = bl.proximo;
+  return (
+    <button type="button" className="lc-bloco" onClick={() => aoAbrir(bl)} title={`Ver os lançamentos de ${bl.nome}`}>
+      <div className="lc-capa">
+        {bl.capa && !semCapa
+          ? <img src={bl.capa} alt="" loading="lazy" onError={() => setSemCapa(true)} />
+          : <span className="lc-capa-vazia">{bl.nome}</span>}
+        {bl.vols.length > 1 && <span className="lc-qtd">{bl.vols.length} volumes</span>}
+      </div>
+      <div className="lc-corpo">
+        <div className="lc-titulo">{bl.nome}</div>
+        <div className="lc-chips">
+          {bl.nLancou > 0 && <span className="lc-estado mini a-venda">{bl.nLancou} lançou</span>}
+          {bl.nPre > 0 && <span className="lc-estado mini pre-venda">{bl.nPre} em pré-venda</span>}
+        </div>
+        {p && (
+          <div className="lc-prev">
+            <span>próximo{p.numeros.length ? ` · nº ${p.numeros[0]}` : ""}</span>
+            <b>{p.previsao ? p.previsao.txt : "sem previsão"}</b>
+          </div>
+        )}
+        {!p && bl.lancados.length > 0 && (
+          <div className="lc-prev"><span>último lançamento</span><b className="vd">{dataCurtaLanc(bl.lancados[0].data)}</b></div>
+        )}
+        {bl.situacao === "minha" && resumoDaSerie(bl) && <div className="lc-rel">{resumoDaSerie(bl)}</div>}
+        {bl.situacao === "sugerida" && bl.alvo && <div className="lc-rel palpite">parece ser a sua série “{bl.alvo.nome}”</div>}
+        {bl.jaTem > 0 && <div className="lc-rel tenho">{bl.jaTem === bl.vols.length ? "você já tem" : `você já tem ${bl.jaTem} de ${bl.vols.length}`}</div>}
+      </div>
+    </button>
+  );
+}
+
+function JanelaSerieLancamento({ bl, opcoesSerie, desejados, aoFechar, aoVincular, aoIgnorar, aoDesejar, aoComprei }) {
+  const [escolha, setEscolha] = useState("");
+  return (
+    <Modal
+      titulo={bl.nome}
+      aoFechar={aoFechar}
+      rodape={
+        <>
+          {bl.situacao === "sugerida" && bl.alvo && (
+            <>
+              <button className="btn btn-primario" onClick={() => aoVincular(bl, bl.alvo.chave, bl.alvo.nome)}><Check size={14} /> É a minha série “{bl.alvo.nome}”</button>
+              <button className="btn" onClick={() => aoVincular(bl, null, "")}>Não é</button>
+            </>
+          )}
+          {bl.situacao === "minha" && bl.vinculo && bl.vinculo.chave && (
+            <button className="btn" onClick={() => aoVincular(bl, null, "")}>Não é desta série</button>
+          )}
+          {bl.situacao === "outra" && (
+            <>
+              <select value={escolha} onChange={(e) => setEscolha(e.target.value)} aria-label="Vincular a uma série sua">
+                <option value="">É da minha série…</option>
+                {opcoesSerie.map((s) => <option key={s.chave} value={s.chave}>{s.nome}</option>)}
+              </select>
+              <button className="btn" disabled={!escolha} onClick={() => {
+                const s = opcoesSerie.find((x) => x.chave === escolha);
+                if (s) aoVincular(bl, s.chave, s.nome);
+              }}>Vincular</button>
+            </>
+          )}
+          <button className="btn" onClick={aoFechar}>Fechar</button>
+        </>
+      }
+    >
+      <p className="dica" style={{ marginTop: 0 }}>
+        {bl.situacao === "minha" && bl.alvo ? `Sua série: ${bl.alvo.nome}${resumoDaSerie(bl) ? ` — ${resumoDaSerie(bl)}` : ""}.`
+          : bl.situacao === "sugerida" && bl.alvo ? `Parece ser a sua série “${bl.alvo.nome}”. Confirme uma vez e os próximos volumes entram direto.`
+          : "Não está ligada a nenhuma série do seu acervo."}
+        {" "}{bl.vols.length} volume{bl.vols.length > 1 ? "s" : ""} na leitura da Panini.
+      </p>
+      <div className="lc-vols">
+        {bl.vols.map((g) => (
+          <LinhaLancamento key={g.id} g={g} desejado={desejados.has(g.id)}
+            aoIgnorar={aoIgnorar} aoDesejar={aoDesejar} aoComprei={aoComprei} />
+        ))}
+      </div>
+    </Modal>
+  );
+}
+
+function PainelLancamentos({ info, estado, aoRecarregar, aoVincular, aoIgnorar, aoDesfazerIgnorar, aoDesejar, aoComprei }) {
   const [fEstado, setFEstado] = useState("");
   const [fLinha, setFLinha] = useState("");
   const [busca, setBusca] = useState("");
   const [verOutros, setVerOutros] = useState(false);
   const [verIgnorados, setVerIgnorados] = useState(false);
+  const [abertoId, setAbertoId] = useState(null);
   const d = estado.dados;
 
   const opcoesSerie = useMemo(
@@ -10069,35 +9825,26 @@ function PainelLancamentos({ info, estado, vinculos, aoRecarregar, aoVincular, a
   }
 
   const q = semAcento(busca.trim());
-  const filtra = (g) =>
+  const passa = (g) =>
     (!fEstado || g.estado === fEstado)
     && (!fLinha || g.categoria === fLinha)
     && (!q || semAcento(g.titulo).includes(q));
-  const PESO_ESTADO = { "a-venda": 0, "pre-venda": 1, "fora-do-site": 2 };
-  const ordenar = (a, b) =>
-    PESO_ESTADO[a.estado] - PESO_ESTADO[b.estado]
-    || (a.estado === "a-venda" ? String(b.data || "").localeCompare(String(a.data || "")) : 0)
-    || ((a.previsao ? a.previsao.chave : 999999) - (b.previsao ? b.previsao.chave : 999999))
-    || a.titulo.localeCompare(b.titulo, "pt-BR");
-  // reimpressão do que você já tem vai para o fim: é o menos urgente
-  const jaTem = (g) => (g.rel && g.rel.tipo === "tenho" ? 1 : 0);
-  const minhas = info.grupos.filter((g) => g.situacao === "minha" && filtra(g))
-    .sort((a, b) => jaTem(a) - jaTem(b) || ordenar(a, b));
-  const sugeridas = info.grupos.filter((g) => g.situacao === "sugerida" && filtra(g))
-    .sort((a, b) => a.serieP.localeCompare(b.serieP, "pt-BR") || ordenar(a, b));
-  const outras = info.grupos.filter((g) => g.situacao === "outra" && filtra(g)).sort(ordenar);
-  const ignoradas = info.grupos.filter((g) => g.situacao === "ignorada");
+  // o filtro vale por volume; a série aparece se algum volume dela passar
+  const blocos = blocosDeLancamento(info.grupos)
+    .map((bl) => ({ ...bl, visiveis: bl.vols.filter(passa) }))
+    .filter((bl) => bl.visiveis.length);
+  const ordenarBlocos = (a, b) =>
+    (b.nLancou > 0) - (a.nLancou > 0)
+    || ((a.proximo && a.proximo.previsao ? a.proximo.previsao.chave : 999999) - (b.proximo && b.proximo.previsao ? b.proximo.previsao.chave : 999999))
+    || a.nome.localeCompare(b.nome, "pt-BR");
+  const minhas = blocos.filter((b) => b.situacao === "minha").sort(ordenarBlocos);
+  const sugeridas = blocos.filter((b) => b.situacao === "sugerida").sort(ordenarBlocos);
+  const outras = blocos.filter((b) => b.situacao === "outra").sort(ordenarBlocos);
+  const ignorados = info.grupos.filter((g) => g.situacao === "ignorada");
   const desejados = new Set([...info.porDesejo.values()].map((g) => g.id));
   const linhas = [...new Set(info.grupos.map((g) => g.categoria).filter(Boolean))];
   const conta = (e) => info.grupos.filter((g) => g.situacao !== "ignorada" && g.estado === e).length;
-
-  const props = (g) => ({
-    g, desejado: desejados.has(g.id),
-    aoConfirmar: (x) => aoVincular(x, x.alvo.chave, x.alvo.nome),
-    aoRecusar: (x) => aoVincular(x, null, ""),
-    aoDesvincular: (x) => aoVincular(x, null, ""),
-    aoIgnorar, aoDesejar, aoComprei,
-  });
+  const aberto = abertoId ? blocosDeLancamento(info.grupos).find((b) => b.id === abertoId) : null;
 
   return (
     <main className="lc">
@@ -10118,7 +9865,7 @@ function PainelLancamentos({ info, estado, vinculos, aoRecarregar, aoVincular, a
           </div>
         </div>
         <div className="lc-nums">
-          <div><b className="am">{minhas.length}</b><span>das suas séries</span></div>
+          <div><b className="am">{minhas.length}</b><span>séries suas</span></div>
           <div><b>{conta("pre-venda")}</b><span>em pré-venda</span></div>
           <div><b className="vd">{conta("a-venda")}</b><span>lançados</span></div>
         </div>
@@ -10143,15 +9890,15 @@ function PainelLancamentos({ info, estado, vinculos, aoRecarregar, aoVincular, a
       <section className="lc-secao">
         <h3>Das suas séries <span>{minhas.length}</span></h3>
         {minhas.length
-          ? <div className="lc-grade">{minhas.map((g) => <CardLancamento key={g.id} {...props(g)} />)}</div>
+          ? <div className="lc-grade">{minhas.map((bl) => <CardSerieLancamento key={bl.id} bl={bl} aoAbrir={(b) => setAbertoId(b.id)} />)}</div>
           : <p className="lc-vazio">{sugeridas.length ? "Nenhuma série confirmada ainda — comece pelas sugestões abaixo." : "Nada das suas séries neste momento."}</p>}
       </section>
 
       {sugeridas.length > 0 && (
         <section className="lc-secao">
           <h3>Parece ser das suas séries <span>{sugeridas.length}</span></h3>
-          <p className="lc-ajuda">Confirme uma vez por série. Os próximos volumes dela passam a aparecer lá em cima sozinhos.</p>
-          <div className="lc-grade">{sugeridas.map((g) => <CardLancamento key={g.id} {...props(g)} />)}</div>
+          <p className="lc-ajuda">Abra a série e confirme uma vez. Os próximos volumes dela passam a aparecer lá em cima sozinhos.</p>
+          <div className="lc-grade">{sugeridas.map((bl) => <CardSerieLancamento key={bl.id} bl={bl} aoAbrir={(b) => setAbertoId(b.id)} />)}</div>
         </section>
       )}
 
@@ -10162,40 +9909,30 @@ function PainelLancamentos({ info, estado, vinculos, aoRecarregar, aoVincular, a
         </div>
         {verOutros && (
           <div className="lc-lista">
-            {outras.map((g) => (
-              <div key={g.id} className="lc-row">
-                <span className={`lc-estado mini ${g.estado}`}>{ROT_ESTADO_LANC[g.estado]}</span>
-                <a className="lc-row-tit" href={g.url} target="_blank" rel="noopener noreferrer">{g.titulo}</a>
+            {outras.map((bl) => (
+              <button type="button" key={bl.id} className="lc-row" onClick={() => setAbertoId(bl.id)}>
+                <span className="lc-row-tit">{bl.nome}</span>
+                {bl.jaTem > 0 && <span className="lc-rel tenho">{bl.jaTem === bl.vols.length ? "já tenho" : `já tenho ${bl.jaTem}`}</span>}
+                <span className="lc-row-qtd">{bl.vols.length > 1 ? `${bl.vols.length} volumes` : ""}</span>
                 <b className="lc-row-prev">
-                  {g.estado === "a-venda" ? `lançou ${dataCurtaLanc(g.data)}` : g.previsao ? g.previsao.curto : "—"}
+                  {bl.nLancou ? `lançou ${dataCurtaLanc(bl.lancados[0].data)}` : bl.proximo && bl.proximo.previsao ? bl.proximo.previsao.curto : "—"}
                 </b>
-                <select value="" aria-label={`Vincular ${g.titulo} a uma série sua`}
-                        onChange={(e) => {
-                          const s = opcoesSerie.find((x) => x.chave === e.target.value);
-                          if (s) aoVincular(g, s.chave, s.nome);
-                        }}>
-                  <option value="">É da minha série…</option>
-                  {opcoesSerie.map((s) => <option key={s.chave} value={s.chave}>{s.nome}</option>)}
-                </select>
-                {!desejados.has(g.id) && g.estado !== "fora-do-site" && (
-                  <button className="btn btn-mini" onClick={() => aoDesejar(g)}>+ Desejos</button>
-                )}
-              </div>
+              </button>
             ))}
           </div>
         )}
       </section>
 
-      {ignoradas.length > 0 && (
+      {ignorados.length > 0 && (
         <section className="lc-secao">
           <div className="lc-secao-cab">
-            <h3>Ignorados <span>{ignoradas.length}</span></h3>
+            <h3>Ignorados <span>{ignorados.length}</span></h3>
             <button className="btn btn-mini" onClick={() => setVerIgnorados(!verIgnorados)}>{verIgnorados ? "Recolher" : "Mostrar"}</button>
           </div>
           {verIgnorados && (
             <div className="lc-lista">
-              {ignoradas.map((g) => (
-                <div key={g.id} className="lc-row">
+              {ignorados.map((g) => (
+                <div key={g.id} className="lc-row estatico">
                   <span className="lc-row-tit">{g.titulo}</span>
                   <button className="btn btn-mini" onClick={() => aoDesfazerIgnorar(g)}>Voltar a mostrar</button>
                 </div>
@@ -10203,6 +9940,23 @@ function PainelLancamentos({ info, estado, vinculos, aoRecarregar, aoVincular, a
             </div>
           )}
         </section>
+      )}
+
+      {aberto && (
+        <JanelaSerieLancamento
+          bl={aberto}
+          opcoesSerie={opcoesSerie}
+          desejados={desejados}
+          aoFechar={() => setAbertoId(null)}
+          aoVincular={(bl, chave, nome) => {
+            // um vínculo por código Panini; série confirmada pode juntar mais de um
+            for (const c of [...new Set(bl.vols.map((v) => v.codigo))]) aoVincular(bl.vols.find((v) => v.codigo === c), chave, nome);
+            setAbertoId(chave ? `v:${chave}` : null);
+          }}
+          aoIgnorar={aoIgnorar}
+          aoDesejar={aoDesejar}
+          aoComprei={(g) => { setAbertoId(null); aoComprei(g); }}
+        />
       )}
     </main>
   );
@@ -10227,7 +9981,6 @@ const COLUNAS = {
   ano: ["ano", "ano publicacao", "ano de publicacao", "ano de publicação", "ano edicao", "ano da edicao"],
   lista: ["lista", "destino", "estante ou desejos", "estante/desejos", "wishlist", "lista de desejos", "acervo"],
   publicacaoOriginal: ["publicacao original", "publicação original", "original", "serie original", "série original", "publicacao originais"],
-  marco: ["ponto chave", "ponto-chave", "ponto chave?", "marco", "chave"],
   aCaminho: ["a caminho", "comprado a caminho", "ja comprei"],
   lojaCompra: ["loja", "loja da compra", "comprado em loja", "onde comprei"],
 };
@@ -11247,44 +11000,6 @@ async function nomesEmPortugues(nomes) {
   return fora;
 }
 
-/* Candidatos a nome em português para quem a ligação direta não resolveu.
-   Busca o nome em inglês dentro da Wikipédia em português — "Beast Boy"
-   devolve "Mutano" — e consulta o rótulo do Wikidata. Nenhuma das duas
-   inventa tradução: são nomes já usados por aqui. */
-async function candidatosPt(nome) {
-  const limpo = semIdentidade(nome);
-  const fora = [];
-  const visto = new Set();
-  const por = (rot, fonte) => {
-    const t = semDesambiguacao(rot);
-    if (!t || visto.has(semAcento(t)) || semAcento(t) === semAcento(limpo)) return;
-    visto.add(semAcento(t));
-    fora.push({ nome: t, fonte });
-  };
-
-  try {
-    const url = "https://pt.wikipedia.org/w/api.php?action=query&list=search&srlimit=4&srsearch="
-      + encodeURIComponent(limpo) + "&format=json&formatversion=2&origin=*";
-    const r = await fetch(url, { mode: "cors", credentials: "omit" });
-    if (r.ok) {
-      const d = await r.json();
-      for (const x of (d.query && d.query.search) || []) por(x.title, "Wikipédia");
-    }
-  } catch (e) { /* segue para o Wikidata */ }
-
-  try {
-    const url = "https://www.wikidata.org/w/api.php?action=wbsearchentities&language=en&uselang=pt-br"
-      + "&type=item&limit=3&search=" + encodeURIComponent(limpo) + "&format=json&origin=*";
-    const r = await fetch(url, { mode: "cors", credentials: "omit" });
-    if (r.ok) {
-      const d = await r.json();
-      for (const x of d.search || []) por(x.label, "Wikidata");
-    }
-  } catch (e) { /* devolve o que houver */ }
-
-  return fora.slice(0, 5);
-}
-
 /* Retrato do personagem para o círculo na ficha. A imagem fica guardada pelo
    nome, então o Batman é baixado uma vez e reaproveitado por toda série em
    que ele apareça. */
@@ -11528,8 +11243,6 @@ function lerPlanilha(texto) {
       reg.capaUrl = pega("capaUrl").trim();
       reg.lista = paraLista(pega("lista"));
       reg.original = textoParaOrigens(pega("publicacaoOriginal"));
-      const mk = semAcento(pega("marco").trim());
-      reg.marco = mk ? /^(s|1|sim|x|true|v)/.test(mk) : undefined;
       const ac = semAcento(pega("aCaminho").trim());
       reg.aCaminho = ac ? /^(s|1|sim|x|true|v)/.test(ac) : undefined;
       reg.lojaCompra = pega("lojaCompra").trim();
@@ -11543,7 +11256,7 @@ function lerPlanilha(texto) {
       reg.titulo = reg.isbn ? "" : (campos[0] || "");
       reg.leitura = ""; reg.dataLeitura = ""; reg.volume = null; reg.colecao = ""; reg.notas = "";
       reg.editora = ""; reg.autor = ""; reg.generos = []; reg.tipo = "";
-      reg.paginas = null; reg.ano = ""; reg.capaUrl = ""; reg.lista = ""; reg.original = []; reg.marco = undefined;
+      reg.paginas = null; reg.ano = ""; reg.capaUrl = ""; reg.lista = ""; reg.original = [];
     }
     if (!reg.isbn && (!reg.titulo || reg.titulo.length < 4)) continue;
     reg.chave = reg.isbn || `titulo:${reg.titulo}`;
@@ -11562,7 +11275,6 @@ function itemDaImportacao(sheet, destino, tipoPadrao, colecaoId) {
   return {
     ...itemVazio(alvo),
     original: (sheet.original && sheet.original.length) ? sheet.original : null,
-    marco: !!sheet.marco,
     aCaminho: alvo === "desejos" && !!sheet.aCaminho,
     lojaCompra: sheet.lojaCompra || "",
     id: uid(),
@@ -11693,7 +11405,7 @@ function ImportarLote({ isbnsExistentes, itensExistentes, colecoesExistentes, ao
 
   const baixarModelo = () => {
     const linhas = [
-      "ISBN;TITULO;VOLUME;COLECAO;EDITORA;AUTOR;TIPO;GENERO;DATA AQUISICAO;PRECO PAGO;LEITURA;DATA LEITURA;QTD PAGINAS;LINK DE IMAGEM DE CAPA;NOTAS;LISTA;PUBLICACAO ORIGINAL;PONTO CHAVE",
+      "ISBN;TITULO;VOLUME;COLECAO;EDITORA;AUTOR;TIPO;GENERO;DATA AQUISICAO;PRECO PAGO;LEITURA;DATA LEITURA;QTD PAGINAS;LINK DE IMAGEM DE CAPA;NOTAS;LISTA;PUBLICACAO ORIGINAL",
       "9788542618709;Dragon Ball Edição Definitiva;1;Dragon Ball Edição Definitiva;Panini;Akira Toriyama;Mangá;Aventura/Ação;12/03/2023;64,90;lido;05/04/2023;232;https://.../capa-vol1.jpg;",
       "9788542624373;Dragon Ball Edição Definitiva;5;Dragon Ball Edição Definitiva;Panini;Akira Toriyama;Mangá;Aventura/Ação;20/05/2024;69,90;lendo;;236;;",
       "8573516534;Sandman Edição Definitiva;1;Sandman Edição Definitiva;Panini;Neil Gaiman;Quadrinho;Fantasia/Horror;;;nao lido;;616;;edição antiga, o ISBN novo não bate mais",
@@ -11883,7 +11595,6 @@ function ImportarLote({ isbnsExistentes, itensExistentes, colecoesExistentes, ao
       // a coluna LISTA move o item que já existe entre estante e desejos
       if (r.lista === "estante" || r.lista === "desejos") campos.lista = r.lista;
       if (r.original && r.original.length) campos.original = r.original;
-      if (r.marco !== undefined) campos.marco = r.marco;
       if (r.aCaminho !== undefined) campos.aCaminho = r.aCaminho;
       if (r.lojaCompra) campos.lojaCompra = r.lojaCompra;
       return campos;
