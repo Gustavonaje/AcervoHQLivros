@@ -710,6 +710,36 @@ const CSS = `
 .grupo-pe span{display:inline-flex;align-items:center;gap:3px;}
 .card-serie.no-grupo{border-left:2px solid rgba(242,179,61,.45);}
 
+/* ── leque: grupo de séries e série de lançamentos ─────────────
+   Ao passar o mouse, 1 a 4 capas de outras séries do grupo saem de trás
+   da capa principal, abertas como cartas. Só visual: o clique continua
+   fazendo o que fazia. Não muda o tamanho do card; passa por cima dos
+   vizinhos. No toque não existe — o card fica como sempre foi. */
+.tem-leque{position:relative;overflow:visible;}
+.leque{position:relative;}
+.leque .leque-principal{position:relative;z-index:5;}
+.leque .leque-sec{position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none;
+  transform:translate(0,0) rotate(0) scale(.94);transform-origin:50% 100%;filter:brightness(.8) saturate(.9);
+  transition:transform .26s cubic-bezier(.2,.8,.3,1),opacity .16s ease;}
+.leque .leque-sec.s2{z-index:2}.leque .leque-sec.s3{z-index:3}.leque .leque-sec.s4{z-index:4}
+@media (hover:hover){
+  .tem-leque:hover,.tem-leque:focus-visible{z-index:20;}
+  .tem-leque:hover .leque-sec,.tem-leque:focus-visible .leque-sec{opacity:1;}
+  .tem-leque:hover .n4 .leque-sec.s1,.tem-leque:focus-visible .n4 .leque-sec.s1{transform:translate(-38%,-2%) rotate(-10deg) scale(.92)}
+  .tem-leque:hover .n4 .leque-sec.s2,.tem-leque:focus-visible .n4 .leque-sec.s2{transform:translate(-14%,-10%) rotate(-4deg) scale(.92);transition-delay:20ms}
+  .tem-leque:hover .n4 .leque-sec.s3,.tem-leque:focus-visible .n4 .leque-sec.s3{transform:translate(14%,-10%) rotate(4deg) scale(.92);transition-delay:40ms}
+  .tem-leque:hover .n4 .leque-sec.s4,.tem-leque:focus-visible .n4 .leque-sec.s4{transform:translate(38%,-2%) rotate(10deg) scale(.92);transition-delay:60ms}
+  .tem-leque:hover .n3 .leque-sec.s1,.tem-leque:focus-visible .n3 .leque-sec.s1{transform:translate(-31%,-4%) rotate(-8deg) scale(.92)}
+  .tem-leque:hover .n3 .leque-sec.s2,.tem-leque:focus-visible .n3 .leque-sec.s2{transform:translate(0,-13%) rotate(-1deg) scale(.92);transition-delay:20ms}
+  .tem-leque:hover .n3 .leque-sec.s3,.tem-leque:focus-visible .n3 .leque-sec.s3{transform:translate(31%,-4%) rotate(8deg) scale(.92);transition-delay:40ms}
+  .tem-leque:hover .n2 .leque-sec.s1,.tem-leque:focus-visible .n2 .leque-sec.s1{transform:translate(-24%,-7%) rotate(-6deg) scale(.92)}
+  .tem-leque:hover .n2 .leque-sec.s2,.tem-leque:focus-visible .n2 .leque-sec.s2{transform:translate(24%,-7%) rotate(6deg) scale(.92);transition-delay:20ms}
+  .tem-leque:hover .n1 .leque-sec.s1,.tem-leque:focus-visible .n1 .leque-sec.s1{transform:translate(20%,-8%) rotate(5deg) scale(.92)}
+}
+@media (prefers-reduced-motion:reduce){.leque .leque-sec{transition:opacity .12s linear;}}
+/* o leque não pode criar rolagem lateral na borda da tela */
+.grade,.lc-grade{overflow-x:clip;}
+
 .lt-escolha{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px;
   max-height:320px;overflow-y:auto;padding:10px;border:1px solid var(--linha);border-radius:10px;
   background:rgba(0,0,0,.16);margin:8px 0;}
@@ -1333,7 +1363,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.12", data: "30/09/2026", nota: "saem Completar dados, Conferir páginas, ponto-chave, Buscar fichas e Revisar um a um" };
+const VERSAO = { numero: "3.15", data: "03/10/2026", nota: "período da série não é mais trocado por um que contradiz as suas edições" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -2402,6 +2432,13 @@ function montarSeries(itens, metaSeries) {
   }
 
   return [...m.values()].map((g) => {
+    /* Período guardado que contradiz as suas edições (série "começando"
+       depois da sua edição mais antiga) é dado ruim de uma leitura que
+       falhou: não vale como estreia e a ficha avisa. */
+    const mdP = meta.get(g.id) || {};
+    const pIni = mdP.inicio ? periodoDoTexto(mdP.inicio) : null;
+    const pFim = mdP.fim ? periodoDoTexto(mdP.fim) : null;
+    const periodoIncoerente = !!((pIni && g.ini != null && pIni.ini > g.ini + 1) || (pFim && g.fim != null && pFim.fim < g.fim - 1));
     const md = meta.get(g.id) || {};
     /* As decimais (23.1, 23.2 do Villains Month) são edições complementares:
        entram na contagem do que você tem, mas não definem o tamanho da série
@@ -2474,14 +2511,19 @@ function montarSeries(itens, metaSeries) {
          jogava a régua para o ano 0. */
       inicio: md.inicio || "",
       fimTexto: md.fim || "",
-      estreiaReal: !!md.inicio,
-      ordemEstreia: md.inicio
+      periodoIncoerente,
+      estreiaReal: !!md.inicio && !periodoIncoerente,
+      ordemEstreia: md.inicio && !periodoIncoerente
         ? ordemDaData(dataDaSerie({ data: md.inicio }))
         : (() => { const d = dataDaSerie(g); return d.ano != null ? ordemDaData(d) : null; })(),
       tipo: tipoDaMeta({ ...md, nome: md.nome || g.nome }),
       tipoDeduzido: !md.tipo,
       completa: total > 0 && faltam.length === 0,
       cobertura: total > 0 ? Math.min(1, inteiros.length / total) : 0,
+      /* Edição única (one-shot, especial de uma edição só): não faz sentido
+         chamar de "completa" nem contar como série com lacuna — ou você tem
+         ou ainda não tem. */
+      unica: total === 1 || (total === 0 && tipoDaMeta({ ...md, nome: md.nome || g.nome }) === "One-shot"),
     };
   });
 }
@@ -3200,19 +3242,30 @@ function Estrelas({ valor = 0, aoMudar }) {
   );
 }
 
-function Modal({ titulo, aoFechar, children, rodape }) {
+/* "protegido": janela de edição. Clique fora não fecha — era fácil perder
+   um cadastro pela metade com um clique sem querer. ESC e o × continuam
+   fechando, mas, se você já digitou ou escolheu algo nela, perguntam antes.
+   Janelas só de leitura seguem fechando com clique fora, como antes. */
+function Modal({ titulo, aoFechar, children, rodape, protegido }) {
+  const mexeu = useRef(false);
+  const fechar = useCallback(() => {
+    if (protegido && mexeu.current
+        && !window.confirm("Fechar sem salvar? O que você preencheu nesta janela será perdido.")) return;
+    aoFechar();
+  }, [aoFechar, protegido]);
   useEffect(() => {
-    const esc = (e) => e.key === "Escape" && aoFechar();
+    const esc = (e) => e.key === "Escape" && fechar();
     window.addEventListener("keydown", esc);
     return () => window.removeEventListener("keydown", esc);
-  }, [aoFechar]);
+  }, [fechar]);
 
   return (
-    <div className="fundo" onMouseDown={(e) => e.target === e.currentTarget && aoFechar()}>
-      <div className="modal" role="dialog" aria-modal="true" aria-label={titulo}>
+    <div className="fundo" onMouseDown={(e) => { if (e.target === e.currentTarget && !protegido) aoFechar(); }}>
+      <div className="modal" role="dialog" aria-modal="true" aria-label={titulo}
+           onInput={() => { mexeu.current = true; }} onChange={() => { mexeu.current = true; }}>
         <div className="modal-topo">
           <h2>{titulo}</h2>
-          <button className="btn btn-icone" onClick={aoFechar} aria-label="Fechar">
+          <button className="btn btn-icone" onClick={fechar} aria-label="Fechar">
             <X size={16} />
           </button>
         </div>
@@ -3473,6 +3526,7 @@ function Formulario({ inicial, capaAtual, colecoes, sugestoesOrig, aoAbrirLote, 
     <Modal
       titulo={inicial.titulo ? "Editar título" : "Adicionar título"}
       aoFechar={aoFechar}
+      protegido
       rodape={
         <>
           <button className="btn btn-primario" onClick={salvar}>
@@ -4800,6 +4854,7 @@ function FormPersonagem({ pers, retratoAtual, aoSalvar, aoFechar, aoAvisar }) {
     <Modal
       titulo="Editar personagem"
       aoFechar={aoFechar}
+      protegido
       rodape={
         <>
           <button className="btn btn-primario" onClick={() => aoSalvar(pers.id, f, retratoNovo)}>
@@ -5213,6 +5268,7 @@ function FormLinha({ inicial, series, aoSalvar, aoFechar, aoAvisar }) {
     <Modal
       titulo={inicial.nome ? "Editar linha do tempo" : "Nova linha do tempo"}
       aoFechar={aoFechar}
+      protegido
       rodape={
         <>
           <button
@@ -5272,6 +5328,7 @@ function FormEventoLinha({ inicial, linhas, aoSalvar, aoRemover, aoFechar, aoAvi
     <Modal
       titulo={inicial.nome ? "Editar evento" : "Novo evento"}
       aoFechar={aoFechar}
+      protegido
       rodape={
         <>
           <button
@@ -5340,6 +5397,7 @@ function FormErasLinha({ eras, aoSalvar, aoFechar }) {
     <Modal
       titulo="Eras"
       aoFechar={aoFechar}
+      protegido
       rodape={
         <>
           <button className="btn btn-primario" onClick={() => aoSalvar(lista.filter((x) => x.nome.trim()))}>
@@ -5628,6 +5686,7 @@ function EscolherLado({ nuvem: cN, local: cL, aoUsarNuvem, aoUsarLocal, aoFechar
     <Modal
       titulo="Os dois lados estão diferentes"
       aoFechar={aoFechar}
+      protegido
       rodape={
         <>
           <button className={`btn ${nuvemMaior ? "btn-primario" : ""}`} onClick={aoUsarNuvem}>
@@ -5819,12 +5878,13 @@ function PainelNuvem({ sessao, cfg, ocupado, capas, naNuvem, backupAuto, backupE
   );
 }
 
-function CardGrupoSerie({ grupo, membros, capaSrc, aberto, indice, aoAlternar, aoEditar }) {
+function CardGrupoSerie({ grupo, membros, capaSrc, capasSec, aberto, indice, aoAlternar, aoEditar }) {
   const totalEd = membros.reduce((n, m) => n + (m.total || 0), 0);
   const tenhoEd = membros.reduce((n, m) => n + m.tenho.size, 0);
+  const sec = capaSrc ? (capasSec || []).slice(0, 4) : [];
   return (
     <button
-      className={`card card-serie card-grupo ${aberto ? "aberto" : ""}`}
+      className={`card card-serie card-grupo ${sec.length ? "tem-leque" : ""} ${aberto ? "aberto" : ""}`}
       onClick={aoAlternar}
       style={{ animationDelay: `${Math.min(indice, 24) * 22}ms` }}
     >
@@ -5832,9 +5892,16 @@ function CardGrupoSerie({ grupo, membros, capaSrc, aberto, indice, aoAlternar, a
           Eu tinha inventado uma classe inexistente e a imagem saía no
           tamanho natural do arquivo, estourando a grade. */}
       {capaSrc ? (
-        <div className="card-capa">
-          <img src={capaSrc} alt="" loading="lazy" />
-          <span className="grupo-selo">{membros.length}</span>
+        <div className={`leque n${sec.length}`}>
+          {sec.map((src, i) => (
+            <div key={i} className={`card-capa leque-sec s${i + 1}`} aria-hidden="true">
+              <img src={src} alt="" loading="lazy" />
+            </div>
+          ))}
+          <div className="card-capa leque-principal">
+            <img src={capaSrc} alt="" loading="lazy" />
+            <span className="grupo-selo">{membros.length}</span>
+          </div>
         </div>
       ) : (
         <div className="serie-marca" style={{ background: `hsl(${matizDoTitulo(grupo.nome)} 42% 26%)` }}>
@@ -5907,6 +5974,7 @@ function FormGrupoSerie({ inicial, series, grupos, capas, aoSalvar, aoRemover, a
     <Modal
       titulo={inicial.nome ? "Editar grupo de séries" : "Novo grupo de séries"}
       aoFechar={aoFechar}
+      protegido
       rodape={
         <>
           <button
@@ -6025,7 +6093,7 @@ function CardSerie({ serie, capaSrc, indice, noGrupo, aoAbrir }) {
       ) : (
         <div className="serie-marca" style={{ background: `hsl(${matizDoTitulo(serie.nome)} 42% 26%)` }}>
           <Globe size={20} />
-          <span>{serie.total > 0 ? `${pct}%` : "—"}</span>
+          <span>{serie.unica ? "única" : serie.total > 0 ? `${pct}%` : "—"}</span>
           {situacao && <span className={`selo-sit ${situacao.cor}`} title={situacao.rot} />}
         </div>
       )}
@@ -6055,7 +6123,11 @@ function CardSerie({ serie, capaSrc, indice, noGrupo, aoAbrir }) {
           ].filter(Boolean).join(" · ") || "—"}
         </div>
 
-        {serie.total > 0 ? (
+        {serie.unica ? (
+          <div className={`serie-falta ${serie.tenho.size ? "ok" : ""}`}>
+            {serie.tenho.size ? "Edição única · na estante" : serie.querendo.size ? "Edição única · nos desejos" : "Edição única"}
+          </div>
+        ) : serie.total > 0 ? (
           <>
             <div className="serie-cob">
               Cobertura: <b>{serie.tenho.size}/{serie.total}</b>
@@ -7111,7 +7183,9 @@ function Acervo() {
   const seriesVisiveis = useMemo(() => {
     const q = semAcento(busca.trim());
     return series
-      .filter((s) => (fSerie === "lacunas" ? !s.completa : fSerie === "completas" ? s.completa : true))
+      .filter((s) => (fSerie === "lacunas" ? (!s.completa && !s.unica)
+        : fSerie === "completas" ? (s.completa && !s.unica)
+        : fSerie === "unicas" ? s.unica : true))
       .filter((s) => {
         if (fSit === "todas") return true;
         if (fSit === "cancelada") return !!s.cancelada;
@@ -7197,14 +7271,19 @@ function Acervo() {
 
     for (const c of candidatos.slice(0, 6)) {
       try {
-        const eds = await edicoesDaWiki(c.wiki, c.pagina, []);
-        if (!eds.numeros.length) continue;
+        /* Categoria primeiro; sem ela, a página da edição (a que a busca
+           achou, ou a #1/#0 deduzida do nome). Era isso que fazia o
+           "Atualizar da base" desistir dos one-shots. */
+        const reservas = [c.reserva, ...paginasDeEdicaoUnica(c.pagina)].filter((x) => x && x !== c.pagina);
+        const achou = await edicoesComReserva(c.wiki, c.pagina, [], reservas);
+        if (!achou || !achou.eds.numeros.length) continue;
+        const eds = achou.eds;
         // com ano conhecido, exige que a estreia bata dentro de dois anos
         if (alvoAno && eds.inicioSerie) {
           const ano = Number(String(eds.inicioSerie).slice(-4));
           if (ano && Math.abs(ano - alvoAno) > 2) continue;
         }
-        return { wiki: c.wiki, pagina: c.pagina, eds };
+        return { wiki: c.wiki, pagina: achou.pagina, eds };
       } catch (e) { /* tenta o próximo */ }
     }
     return null;
@@ -7269,20 +7348,29 @@ function Acervo() {
     pararAtualizacao.current = false;
     setAtualizando({ feitas: 0, total: alvos.length, nome: "", mudadas: 0 });
     let mudadas = 0, descobertas = 0, semAchar = 0;
+    const naoAchadas = [], recusadas = [];
 
     for (let i = 0; i < alvos.length; i++) {
       if (pararAtualizacao.current) break;
       const md = alvos[i];
       setAtualizando({ feitas: i, total: alvos.length, nome: md.nome || "", mudadas });
       try {
-        let wiki, pagina, eds;
+        let wiki, pagina, eds, paginaMudou = false;
         if (md.paginaWiki) {
           wiki = WIKIS.find((w) => w.id === md.wikiId) || WIKIS[0];
-          pagina = md.paginaWiki;
-          eds = await edicoesDaWiki(wiki, pagina, []);
+          /* Endereço guardado como categoria, mas o one-shot não tem
+             categoria: a busca voltava vazia e a série ficava como estava.
+             Agora tenta a página da edição e, se ela responder, passa a
+             guardá-la no lugar. */
+          let achou = null;
+          try { achou = await edicoesComReserva(wiki, md.paginaWiki, [], paginasDeEdicaoUnica(md.paginaWiki)); }
+          catch (e) { achou = null; }
+          if (!achou) { semAchar++; naoAchadas.push(md.nome || md.id); continue; }
+          ({ eds, pagina } = achou);
+          paginaMudou = pagina !== md.paginaWiki;
         } else {
           const achado = await descobrirPagina(md);
-          if (!achado) { semAchar++; continue; }
+          if (!achado) { semAchar++; naoAchadas.push(md.nome || md.id); continue; }
           descobertas++;
           ({ wiki, pagina, eds } = achado);
         }
@@ -7297,13 +7385,25 @@ function Acervo() {
         }
         if (eds.inicioSerie) campos.inicio = eds.inicioSerie;
         if (eds.fimSerie) campos.fim = eds.fimSerie;
+        /* A série não pode ter começado depois da sua edição mais antiga nem
+           terminado antes da mais recente. Se a base devolveu isso, a leitura
+           falhou em algum ponto: fica o que estava guardado. */
+        const minha = series.find((x) => x.id === md.id);
+        const per = (t) => periodoDoTexto(t);
+        if (minha && campos.inicio && minha.ini != null) {
+          const p = per(campos.inicio);
+          if (p && p.ini > minha.ini + 1) { delete campos.inicio; recusadas.push(md.nome || md.id); }
+        }
+        if (minha && campos.fim && minha.fim != null) {
+          const p = per(campos.fim);
+          if (p && p.fim < minha.fim - 1) { delete campos.fim; if (!recusadas.includes(md.nome || md.id)) recusadas.push(md.nome || md.id); }
+        }
         if (vol) {
           campos.publicando = vol.publicando;
           campos.anoFim = vol.anoFim || 0;
           if (vol.tipo) campos.tipo = vol.tipo;
         }
-        if (!md.paginaWiki) { campos.wikiId = wiki.id; campos.paginaWiki = pagina; }
-        if (!md.paginaWiki) { campos.wikiId = wiki.id; campos.paginaWiki = pagina; }
+        if (!md.paginaWiki || paginaMudou) { campos.wikiId = wiki.id; campos.paginaWiki = pagina; }
         if (Object.keys(campos).length) {
           mudadas++;
           setMetaSeries((p) => p.map((x) => (x.id === md.id ? { ...x, ...campos } : x)));
@@ -7314,7 +7414,8 @@ function Acervo() {
     setAtualizando(null);
     const extra = [
       descobertas ? `${descobertas} ganharam endereço` : "",
-      semAchar ? `${semAchar} não encontradas` : "",
+      semAchar ? `${semAchar} não encontradas (${naoAchadas.slice(0, 3).join(", ")}${naoAchadas.length > 3 ? "…" : ""})` : "",
+      recusadas.length ? `${recusadas.length} com período contraditório mantidas como estavam (${recusadas.slice(0, 3).join(", ")}${recusadas.length > 3 ? "…" : ""})` : "",
     ].filter(Boolean).join(" · ");
     avisar((pararAtualizacao.current
       ? `Interrompido. ${mudadas} série(s) atualizadas.`
@@ -8187,7 +8288,8 @@ function Acervo() {
         {emSeries && (
           <>
             <div className="stat"><b>{series.length}</b><small>séries originais</small></div>
-            <div className="stat ok"><b>{series.filter((x) => x.completa).length}</b><small>completas</small></div>
+            <div className="stat ok"><b>{series.filter((x) => x.completa && !x.unica).length}</b><small>completas</small></div>
+            <div className="stat"><b>{series.filter((x) => x.unica).length}</b><small>edições únicas</small></div>
             <div className="stat falta"><b>{series.reduce((n, x) => n + x.faltam.length, 0)}</b><small>edições faltando</small></div>
           </>
         )}
@@ -8487,11 +8589,12 @@ function Acervo() {
 
         {emSeries && vistaSeries === "lista" && (
           <div className="chips">
-            {[["todas", "Todas"], ["lacunas", "Com lacunas"], ["completas", "Completas"]].map(([v, rot]) => (
+            {[["todas", "Todas"], ["lacunas", "Com lacunas"], ["completas", "Completas"], ["unicas", "Edições únicas"]].map(([v, rot]) => (
               <button key={v} className={`chip ${fSerie === v ? "ativo" : ""}`} onClick={() => setFSerie(v)}>
                 {rot}
-                {v === "lacunas" && <span className="cont-chip">{series.filter((x) => !x.completa).length}</span>}
-                {v === "completas" && <span className="cont-chip">{series.filter((x) => x.completa).length}</span>}
+                {v === "lacunas" && <span className="cont-chip">{series.filter((x) => !x.completa && !x.unica).length}</span>}
+                {v === "completas" && <span className="cont-chip">{series.filter((x) => x.completa && !x.unica).length}</span>}
+                {v === "unicas" && <span className="cont-chip">{series.filter((x) => x.unica).length}</span>}
               </button>
             ))}
           </div>
@@ -8725,6 +8828,7 @@ function Acervo() {
                     grupo={x.grupo}
                     membros={x.membros}
                     capaSrc={capas[x.grupo.capa] || ""}
+                    capasSec={x.membros.filter((m) => m.id !== x.grupo.capa && capas[m.id]).map((m) => capas[m.id])}
                     aberto={aberto}
                     indice={i}
                     aoAlternar={() => setGruposAbertos((p) => (p.includes(x.grupo.id) ? p.filter((y) => y !== x.grupo.id) : [...p, x.grupo.id]))}
@@ -8767,7 +8871,7 @@ function Acervo() {
                 {temFiltro ? "Nada com esses filtros"
                   : emColecoes ? "Nenhuma coleção ainda"
                   : emPersonagens ? "Nenhum personagem ainda"
-                  : emSeries ? (fSerie === "completas" ? "Nenhuma série completa ainda" : fSerie === "lacunas" ? "Nenhuma série com lacunas" : "Nenhuma série original ainda")
+                  : emSeries ? (fSerie === "completas" ? "Nenhuma série completa ainda" : fSerie === "lacunas" ? "Nenhuma série com lacunas" : fSerie === "unicas" ? "Nenhuma edição única" : "Nenhuma série original ainda")
                   : emListas ? "Nenhuma lista de leitura ainda"
                   : aba === "estante" ? "A estante está vazia"
                   : "Nenhum desejo anotado"}
@@ -9293,6 +9397,7 @@ function Acervo() {
         <Modal
           titulo="Corrigir editora"
           aoFechar={() => setTrocaEditora(null)}
+          protegido
           rodape={
             <>
               <button className="btn btn-primario" onClick={aplicarTrocaEditora} disabled={!trocaEditora.para.trim()}>
@@ -9713,13 +9818,24 @@ function LinhaLancamento({ g, desejado, aoIgnorar, aoDesejar, aoComprei }) {
 function CardSerieLancamento({ bl, aoAbrir }) {
   const [semCapa, setSemCapa] = useState(false);
   const p = bl.proximo;
+  // capas dos outros volumes da série, para o leque
+  const sec = bl.capa && !semCapa
+    ? [...new Set(bl.vols.map((v) => v.capa).filter((c) => c && c !== bl.capa))].slice(0, 4)
+    : [];
   return (
-    <button type="button" className="lc-bloco" onClick={() => aoAbrir(bl)} title={`Ver os lançamentos de ${bl.nome}`}>
-      <div className="lc-capa">
-        {bl.capa && !semCapa
-          ? <img src={bl.capa} alt="" loading="lazy" onError={() => setSemCapa(true)} />
-          : <span className="lc-capa-vazia">{bl.nome}</span>}
-        {bl.vols.length > 1 && <span className="lc-qtd">{bl.vols.length} volumes</span>}
+    <button type="button" className={`lc-bloco ${sec.length ? "tem-leque" : ""}`} onClick={() => aoAbrir(bl)} title={`Ver os lançamentos de ${bl.nome}`}>
+      <div className={`leque n${sec.length}`}>
+        {sec.map((src, i) => (
+          <div key={src} className={`lc-capa leque-sec s${i + 1}`} aria-hidden="true">
+            <img src={src} alt="" loading="lazy" />
+          </div>
+        ))}
+        <div className="lc-capa leque-principal">
+          {bl.capa && !semCapa
+            ? <img src={bl.capa} alt="" loading="lazy" onError={() => setSemCapa(true)} />
+            : <span className="lc-capa-vazia">{bl.nome}</span>}
+          {bl.vols.length > 1 && <span className="lc-qtd">{bl.vols.length} volumes</span>}
+        </div>
       </div>
       <div className="lc-corpo">
         <div className="lc-titulo">{bl.nome}</div>
@@ -10217,6 +10333,28 @@ function paginaDoLink(texto) {
   return wiki && titulo ? { wiki, titulo } : null;
 }
 
+/* One-shots e especiais muitas vezes não têm categoria de volume no DC
+   Database — só a página da edição. A partir de "Category:X Vol 1", estas
+   são as páginas a tentar: a #1 e, para FCBD e afins, a #0. */
+const paginasDeEdicaoUnica = (pagina) => {
+  const base = String(pagina || "").replace(/^Category:/i, "");
+  return ehPaginaDeVolume(base) ? [`${base} 1`, `${base} 0`] : [];
+};
+
+/* Lê as edições de uma página e, se ela vier vazia ou não existir, tenta as
+   alternativas na ordem. Devolve também qual página respondeu. */
+async function edicoesComReserva(wiki, pagina, alvos, reservas) {
+  let primeiroErro = null;
+  for (const p of [pagina, ...(reservas || [])].filter(Boolean)) {
+    try {
+      const eds = await edicoesDaWiki(wiki, p, alvos);
+      if (eds && (eds.numeros.length || eds.datas.length)) return { eds, pagina: p };
+    } catch (e) { if (!primeiroErro) primeiroErro = e; }
+  }
+  if (primeiroErro) throw primeiroErro;
+  return null;
+}
+
 async function volumesDaWiki(nome) {
   const link = paginaDoLink(nome);
   if (link) {
@@ -10358,23 +10496,31 @@ function dataDaFicha(texto) {
     return mes && ano ? String(mes).padStart(2, "0") + "/" + ano : "";
   };
 
-  for (const campo of ["CoverDate", "Cover Date", "Date", "ReleaseDate"]) {
-    const v = pega(campo);
-    if (!v) continue;
+  /* Ordem importa: um campo com mês vence um campo só com ano. Antes, um
+     "Date = 2011" sem mês era lido antes de "Month = July" e virava 01/2011
+     — a origem de várias datas de janeiro erradas no acervo. */
+  const comMes = (v) => {
+    if (!v) return "";
     const m1 = v.match(/([A-Za-z]+)[,\s]+(\d{4})/);
     if (m1) { const d = monta(m1[1], m1[2]); if (d) return d; }
     const m2 = v.match(/(\d{4})[-\/](\d{1,2})/);
     if (m2) { const d = monta(m2[2], m2[1]); if (d) return d; }
-    const m3 = v.match(/\b(\d{4})\b/);
-    if (m3) return "01/" + m3[1];
-  }
-
+    return "";
+  };
+  for (const campo of ["CoverDate", "Cover Date"]) { const d = comMes(pega(campo)); if (d) return d; }
   const d3 = monta(pega("Month"), pega("Year"));
   if (d3) return d3;
+  for (const campo of ["Date", "ReleaseDate"]) { const d = comMes(pega(campo)); if (d) return d; }
 
-  // último recurso no próprio wikitexto: a frase de abertura
+  // a frase de abertura do wikitexto
   const m4 = texto.match(/cover date of\s+([A-Za-z]+),?\s*(\d{4})/i);
-  if (m4) return monta(m4[1], m4[2]);
+  if (m4) { const d = monta(m4[1], m4[2]); if (d) return d; }
+
+  // só o ano, em último caso: fica 01/AAAA, que é o que dá para afirmar
+  for (const campo of ["CoverDate", "Cover Date", "Year", "Date", "ReleaseDate"]) {
+    const m3 = pega(campo).match(/\b(\d{4})\b/);
+    if (m3) return "01/" + m3[1];
+  }
   return "";
 }
 
@@ -10428,7 +10574,12 @@ async function edicoesDaWiki(wiki, pagina, alvos) {
       } catch (e) { /* fica sem data */ }
     }
     if (!data) throw new Error("achei a página, mas não a data de capa dela");
-    return { numeros: [1], datas: [{ n: 1, data }] };
+    /* Página de edição ("X Vol 1 1", "X Vol 1 0") diz o número; página
+       solta sem volume é edição única, #1. Estreia e fim são a própria data —
+       antes voltavam vazios e o one-shot ficava sem data de estreia. */
+    const mNum = String(pagina).match(new RegExp("\\sVol\\s\\d+" + SUFIXO_VOL + "\\s+(\\d+(?:\\.\\d+)?)$"));
+    const n = mNum ? Number(mNum[1]) : 1;
+    return { numeros: [n], datas: [{ n, data }], inicioSerie: data, fimSerie: data };
   }
 
   /* 1) quais edições existem nesta categoria.
@@ -10546,11 +10697,9 @@ async function edicoesDaWiki(wiki, pagina, alvos) {
     /* O menor número nem sempre é o mais antigo: a Action Comics #0 saiu em
        1994, 56 anos depois da #1. Por isso lê várias das pontas e decide
        pela DATA, não pela numeração. */
-    const candidatos = [...new Set([
-      ...todos.slice(0, 4),
-      ...todos.slice(-2),
-      ...(todos.includes(1) ? [1] : []),
-    ])];
+    const primeiros = [...new Set([...todos.slice(0, 4), ...(todos.includes(1) ? [1] : [])])];
+    const ultimos = todos.slice(-2);
+    const candidatos = [...new Set([...primeiros, ...ultimos])];
 
     const lidas = await Promise.all(candidatos.map(async (n) => {
       if (fora.has(n)) return { n, data: fora.get(n) };
@@ -10571,9 +10720,16 @@ async function edicoesDaWiki(wiki, pagina, alvos) {
       return { ...x, ordem: d.ano != null ? d.ano * 12 + ((d.mes || 1) - 1) : null };
     }).filter((x) => x.ordem != null);
 
+    /* Só afirma a estreia se alguma das PRIMEIRAS edições teve a data lida,
+       e o fim só se alguma das ÚLTIMAS teve. Antes, quando a leitura das
+       primeiras falhava (página fora do ar, recusa por excesso de consultas),
+       a estreia virava a data da última edição: a Superman Vol 1 ficou
+       "09/2011 – 10/2011". Sem a ponta, melhor não dizer nada. */
     if (comData.length) {
-      inicioSerie = comData.reduce((a, b) => (b.ordem < a.ordem ? b : a)).data;
-      fimSerie = comData.reduce((a, b) => (b.ordem > a.ordem ? b : a)).data;
+      const temIni = comData.some((x) => primeiros.includes(x.n));
+      const temFim = comData.some((x) => ultimos.includes(x.n));
+      if (temIni) inicioSerie = comData.reduce((a, b) => (b.ordem < a.ordem ? b : a)).data;
+      if (temFim) fimSerie = comData.reduce((a, b) => (b.ordem > a.ordem ? b : a)).data;
     }
   }
 
@@ -11657,6 +11813,7 @@ function ImportarLote({ isbnsExistentes, itensExistentes, colecoesExistentes, ao
     <Modal
       titulo="Importar por lista de ISBNs"
       aoFechar={() => { cancelar.current = true; aoFechar(); }}
+      protegido
       rodape={
         etapa === "revisao" ? (
           <>
@@ -12200,17 +12357,12 @@ function ModalDatasWiki({ nomeSerie, edicoesTexto, jaTemCapa, podeRenomear, aoAp
       /* A categoria do volume é o caminho certo para séries longas, mas
          one-shots costumam não ter categoria — aí vale a própria página da
          edição que você colou. */
-      let eds;
-      try {
-        eds = await edicoesDaWiki(v.wiki, v.pagina, meusNums);
-      } catch (errCat) {
-        if (!v.reserva) throw errCat;
-        eds = await edicoesDaWiki(v.wiki, v.reserva, meusNums);
-      }
-      if (!eds.datas.length && !eds.numeros.length && v.reserva) {
-        // categoria respondeu vazia sem erro: tenta a própria edição
-        try { eds = await edicoesDaWiki(v.wiki, v.reserva, meusNums); } catch (e2) { /* mantém o vazio */ }
-      }
+      /* Categoria; se ela não existir ou vier vazia, a página que a busca
+         achou e, por fim, a #1/#0 deduzida do nome — o caminho dos one-shots,
+         que antes só funcionava colando o link. */
+      const reservas = [v.reserva, ...paginasDeEdicaoUnica(v.pagina)].filter((x) => x && x !== v.pagina);
+      const achou = await edicoesComReserva(v.wiki, v.pagina, meusNums, reservas);
+      const eds = achou ? achou.eds : { datas: [], numeros: [] };
       if (!eds.datas.length && !eds.numeros.length) {
         setErro("A página abriu, mas não tinha datas no formato esperado."); setEtapa("erro"); return;
       }
@@ -12313,6 +12465,7 @@ function ModalDatasWiki({ nomeSerie, edicoesTexto, jaTemCapa, podeRenomear, aoAp
     <Modal
       titulo="Buscar datas de publicação"
       aoFechar={aoFechar}
+      protegido
       rodape={
         <>
           {etapa === "pronto" && (
@@ -12782,6 +12935,7 @@ function FormSerie({ serie, capaAtual, aoSalvar, aoFechar, aoAvisar }) {
     <Modal
       titulo="Personalizar série"
       aoFechar={aoFechar}
+      protegido
       rodape={
         <>
           <button className="btn btn-primario" onClick={salvar}><Check size={15} /> Salvar</button>
@@ -12926,6 +13080,7 @@ function FormColecao({ inicial, capaAtual, aoSalvar, aoFechar, aoAvisar }) {
     <Modal
       titulo={inicial.nome ? "Editar coleção" : "Nova coleção"}
       aoFechar={aoFechar}
+      protegido
       rodape={
         <>
           <button className="btn btn-primario" onClick={salvar}><Check size={15} /> Salvar</button>
@@ -13183,6 +13338,12 @@ function DetalheSerie({ serie, capaSrc, aoFechar, aoEditar, aoLimpar, aoAbrirIte
             })()}
           </p>
 
+          {serie.periodoIncoerente && (
+            <p className="dica" style={{ margin: "6px 0 0", color: "var(--magenta)" }}>
+              O período guardado da série não fecha com as suas edições — ela não pode começar depois
+              (nem terminar antes) do que você tem. Refaça a busca da numeração ou rode o Atualizar da base.
+            </p>
+          )}
           {(serie.data || !serie.inicio) && (
             <p className="dica" style={{ margin: "4px 0 0" }}>
               {serie.inicio
@@ -13196,7 +13357,8 @@ function DetalheSerie({ serie, capaSrc, aoFechar, aoEditar, aoLimpar, aoAbrirIte
       <div className="painel" style={{ padding: "14px 0", borderBottom: "1px solid var(--linha)", marginBottom: 14 }}>
         <div className="stat">
           <b>{serie.total || "—"}</b>
-          <small>{serie.primeiro > 1 ? `edições · #${serie.primeiro}–${serie.ultimo}` : "edições na série"}</small>
+          <small>{serie.unica ? `edição única${serie.primeiro !== 1 && serie.primeiro != null ? ` · #${serie.primeiro}` : ""}`
+            : serie.primeiro > 1 ? `edições · #${serie.primeiro}–${serie.ultimo}` : "edições na série"}</small>
         </div>
         <div className="stat ok"><b>{serie.tenho.size}</b><small>você tem</small></div>
         {serie.especiais > 0 && (
@@ -13659,6 +13821,7 @@ function FormListaLeitura({ inicial, capaAtual, aoSalvar, aoFechar, aoAvisar }) 
     <Modal
       titulo={inicial.nome ? "Editar lista" : "Nova lista de leitura"}
       aoFechar={aoFechar}
+      protegido
       rodape={<>
         <button className="btn btn-primario" onClick={salvar}><Check size={15} /> Salvar</button>
         <button className="btn" onClick={aoFechar}>Cancelar</button>
