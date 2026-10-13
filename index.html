@@ -1667,6 +1667,52 @@ button.rl-bar:hover .nome{color:var(--papel);}
   .lombadas{gap:1px;overflow:hidden;}
   .lomb{min-width:1px;}
 }
+/* ---------- compras parceladas (v3.23) ---------- */
+.parc-campo{display:flex;flex-direction:column;gap:10px;margin-top:16px;padding-top:14px;border-top:1px dashed var(--linha);}
+.parc-linha{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;}
+.parc-rot{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--papel3);min-width:132px;}
+.parc-outro{width:78px;max-width:78px;padding:6px 10px;min-height:34px;font-size:13px;}
+.parc-resumo{display:flex;flex-direction:column;gap:10px;padding:12px 14px;border-radius:12px;background:var(--tinta);border:1px solid var(--linha);}
+.parc-total{display:flex;align-items:baseline;gap:4px 10px;flex-wrap:wrap;}
+.parc-total b{font-family:var(--disp);font-size:22px;font-weight:800;letter-spacing:-.02em;}
+.parc-total span{font-size:12.5px;color:var(--papel2);}
+.parc-tira{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:4px;}
+.parc-cel{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:7px;border:1.5px solid var(--amarelo);min-width:0;}
+.parc-cel em{font-style:normal;font-family:var(--mono);font-size:9.5px;color:var(--papel2);text-transform:uppercase;}
+.parc-cel b{font-family:var(--mono);font-size:10.5px;font-weight:700;}
+.parc-cel.paga{background:var(--amarelo);color:#1A1405;}
+.parc-cel.paga em{color:#5a4410;}
+.parc-sit{font-size:12.5px;font-weight:600;}
+.ficha .ficha-parc{grid-column:span 2;}
+.ficha-parc-txt{font-size:12.5px;font-weight:600;color:var(--amarelo);}
+.parc-mini{display:flex;gap:2px;height:8px;max-width:220px;margin-top:2px;}
+.parc-mini i{flex:1;border-radius:2px;border:1.5px solid var(--amarelo);box-sizing:border-box;min-width:3px;}
+.parc-mini i.paga{background:var(--amarelo);}
+.ficha-parc-sit{font-size:12px;color:var(--papel2);}
+.rl-colunas i.futuro{background:transparent;border:1.5px dashed var(--amarelo);border-bottom:none;}
+.rl-colunas-rot span.fut{color:var(--amarelo);}
+.rl-apagar{display:flex;flex-direction:column;margin-top:6px;padding-top:10px;border-top:1px solid #2C2546;}
+.rl-apagar > .rl-cab b{font-family:var(--mono);font-size:14px;}
+.rl-apagar-mes{display:grid;grid-template-columns:80px minmax(0,1fr) auto;gap:6px 14px;align-items:baseline;padding:10px 0;border-bottom:1px solid #2C2546;}
+.rl-apagar-mes:last-child{border-bottom:none;}
+.rl-apagar-mes > b{font-family:var(--disp);font-size:15px;}
+.rl-apagar-mes .its{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.rl-apagar-mes .its button{display:flex;gap:8px;align-items:baseline;text-align:left;min-width:0;font-size:13px;color:#C9C1DC;}
+.rl-apagar-mes .its button:hover span{color:var(--amarelo);}
+.rl-apagar-mes .its span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rl-apagar-mes .its em{font-style:normal;font-family:var(--mono);font-size:11px;color:#8A82A3;white-space:nowrap;flex:none;}
+.rl-apagar-mes .its small{font-size:11.5px;color:#8A82A3;}
+.rl-apagar-mes .tot{font-family:var(--mono);font-size:13px;font-weight:700;}
+.barra-selecao .lote-parc{order:0;}
+@media (max-width:760px){
+  .parc-rot{min-width:0;width:100%;}
+  .parc-linha .segm{width:100%;}
+  .parc-linha .segm button{flex:1;}
+  .rl-apagar-mes{grid-template-columns:minmax(0,1fr) auto;}
+  .rl-colunas .c em.fut{display:none;} /* colunas estreitas: os valores estão na lista "ainda a pagar" logo abaixo */
+  .rl-apagar-mes .its{grid-column:1 / -1;order:3;}
+  .barra-selecao .lote-parc{order:2;}
+}
 `;
 
 /* ══════════════════════════════════════════════════════════════
@@ -1725,7 +1771,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.22", data: "10/10/2026", nota: "revisão de uso: cabeçalho com menu de ações, janelas com rodapé fixo, celular mais enxuto e confirmações que faltavam" };
+const VERSAO = { numero: "3.24", data: "13/10/2026", nota: "lançamentos: a previsão acompanha os adiamentos da Panini (faixa de envio, adiada, atrasada)" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -3486,25 +3532,235 @@ const diasDesde = (iso) => {
   return d >= 0 ? d : null;
 };
 
+/* ─── compras parceladas ───
+   O preço pago é sempre o total da compra, com juros se houver. "parcelas"
+   divide esse total em N vezes, mensais ou quinzenais, a partir da data da
+   compra (ou do período seguinte). Os centavos que sobram da divisão vão na
+   última parcela, para a soma bater com o total. Sem data de aquisição não
+   há como saber quando cada parcela cai — aí o item conta como à vista. */
+const VEZES_RAPIDAS = [2, 3, 4, 5, 6, 8, 10, 12];
+const ehParcelado = (i) => !!i && Number(i.parcelas) > 1 && Number(i.precoPago) > 0;
+const isoDe = (dt) => `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`;
+const mesCurtoDe = (iso) => `${MESES_CURTO[Number(iso.slice(5, 7)) - 1]}/${iso.slice(2, 4)}`;
+function cronogramaParcelas(i) {
+  if (!ehParcelado(i) || !/^\d{4}-\d{2}-\d{2}$/.test(i.aquisicao || "")) return [];
+  const n = Math.min(48, Math.floor(Number(i.parcelas)));
+  const centavos = Math.round(Number(i.precoPago) * 100);
+  const base = Math.floor(centavos / n);
+  const [a, m, d] = i.aquisicao.split("-").map(Number);
+  const quinzenal = i.parcelaFreq === "quinzenal";
+  const pula = i.parcelaInicio === "seguinte" ? 1 : 0;
+  const lista = [];
+  for (let k = 0; k < n; k++) {
+    let dt;
+    if (quinzenal) {
+      dt = new Date(a, m - 1, d + 15 * (k + pula));
+    } else {
+      // mesmo dia do mês da compra; em mês mais curto, o último dia dele
+      const alvo = new Date(a, m - 1 + k + pula, 1);
+      const ultimo = new Date(alvo.getFullYear(), alvo.getMonth() + 1, 0).getDate();
+      dt = new Date(alvo.getFullYear(), alvo.getMonth(), Math.min(d, ultimo));
+    }
+    const data = isoDe(dt);
+    lista.push({ n: k + 1, data, mes: data.slice(0, 7), valor: (k === n - 1 ? centavos - base * (n - 1) : base) / 100 });
+  }
+  return lista;
+}
+function situacaoParcelas(i, dia = hoje()) {
+  const c = cronogramaParcelas(i);
+  if (!c.length) return null;
+  const faltam = c.filter((p) => p.data > dia);
+  return {
+    c, n: c.length, pagas: c.length - faltam.length, faltam,
+    faltaValor: faltam.reduce((s, p) => s + p.valor, 0),
+    base: c[0].valor, ultima: c[c.length - 1].valor,
+    quinzenal: i.parcelaFreq === "quinzenal",
+  };
+}
+// "6x de R$ 71,48" · "6x quinzenais de R$ 71,48"
+const textoParcelas = (s) => (s ? `${s.n}x ${s.quinzenal ? "quinzenais " : ""}de ${brl(s.base)}` : "");
+const rotuloParcela = (p, quinzenal) => (quinzenal ? `${p.data.slice(8, 10)}/${p.data.slice(5, 7)}` : mesCurtoDe(p.data));
+
+/* Os mesmos controles servem ao cadastro, ao pedido "a caminho" e ao
+   parcelamento em lote. "valor" traz parcelas/parcelaFreq/parcelaInicio;
+   "preco" e "data", quando vêm, desenham o cronograma ao vivo. */
+function CampoParcelas({ valor, aoMudar, preco, data, semPrevia }) {
+  const n = Number(valor.parcelas) > 1 ? Math.floor(Number(valor.parcelas)) : 0;
+  const quinzenal = valor.parcelaFreq === "quinzenal";
+  const seguinte = valor.parcelaInicio === "seguinte";
+  /* O campo "outro" guarda o que está sendo digitado: ao digitar 18, o "1"
+     sozinho ainda não vale (mínimo 2) e não pode sumir antes do "8". */
+  const doN = (x) => (x && !VEZES_RAPIDAS.includes(x) ? String(x) : "");
+  const [outro, setOutro] = useState(() => doN(n));
+  useEffect(() => { setOutro((t) => (Number(t) === n ? t : doN(n))); }, [n]);
+  const s = !semPrevia && n
+    ? situacaoParcelas({ precoPago: typeof preco === "number" ? preco : numero(preco), aquisicao: data, parcelas: n, parcelaFreq: valor.parcelaFreq, parcelaInicio: valor.parcelaInicio })
+    : null;
+  return (
+    <div className="parc-campo">
+      <div className="parc-linha">
+        <span className="parc-rot">Pagamento</span>
+        <div className="segm" role="group" aria-label="Forma de pagamento">
+          <button type="button" className={!n ? "ativo" : ""} aria-pressed={!n} onClick={() => aoMudar({ parcelas: null })}>À vista</button>
+          <button type="button" className={n ? "ativo" : ""} aria-pressed={!!n} onClick={() => aoMudar({ parcelas: n || 2 })}>Parcelado</button>
+        </div>
+      </div>
+      {n > 0 && (
+        <>
+          <div className="parc-linha">
+            <span className="parc-rot">Em quantas vezes</span>
+            <div className="chips">
+              {VEZES_RAPIDAS.map((v) => (
+                <button key={v} type="button" className={`chip ${n === v ? "ativo" : ""}`} aria-pressed={n === v} onClick={() => aoMudar({ parcelas: v })}>{v}x</button>
+              ))}
+              <input
+                className="entrada parc-outro"
+                inputMode="numeric"
+                aria-label="Outro número de parcelas"
+                placeholder="outro"
+                value={outro}
+                onChange={(e) => {
+                  const t = e.target.value.replace(/[^0-9]/g, "").slice(0, 2);
+                  setOutro(t);
+                  const v = Number(t);
+                  if (v >= 2) aoMudar({ parcelas: Math.min(48, v) });
+                }}
+                onBlur={() => setOutro(doN(n))}
+              />
+            </div>
+          </div>
+          <div className="parc-linha">
+            <span className="parc-rot">Parcelas</span>
+            <div className="segm" role="group" aria-label="De quanto em quanto tempo">
+              <button type="button" className={!quinzenal ? "ativo" : ""} aria-pressed={!quinzenal} onClick={() => aoMudar({ parcelaFreq: "mensal" })}>Mensais</button>
+              <button type="button" className={quinzenal ? "ativo" : ""} aria-pressed={quinzenal} onClick={() => aoMudar({ parcelaFreq: "quinzenal" })}>Quinzenais</button>
+            </div>
+          </div>
+          <div className="parc-linha">
+            <span className="parc-rot">1ª parcela</span>
+            <div className="segm" role="group" aria-label="Quando cai a primeira parcela">
+              <button type="button" className={!seguinte ? "ativo" : ""} aria-pressed={!seguinte} onClick={() => aoMudar({ parcelaInicio: "compra" })}>Na data da compra</button>
+              <button type="button" className={seguinte ? "ativo" : ""} aria-pressed={seguinte} onClick={() => aoMudar({ parcelaInicio: "seguinte" })}>
+                {quinzenal ? "15 dias depois" : "No mês seguinte"}
+              </button>
+            </div>
+          </div>
+          {!semPrevia && (s ? (
+            <div className="parc-resumo">
+              <div className="parc-total">
+                <b>{textoParcelas(s)}</b>
+                <span>
+                  {rotuloParcela(s.c[0], s.quinzenal)} a {rotuloParcela(s.c[s.n - 1], s.quinzenal)}
+                  {s.ultima !== s.base ? ` · a última de ${brl(s.ultima)}` : ""}
+                </span>
+              </div>
+              <div className="parc-tira">
+                {s.c.map((p) => (
+                  <span key={p.n} className={`parc-cel ${p.data <= hoje() ? "paga" : ""}`}
+                        title={`${p.n}ª parcela · ${dataCurta(p.data)} · ${brl(p.valor)}${p.data <= hoje() ? " · paga" : ""}`}>
+                    <em>{rotuloParcela(p, s.quinzenal)}</em>
+                    <b>{p.valor.toFixed(2).replace(".", ",")}</b>
+                  </span>
+                ))}
+              </div>
+              <span className="parc-sit">
+                {s.faltam.length
+                  ? `${s.pagas} de ${s.n} pagas · faltam ${brl(s.faltaValor)}`
+                  : `${s.n} de ${s.n} pagas · quitado`}
+              </span>
+            </div>
+          ) : (
+            <p className="dica" style={{ margin: 0 }}>Preencha o preço total e a data da compra para ver as parcelas mês a mês.</p>
+          ))}
+        </>
+      )}
+    </div>
+  );
+}
+
+/* Parcelar vários de uma vez: um pedido com vários quadrinhos, parcelado
+   junto. Cada item recebe as mesmas vezes; a soma das parcelas de cada mês
+   é a parcela do pedido. */
+function ModalParcelarLote({ itens, aoAplicar, aoFechar }) {
+  const [v, setV] = useState({ parcelas: 2, parcelaFreq: "mensal", parcelaInicio: "compra" });
+  const comTudo = itens.filter((i) => Number(i.precoPago) > 0 && /^\d{4}-\d{2}-\d{2}$/.test(i.aquisicao || ""));
+  const total = comTudo.reduce((s, i) => s + Number(i.precoPago), 0);
+  const n = Number(v.parcelas) > 1 ? Number(v.parcelas) : 0;
+  // primeira parcela do pedido: soma da primeira de cada item
+  const primeira = n ? comTudo.reduce((s, i) => {
+    const c = cronogramaParcelas({ ...i, ...v });
+    return s + (c[0] ? c[0].valor : 0);
+  }, 0) : 0;
+  const datas = [...new Set(comTudo.map((i) => i.aquisicao))];
+  return (
+    <Modal
+      estreita
+      titulo={`Parcelamento de ${itens.length} ${itens.length === 1 ? "item" : "itens"}`}
+      aoFechar={aoFechar}
+      rodape={
+        <>
+          <button className="btn btn-primario" onClick={() => aoAplicar(n ? v : { parcelas: null })}>
+            <Check size={15} /> {n ? `Parcelar em ${n}x` : "Marcar como à vista"}
+          </button>
+          <button className="btn" onClick={aoFechar}>Cancelar</button>
+        </>
+      }
+    >
+      <p className="dica" style={{ marginTop: 0 }}>
+        Para um pedido com vários quadrinhos parcelado junto: cada um recebe as mesmas vezes, e a soma das
+        parcelas de cada mês fica igual à parcela do pedido. O preço de cada item continua sendo o total dele.
+      </p>
+      <CampoParcelas valor={v} aoMudar={(p) => setV((x) => ({ ...x, ...p }))} semPrevia />
+      <div className="parc-resumo" style={{ marginTop: 12 }}>
+        <div className="parc-total">
+          <b>{brl(total)}</b>
+          <span>
+            total de {comTudo.length} {comTudo.length === 1 ? "item" : "itens"} com preço e data
+            {n && comTudo.length ? ` · ${n}x ${v.parcelaFreq === "quinzenal" ? "quinzenais " : ""}de cerca de ${brl(primeira)}` : ""}
+          </span>
+        </div>
+        {datas.length > 1 && (
+          <span className="parc-sit" style={{ color: "var(--amarelo)" }}>
+            Os itens têm {datas.length} datas de compra diferentes — cada um parcela a partir da sua.
+          </span>
+        )}
+        {comTudo.length < itens.length && (
+          <span className="parc-sit" style={{ color: "var(--papel2)" }}>
+            {itens.length - comTudo.length} sem preço ou sem data de compra: recebem o parcelamento, mas as
+            parcelas só entram nas contas quando eles tiverem os dois.
+          </span>
+        )}
+      </div>
+    </Modal>
+  );
+}
+
 function CompraACaminho({ item, lojas, aoAtualizar, aoChegou }) {
   const [editando, setEditando] = useState(false);
   const [data, setData] = useState("");
   const [preco, setPreco] = useState("");
   const [loja, setLoja] = useState("");
+  const [parc, setParc] = useState({});
   const abrir = () => {
     setData(item.aquisicao || hoje());
     setPreco(item.precoPago != null ? String(item.precoPago).replace(".", ",") : "");
     setLoja(item.lojaCompra || "");
+    setParc({ parcelas: item.parcelas || null, parcelaFreq: item.parcelaFreq || "mensal", parcelaInicio: item.parcelaInicio || "compra" });
     setEditando(true);
   };
   const salvar = () => {
-    aoAtualizar({ ...item, aCaminho: true, aquisicao: data || hoje(), precoPago: numero(preco), lojaCompra: loja.trim() });
+    const n = Number(parc.parcelas) > 1 ? Math.floor(Number(parc.parcelas)) : null;
+    aoAtualizar({
+      ...item, aCaminho: true, aquisicao: data || hoje(), precoPago: numero(preco), lojaCompra: loja.trim(),
+      parcelas: n, parcelaFreq: n ? parc.parcelaFreq : item.parcelaFreq, parcelaInicio: n ? parc.parcelaInicio : item.parcelaInicio,
+    });
     setEditando(false);
   };
   const desfazer = () => {
     if (!window.confirm("Desfazer a compra? O item volta a ser só um desejo, sem data, preço e loja.")) return;
-    aoAtualizar({ ...item, aCaminho: false, aquisicao: "", precoPago: null, lojaCompra: "" });
+    aoAtualizar({ ...item, aCaminho: false, aquisicao: "", precoPago: null, lojaCompra: "", parcelas: null });
   };
+  const sitParc = situacaoParcelas(item);
 
   if (editando) {
     return (
@@ -3525,6 +3781,7 @@ function CompraACaminho({ item, lojas, aoAtualizar, aoChegou }) {
             <datalist id="lojas-compra">{lojas.map((l) => <option key={l} value={l} />)}</datalist>
           </div>
         </div>
+        <CampoParcelas valor={parc} aoMudar={(p) => setParc((x) => ({ ...x, ...p }))} preco={preco} data={data} />
         <div className="compra-acoes">
           <button className="btn btn-primario" onClick={salvar}>
             <Check size={14} /> {item.aCaminho ? "Salvar compra" : "Marcar como a caminho"}
@@ -3554,7 +3811,7 @@ function CompraACaminho({ item, lojas, aoAtualizar, aoChegou }) {
           {dias != null ? (dias === 0 ? " · hoje" : ` · há ${dias} dia${dias === 1 ? "" : "s"}`) : ""}
         </span>
         {(item.precoPago != null || item.lojaCompra) && (
-          <span>{[item.precoPago != null ? brl(item.precoPago) : "", item.lojaCompra].filter(Boolean).join(" · ")}</span>
+          <span>{[item.precoPago != null ? brl(item.precoPago) : "", sitParc ? textoParcelas(sitParc) : "", item.lojaCompra].filter(Boolean).join(" · ")}</span>
         )}
       </div>
       <div className="compra-acoes">
@@ -4022,6 +4279,7 @@ function Formulario({ inicial, capaAtual, colecoes, sugestoesOrig, aoAbrirLote, 
       original: original.length ? original : null,
       precoAlvo: numero(it.precoAlvo),
       precoPago: numero(it.precoPago),
+      parcelas: Number(it.parcelas) > 1 ? Math.min(48, Math.floor(Number(it.parcelas))) : null,
     }, capaNova, continuar);
 
     if (continuar) {
@@ -4482,6 +4740,13 @@ function Formulario({ inicial, capaAtual, colecoes, sugestoesOrig, aoAbrirLote, 
               </div>
             </div>
           </div>
+          {/* o preço acima é o total; aqui só se diz em quantas vezes ele foi pago */}
+          <CampoParcelas
+            valor={{ parcelas: it.parcelas, parcelaFreq: it.parcelaFreq, parcelaInicio: it.parcelaInicio }}
+            aoMudar={(p) => setIt((x) => ({ ...x, ...p }))}
+            preco={it.precoPago}
+            data={it.aquisicao}
+          />
         </div>
       )}
 
@@ -4972,7 +5237,26 @@ function Detalhe({ item, capaSrc, colecoes, navLista, capasPers, aoAbrirPersonag
           <div className="ficha">
             <div><dt>Gêneros</dt><dd>{(item.generos || []).join(", ") || "—"}</dd></div>
             {item.lista === "estante" && <div><dt>Aquisição</dt><dd>{dataCurta(item.aquisicao)}</dd></div>}
-            {item.lista === "estante" && <div><dt>Preço pago</dt><dd>{brl(item.precoPago)}</dd></div>}
+            {item.lista === "estante" && (() => {
+              const sp = situacaoParcelas(item);
+              return (
+                <div className={sp ? "ficha-parc" : undefined}>
+                  <dt>Preço pago</dt>
+                  <dd>{brl(item.precoPago)}</dd>
+                  {sp && (
+                    <>
+                      <span className="ficha-parc-txt">{textoParcelas(sp)}</span>
+                      <span className="parc-mini" role="img" aria-label={`${sp.pagas} de ${sp.n} parcelas pagas`}>
+                        {sp.c.map((p) => <i key={p.n} className={p.data <= hoje() ? "paga" : ""} title={`${p.n}ª · ${dataCurta(p.data)} · ${brl(p.valor)}`} />)}
+                      </span>
+                      <span className="ficha-parc-sit">
+                        {sp.faltam.length ? `${sp.pagas} de ${sp.n} pagas · faltam ${brl(sp.faltaValor)}` : `${sp.n} de ${sp.n} pagas · quitado`}
+                      </span>
+                    </>
+                  )}
+                </div>
+              );
+            })()}
             {item.lista === "estante" && item.lojaCompra && <div><dt>Loja</dt><dd>{item.lojaCompra}</dd></div>}
             {item.leitura === "lido" && (
               <div><dt>Terminei em</dt><dd>{item.dataLeitura ? dataCurta(item.dataLeitura) : "não anotado"}</dd></div>
@@ -5387,14 +5671,14 @@ function Card({ item, capaSrc, colecoes, aoAbrir, indice, selecao, selecionado, 
         {item.volume != null && <span className="selo vol">#{item.volume}</span>}
         {desejo && item.aCaminho && (
           <span className="selo caminho">
-            {`A caminho${lanc && lanc.estado === "pre-venda" && lanc.previsao ? ` · ${lanc.previsao.curto}` : ""}`}
+            {`A caminho${lanc && lanc.estado === "pre-venda" && lanc.previsao ? ` · ${lanc.previsao.atrasada ? "atrasado" : lanc.previsao.curto}` : ""}`}
           </span>
         )}
         {desejo && !item.aCaminho && abaixoDoAlvo && <span className="selo alvo">{brl(melhor)}</span>}
         {desejo && !item.aCaminho && !abaixoDoAlvo && lanc && (
           <span className={`selo ${lanc.estado === "a-venda" ? "lanc-venda" : "lanc-pre"}`}
-                title={`Panini: ${lanc.titulo}${lanc.previsao ? ` · previsão: ${lanc.previsao.txt}` : ""}`}>
-            {lanc.estado === "a-venda" ? "À venda" : `Pré-venda${lanc.previsao ? ` · ${lanc.previsao.curto}` : ""}`}
+                title={`Panini: ${lanc.titulo}${lanc.previsao ? ` · previsão: ${lanc.previsao.longo}` : ""}`}>
+            {lanc.estado === "a-venda" ? "À venda" : `Pré-venda${lanc.previsao ? ` · ${lanc.previsao.sit}` : ""}`}
           </span>
         )}
         {desejo && !item.aCaminho && !abaixoDoAlvo && !lanc && <span className="selo desejo">Quero</span>}
@@ -7061,7 +7345,7 @@ function situacaoDasColecoes(colecoes, itens, lancDe) {
     let status = null, aux = null;
     if (grupo === "anda") {
       if (prox) {
-        status = { txt: `próximo #${prox.v} · ${prox.p ? prox.p.curto : "sem data"}${pre.size > 1 ? ` · +${pre.size - 1}` : ""}`, cls: "pre" };
+        status = { txt: `próximo #${prox.v} · ${prox.p ? (prox.p.atrasada ? "atrasado" : prox.p.curto) : "sem data"}${pre.size > 1 ? ` · +${pre.size - 1}` : ""}`, cls: "pre" };
         aux = venda.length ? { txt: txtVenda, cls: "venda" } : relOutros.length ? { txt: txtFaltando(relOutros.length), cls: "" } : null;
       } else if (venda.length) {
         status = { txt: txtVenda, cls: "venda" };
@@ -7143,7 +7427,11 @@ function SaindoNaPanini({ meses, aberto, aoAlternar, aoAbrirColecao, lidoEm }) {
             <div className={`cl-mes ${m.k === "0" ? "venda" : ""}`} key={m.k}>
               <div className="cl-mes-cab">
                 <b>{m.rot}</b>
-                {m.passado && <span className="cl-tag" title="A lista da Panini ainda trazia como pré-venda — confira se já chegou">mês passado</span>}
+                {m.passado && (
+                  <span className="cl-tag" title="O mês previsto já passou e a lista da Panini ainda traz como pré-venda. A Panini costuma adiar para o mês seguinte: se a lista for antiga, rode a leitura da Panini na aba Lançamentos para atualizar.">
+                    atrasado
+                  </span>
+                )}
               </div>
               <span className="cl-rot">{m.resumo}</span>
               <div className="cl-vols">
@@ -7152,7 +7440,7 @@ function SaindoNaPanini({ meses, aberto, aoAlternar, aoAbrirColecao, lidoEm }) {
                     key={`${s.col.id}-${s.item.id}`}
                     className={`cl-vol ${s.caminho ? "cam" : s.estado}`}
                     onClick={() => aoAbrirColecao(s.col)}
-                    title={`${s.col.nome} #${s.vol}${s.caminho ? " — já comprado, a caminho" : s.estado === "venda" ? " — já lançou, falta comprar" : ""}${s.preco ? ` · ${s.preco}` : ""}`}
+                    title={`${s.col.nome} #${s.vol}${s.caminho ? " — já comprado, a caminho" : s.estado === "venda" ? " — já lançou, falta comprar" : ""}${s.previsao ? ` · previsão: ${s.previsao.longo}` : ""}${s.preco ? ` · ${s.preco}` : ""}`}
                   >
                     <i aria-hidden="true" />
                     <span className="nm">{s.col.nome}</span>
@@ -7271,6 +7559,7 @@ function Acervo() {
   useEffect(() => { setModoSelecao(false); setSelecionados(new Set()); }, [aba]);
   // trocar de aba fecha o painel de filtros do celular, que é de cada aba
   useEffect(() => { setFiltrosCel(false); }, [aba]);
+  const [parcelandoLote, setParcelandoLote] = useState(false);
   const [busca, setBusca] = useState("");
   const [fTipo, setFTipo] = useState("");
   const [fEditora, setFEditora] = useState("");
@@ -9845,6 +10134,13 @@ function Acervo() {
                 </div>
               )}
 
+              {aba === "estante" && (
+                <button className="btn btn-mini lote-parc" onClick={() => setParcelandoLote(true)}
+                        title="Para um pedido com vários quadrinhos parcelado junto">
+                  Parcelar…
+                </button>
+              )}
+
               <button className="btn btn-mini lote-mover" onClick={() => moverEmLote(aba === "estante" ? "desejos" : "estante")}>
                 <ArrowRightLeft size={13} /> {aba === "estante" ? "Mover p/ desejos" : "Já comprei — mover p/ estante"}
               </button>
@@ -10705,6 +11001,24 @@ function Acervo() {
         />
       )}
 
+      {parcelandoLote && (
+        <ModalParcelarLote
+          itens={itens.filter((i) => selecionados.has(i.id))}
+          aoFechar={() => setParcelandoLote(false)}
+          aoAplicar={(v) => {
+            const n = selecionados.size;
+            setItens((p) => p.map((i) => (selecionados.has(i.id)
+              ? { ...i, parcelas: v.parcelas || null, ...(v.parcelas ? { parcelaFreq: v.parcelaFreq, parcelaInicio: v.parcelaInicio } : {}) }
+              : i)));
+            setParcelandoLote(false);
+            sairDaSelecao();
+            avisar(v.parcelas
+              ? `${n} ${n === 1 ? "item parcelado" : "itens parcelados"} em ${v.parcelas}x${v.parcelaFreq === "quinzenal" ? " quinzenais" : ""}.`
+              : `${n} ${n === 1 ? "item marcado" : "itens marcados"} como à vista.`);
+          }}
+        />
+      )}
+
       {toast && <div className="toast"><Check size={15} /> {toast}</div>}
     </div>
   );
@@ -10780,20 +11094,45 @@ function refPanini(ref) {
   return m ? { codigo: m[1], numero: Number(m[2]), sufixo: m[3] || "" } : null;
 }
 
-/* A ficha da Panini traz só mês e ano de lançamento — é a previsão que
-   ela divulga para a pré-venda. */
+/* A ficha da Panini traz mês e ano de lançamento. A faixa "Pré-venda com
+   previsão de envio para 2ª quinzena de Out/26", quando existe, é mais
+   precisa e vale ela. A Panini adia muito: o script relê as fichas das
+   pré-vendas e, quando a previsão muda, guarda a primeira em
+   previsao_original (aaaamm). "atrasada" = o mês previsto já passou e a
+   lista lida ainda traz como pré-venda (lista velha ou Panini sem atualizar). */
 const MESES_LANC = ["janeiro", "fevereiro", "marco", "abril", "maio", "junho",
                     "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 const MESES_CURTOS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+const rotuloChaveLanc = (c) => ({
+  txt: `${MESES_LANC[(c % 100) - 1].replace("marco", "março")} de ${Math.floor(c / 100)}`,
+  curto: `${MESES_CURTOS[(c % 100) - 1]}/${String(Math.floor(c / 100)).slice(2)}`,
+});
 function previsaoLanc(p) {
-  const a = Number(p && p.ano) || null;
-  const m = MESES_LANC.indexOf(semAcento(String((p && p.mes) || "")).trim()) + 1;
+  if (!p) return null;
+  let a = Number(p.envio_ano) || null;
+  let m = a ? Number(p.envio_mes) || 0 : 0;
+  if (!a || m < 1 || m > 12) {
+    a = Number(p.ano) || null;
+    m = MESES_LANC.indexOf(semAcento(String(p.mes || "")).trim()) + 1;
+  }
   if (!a) return null;
-  if (!m) return { txt: String(a), curto: String(a), chave: a * 100 + 12 };
+  const base = m ? { ...rotuloChaveLanc(a * 100 + m), chave: a * 100 + m } : { txt: String(a), curto: String(a), chave: a * 100 + 12 };
+  const agora = new Date();
+  const atrasada = p.estado === "pre-venda" && base.chave < agora.getFullYear() * 100 + agora.getMonth() + 1;
+  const orig = Number(p.previsao_original) || 0;
+  const antes = orig && orig !== base.chave && orig % 100 >= 1 && orig % 100 <= 12 ? rotuloChaveLanc(orig) : null;
+  const q = m && Number(p.envio_mes) === m && Number(p.envio_quinzena) ? Number(p.envio_quinzena) : null;
   return {
-    txt: `${MESES_LANC[m - 1].replace("marco", "março")} de ${a}`,
-    curto: `${MESES_CURTOS[m - 1]}/${String(a).slice(2)}`,
-    chave: a * 100 + m,
+    ...base, quinzena: q, antes, atrasada,
+    // o que cabe num selo: o mês, ou "atrasada" quando ele já passou
+    sit: atrasada ? "atrasada" : base.curto,
+    // por extenso, para dicas e para a aba Lançamentos
+    longo: [
+      q ? `${q}ª quinzena de ${base.txt}` : base.txt,
+      p.envio_txt && !Number(p.envio_mes) ? `envio: ${p.envio_txt}` : "",
+      antes ? `adiada (era ${antes.curto})` : "",
+      atrasada ? "atrasada" : "",
+    ].filter(Boolean).join(" · "),
   };
 }
 
@@ -11062,7 +11401,7 @@ function LinhaLancamento({ g, desejado, aoIgnorar, aoDesejar, aoComprei }) {
           <b className={g.estado === "a-venda" ? "vd" : ""}>
             {g.estado === "a-venda" ? `lançou em ${dataCurtaLanc(g.data)}`
               : g.estado === "fora-do-site" ? `saiu em ${dataCurtaLanc(g.data)}`
-              : g.previsao ? `previsão: ${g.previsao.txt}` : "sem previsão"}
+              : g.previsao ? `previsão: ${g.previsao.longo}` : "sem previsão"}
           </b>
           {g.preco && <span className="lc-vol-preco">{g.preco}</span>}
         </div>
@@ -11114,7 +11453,7 @@ function CardSerieLancamento({ bl, aoAbrir }) {
         {p && (
           <div className="lc-prev">
             <span>próximo{p.numeros.length ? ` · nº ${p.numeros[0]}` : ""}</span>
-            <b>{p.previsao ? p.previsao.txt : "sem previsão"}</b>
+            <b>{p.previsao ? p.previsao.longo : "sem previsão"}</b>
           </div>
         )}
         {!p && bl.lancados.length > 0 && (
@@ -11299,7 +11638,7 @@ function PainelLancamentos({ info, estado, aoRecarregar, aoVincular, aoIgnorar, 
                 {bl.jaTem > 0 && <span className="lc-rel tenho">{bl.jaTem === bl.vols.length ? "já tenho" : `já tenho ${bl.jaTem}`}</span>}
                 <span className="lc-row-qtd">{bl.vols.length > 1 ? `${bl.vols.length} volumes` : ""}</span>
                 <b className="lc-row-prev">
-                  {bl.nLancou ? `lançou ${dataCurtaLanc(bl.lancados[0].data)}` : bl.proximo && bl.proximo.previsao ? bl.proximo.previsao.curto : "—"}
+                  {bl.nLancou ? `lançou ${dataCurtaLanc(bl.lancados[0].data)}` : bl.proximo && bl.proximo.previsao ? bl.proximo.previsao.sit : "—"}
                 </b>
               </button>
             ))}
@@ -14987,7 +15326,7 @@ function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoA
                 const m = e.noDesejo.find((i) => i.volume === v);
                 const l = m ? lancDe(m) : null;
                 if (!l) continue;
-                if (l.estado === "pre-venda") pre.push(l.previsao ? `${v} (${l.previsao.curto})` : `${v}`);
+                if (l.estado === "pre-venda") pre.push(l.previsao ? `${v} (${l.previsao.sit}${l.previsao.antes ? `, era ${l.previsao.antes.curto}` : ""})` : `${v}`);
                 else if (l.estado === "a-venda") lancou.push(v);
               }
               return (
@@ -15037,8 +15376,8 @@ function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoA
                       const l = m.lista === "desejos" && lancDe ? lancDe(m) : null;
                       if (!l || l.estado === "fora-do-site") return null;
                       return l.estado === "pre-venda"
-                        ? <span className="slot-lanc pre" title={`Ainda não lançou${l.previsao ? ` — previsão: ${l.previsao.txt}` : ""}`}>
-                            pré-venda{l.previsao && <small>{l.previsao.curto}</small>}
+                        ? <span className="slot-lanc pre" title={`Ainda não lançou${l.previsao ? ` — previsão: ${l.previsao.longo}` : ""}`}>
+                            pré-venda{l.previsao && <small>{l.previsao.sit}</small>}
                           </span>
                         : <span className="slot-lanc lancou" title={m.aCaminho ? "Já lançou — seu pedido deve sair em breve" : "Já lançou — falta comprar"}>
                             lançou{!m.aCaminho && <small>falta comprar</small>}
@@ -15383,6 +15722,7 @@ function Relatorios({ itens, colecoes, series, aoAbrirItem, aoIrParaSeries }) {
   const [medida, setMedida] = useState("itens");
   const [verTodos, setVerTodos] = useState(false);
   const [quase, setQuase] = useState("colecoes");
+  const [gastoModo, setGastoModo] = useState("saiu"); // saiu: parcela no mês dela | compra: valor cheio no mês da compra
 
   const set = (k, v) => setF((p) => ({ ...p, [k]: v }));
   const aplicar = (parcial) => setF((p) => ({ ...p, ...parcial }));
@@ -15511,9 +15851,56 @@ function Relatorios({ itens, colecoes, series, aoAbrirItem, aoIrParaSeries }) {
       const k = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}`;
       ultimos.push({ k, ...(porMes.get(k) || { n: 0, v: 0 }) });
     }
+    /* "O que saiu no mês": compra parcelada entra parcela por parcela, cada
+       uma no mês em que cai; à vista, inteira no mês da compra. As parcelas
+       de datas futuras formam o "ainda a pagar". */
+    const porMesSaiu = new Map();
+    const aPagar = new Map();
+    let temParcela = false;
+    const diaHoje = hoje();
+    const chaveAgora = `${ANO}-${String(MES).padStart(2, "0")}`;
+    for (const i of semPeriodo) {
+      if (!(i.precoPago > 0)) continue;
+      const c = cronogramaParcelas(i);
+      if (c.length) {
+        temParcela = true;
+        for (const p of c) {
+          porMesSaiu.set(p.mes, (porMesSaiu.get(p.mes) || 0) + p.valor);
+          if (p.data > diaHoje) {
+            if (!aPagar.has(p.mes)) aPagar.set(p.mes, []);
+            aPagar.get(p.mes).push({ item: i, p, n: c.length });
+          }
+        }
+      } else {
+        const k = mesDe(i.aquisicao);
+        if (/^\d{4}-\d{2}$/.test(k)) porMesSaiu.set(k, (porMesSaiu.get(k) || 0) + i.precoPago);
+      }
+    }
+    ultimos.forEach((u) => { u.s = porMesSaiu.get(u.k) || 0; });
+    const futuros = [...porMesSaiu.keys()].filter((k) => k > chaveAgora).sort().slice(0, 6).map((k) => ({ k, s: porMesSaiu.get(k) }));
+    const mesesAPagar = [...aPagar.keys()].sort().map((k) => {
+      const lista = aPagar.get(k).sort((a, b) => b.p.valor - a.p.valor);
+      return { k, lista, total: lista.reduce((t, x) => t + x.p.valor, 0) };
+    });
+    const totalAPagar = mesesAPagar.reduce((t, m) => t + m.total, 0);
+    const itensAPagar = new Set(mesesAPagar.flatMap((m) => m.lista.map((x) => x.item.id))).size;
+    const saidasPassadas = [...porMesSaiu].filter(([k]) => k <= chaveAgora);
+    const maiorSaida = saidasPassadas.length ? saidasPassadas.reduce((m, x) => (x[1] > m[1] ? x : m)) : null;
     const picoGasto = Math.max(0, ...ultimos.map((u) => u.v));
-    return { porMes, semData, anos, antes, maxN, recorde, maiorGasto, esteAno: doAno(ANO), anoPassado: doAno(ANO - 1), ultimos, picoGasto };
+    return {
+      porMes, semData, anos, antes, maxN, recorde, maiorGasto, esteAno: doAno(ANO), anoPassado: doAno(ANO - 1), ultimos, picoGasto,
+      temParcela, futuros, mesesAPagar, totalAPagar, itensAPagar, maiorSaida,
+    };
   }, [semPeriodo, ANO, MES]);
+  const porSaida = compras.temParcela && gastoModo === "saiu";
+  const colunasGasto = [
+    ...compras.ultimos.map((u) => ({ k: u.k, v: porSaida ? u.s : u.v, n: u.n, fut: false })),
+    ...(porSaida ? compras.futuros.map((f) => ({ k: f.k, v: f.s, n: 0, fut: true })) : []),
+  ];
+  const picoColunas = Math.max(0, ...colunasGasto.map((c) => c.v));
+  // o "pico" é do que já aconteceu; as colunas futuras só entram na escala
+  const picoPassado = Math.max(0, ...colunasGasto.filter((c) => !c.fut).map((c) => c.v));
+  const colunaPico = colunasGasto.find((c) => !c.fut && picoPassado > 0 && c.v === picoPassado);
 
   const balde = (n) => {
     if (!n) return "";
@@ -15654,7 +16041,7 @@ function Relatorios({ itens, colecoes, series, aoAbrirItem, aoIrParaSeries }) {
   }, [itens]);
 
   const baixarCsv = () => {
-    const cab = ["Título", "Volume", "Tipo", "Autor", "Editora", "Ano", "Páginas", "ISBN", "Coleções", "Gêneros", "Leitura", "Terminei em", "Aquisição", "Preço pago", "Nota", "Série original", "Edições originais", "País"];
+    const cab = ["Título", "Volume", "Tipo", "Autor", "Editora", "Ano", "Páginas", "ISBN", "Coleções", "Gêneros", "Leitura", "Terminei em", "Aquisição", "Preço pago", "Nota", "Série original", "Edições originais", "País", "Parcelas"];
     const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
     const linhas = filtrados.map((i) => [
       i.titulo, i.volume ?? "", i.tipo, i.autor, i.editora, i.ano, i.paginas ?? "", i.isbn,
@@ -15665,6 +16052,7 @@ function Relatorios({ itens, colecoes, series, aoAbrirItem, aoIrParaSeries }) {
       originaisDe(i).map((o) => o.serie).join(" / "),
       originaisDe(i).map((o) => (o.edicoesTexto ? `${o.serie} ${o.edicoesTexto}` : o.serie)).join(" / "),
       [...new Set(originaisDe(i).map((o) => o.pais).filter(Boolean))].join(" / "),
+      ehParcelado(i) ? textoParcelas(situacaoParcelas(i)) || `${i.parcelas}x` : "",
     ].map(esc).join(";"));
     const blob = new Blob(["﻿" + [cab.map(esc).join(";"), ...linhas].join("\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
@@ -15800,7 +16188,7 @@ function Relatorios({ itens, colecoes, series, aoAbrirItem, aoIrParaSeries }) {
       {/* números */}
       <div className="rl-kpis">
         <div className="rl-kpi"><span className="rl-rot">Itens</span><strong>{fmtN(resumo.total)}</strong><span>{tiposTxt || "nada no recorte"}</span></div>
-        <div className="rl-kpi"><span className="rl-rot">Investido</span><strong className="am">{brl(resumo.investido)}</strong><span>em {fmtN(resumo.comPreco)} itens com preço</span></div>
+        <div className="rl-kpi"><span className="rl-rot">Investido</span><strong className="am">{brl(resumo.investido)}</strong><span>em {fmtN(resumo.comPreco)} itens com preço{compras.totalAPagar > 0 ? ` · ${brl(compras.totalAPagar)} ainda em parcelas` : ""}</span></div>
         <div className="rl-kpi"><span className="rl-rot">Preço médio</span><strong>{brl(resumo.medio)}</strong><span>por item</span></div>
         <div className="rl-kpi"><span className="rl-rot">Páginas</span><strong>{fmtN(resumo.paginas)}</strong><span>nos itens com páginas preenchidas</span></div>
       </div>
@@ -15845,32 +16233,73 @@ function Relatorios({ itens, colecoes, series, aoAbrirItem, aoIrParaSeries }) {
                 {compras.recorde && (
                   <div className="rl-fato"><span>Mês recorde</span><b>{rotMesAno(compras.recorde[0])}</b><span>{fmtN(compras.recorde[1].n)} itens</span></div>
                 )}
-                {compras.maiorGasto && compras.maiorGasto[1].v > 0 && (
+                {porSaida ? (compras.maiorSaida && (
+                  <div className="rl-fato"><span>Maior saída num mês</span><b>{brlInteiro(compras.maiorSaida[1])}</b><span>{rotMesAno(compras.maiorSaida[0])} · contando as parcelas</span></div>
+                )) : (compras.maiorGasto && compras.maiorGasto[1].v > 0 && (
                   <div className="rl-fato"><span>Maior gasto num mês</span><b>{brlInteiro(compras.maiorGasto[1].v)}</b><span>{rotMesAno(compras.maiorGasto[0])}</span></div>
-                )}
+                ))}
                 <div className="rl-fato"><span>{ANO} até agora</span><b>{fmtN(compras.esteAno)} {compras.esteAno === 1 ? "item" : "itens"}</b><span>{fmtN(Math.round(compras.esteAno / MES))} por mês, em média</span></div>
                 <div className="rl-fato"><span>{ANO - 1} inteiro</span><b>{fmtN(compras.anoPassado)} {compras.anoPassado === 1 ? "item" : "itens"}</b><span>{fmtN(Math.round(compras.anoPassado / 12))} por mês, em média</span></div>
               </div>
             </div>
             <div className="rl-gasto">
-              <div className="rl-cab">
-                <span className="rl-rot">Gasto por mês · últimos 12 meses</span>
-                {compras.picoGasto > 0 && (
-                  <span className="rl-rot">pico: {brlInteiro(compras.picoGasto)} em {rotMesAno(compras.ultimos.find((u) => u.v === compras.picoGasto).k)}</span>
+              <div className="rl-cab" style={{ alignItems: "center" }}>
+                <span className="rl-rot">
+                  Gasto por mês · últimos 12 meses{porSaida && compras.futuros.length ? " e o que ainda vai cair" : ""}
+                  {colunaPico ? ` · pico de ${brlInteiro(colunaPico.v)} em ${rotMesAno(colunaPico.k)}` : ""}
+                </span>
+                {compras.temParcela && (
+                  <div className="segm" role="group" aria-label="Como contar o gasto">
+                    <button className={porSaida ? "ativo" : ""} onClick={() => setGastoModo("saiu")}>O que saiu no mês</button>
+                    <button className={!porSaida ? "ativo" : ""} onClick={() => setGastoModo("compra")}>Valor das compras</button>
+                  </div>
                 )}
               </div>
               <div className="rl-colunas">
-                {compras.ultimos.map((u) => {
-                  const pico = compras.picoGasto > 0 && u.v === compras.picoGasto;
+                {colunasGasto.map((c) => {
+                  const pico = colunaPico && c.k === colunaPico.k;
                   return (
-                    <div className="c" key={u.k} title={`${rotMesAno(u.k)}: ${brl(u.v)} em ${u.n} ${u.n === 1 ? "item" : "itens"}`}>
-                      {pico && <em>{brlInteiro(u.v)}</em>}
-                      <i className={pico ? "pico" : ""} style={{ height: `${compras.picoGasto ? (u.v / compras.picoGasto) * 100 : 0}%` }} />
+                    <div className="c" key={c.k}
+                         title={c.fut
+                           ? `${rotMesAno(c.k)}: ${brl(c.v)} em parcelas a pagar`
+                           : `${rotMesAno(c.k)}: ${brl(c.v)}${porSaida ? " saíram no mês" : ` em ${c.n} ${c.n === 1 ? "compra" : "compras"}`}`}>
+                      {(pico || c.fut) && c.v > 0 && <em className={c.fut ? "fut" : undefined}>{brlInteiro(c.v)}</em>}
+                      <i className={c.fut ? "futuro" : pico ? "pico" : ""} style={{ height: `${picoColunas ? Math.max(c.v > 0 ? 2 : 0, (c.v / picoColunas) * 100) : 0}%` }} />
                     </div>
                   );
                 })}
               </div>
-              <div className="rl-colunas-rot">{compras.ultimos.map((u) => <span key={u.k}>{MESES_CURTO[Number(u.k.slice(5, 7)) - 1]}</span>)}</div>
+              <div className="rl-colunas-rot">{colunasGasto.map((c) => <span key={c.k} className={c.fut ? "fut" : ""}>{MESES_CURTO[Number(c.k.slice(5, 7)) - 1]}</span>)}</div>
+              {compras.temParcela && (
+                <p className="rl-sub" style={{ fontSize: 12 }}>
+                  {porSaida
+                    ? "Compras parceladas entram no mês de cada parcela; o tracejado é o que ainda vai cair."
+                    : "Cada compra inteira no mês em que foi feita, mesmo parcelada."}
+                </p>
+              )}
+              {compras.totalAPagar > 0 && (
+                <div className="rl-apagar">
+                  <div className="rl-cab">
+                    <span className="rl-rot">Ainda a pagar · {compras.itensAPagar} {compras.itensAPagar === 1 ? "item parcelado" : "itens parcelados"}</span>
+                    <b>{brl(compras.totalAPagar)}</b>
+                  </div>
+                  {compras.mesesAPagar.map((m) => (
+                    <div className="rl-apagar-mes" key={m.k}>
+                      <b>{rotMesAno(m.k)}</b>
+                      <div className="its">
+                        {m.lista.slice(0, 4).map((x) => (
+                          <button key={x.item.id + "-" + x.p.n} onClick={() => aoAbrirItem && aoAbrirItem(x.item)} title={x.item.titulo}>
+                            <span>{x.item.titulo}</span>
+                            <em>{x.p.n} de {x.n} · {brl(x.p.valor)}</em>
+                          </button>
+                        ))}
+                        {m.lista.length > 4 && <small>e mais {m.lista.length - 4}</small>}
+                      </div>
+                      <span className="tot">{brl(m.total)}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </>
         ) : (
