@@ -7,8 +7,16 @@ Roda uma vez por dia (GitHub Actions) e mantém data/lancamentos.json:
   - item novo com a etiqueta "Pré-venda"        -> entra como "pre-venda";
   - item acompanhado que perdeu a etiqueta       -> "a-venda" (lançou), com a data;
   - item acompanhado que sumiu do site (404)     -> "fora-do-site".
-Para cada item novo, abre a ficha uma única vez e guarda referência, coleção,
-páginas, volume anterior/próximo etc.
+Para cada item novo, abre a ficha e guarda referência, coleção, páginas,
+volume anterior/próximo etc.
+
+A Panini adia muito: perto do fim do mês, o que estava previsto para aquele
+mês passa para o seguinte, na ficha ("Mês") e na faixa "Pré-venda com
+previsão de envio para ...". Por isso a ficha das pré-vendas é relida:
+  - todo dia, se a previsão é para o mês atual ou já passou;
+  - uma vez por semana, nas demais.
+Quando a previsão muda, o item guarda a primeira previsão
+("previsao_original", aaaamm) e cada mudança em "mudancas_previsao".
 
 O script NÃO conhece o seu acervo: o cruzamento com as suas séries é feito no app.
 
@@ -39,10 +47,16 @@ MAX_PAGINAS = 12         # teto de segurança por categoria (12 x 36 = 432 itens
 PAUSA = 2.0              # segundos entre requisições
 DIAS_MANTER_LANCADO = 60 # quanto tempo um lançado continua no arquivo
 DIAS_MANTER_FORA = 30
+DIAS_RELER = 7           # pré-venda com previsão para depois: ficha relida 1x por semana
+MAX_RELEITURAS = 250     # teto de fichas relidas por execução (a 1ª vez relê todas)
 USER_AGENT = ("Mozilla/5.0 (compatible; AcervoPessoal/1.0; "
               "acompanhamento pessoal de lancamentos, 1x por dia)")
 
 RE_PREVENDA = re.compile(r"\bpr[eé]-?\s?venda\b(?!s)", re.I)
+# "Pré-venda com previsão de envio para 2ª quinzena de Out/26."
+RE_ENVIO = re.compile(r"previs[aã]o\s+de\s+envio\s*:?\s*(?:para\s+(?:(?:a|o)\s+)?)?([^.!\n]{3,60})", re.I)
+MESES = ["janeiro", "fevereiro", "marco", "abril", "maio", "junho",
+         "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
 
 
 # ----------------------------------------------------------------------------
@@ -106,6 +120,55 @@ def com_parametros(url, **params):
 
 def slug_de(url):
     return urlparse(url).path.strip("/")
+
+
+def ler_envio(texto):
+    """'... previsão de envio para 2ª quinzena de Out/26.' -> texto, mês, ano, quinzena."""
+    m = RE_ENVIO.search(texto or "")
+    if not m:
+        return {}
+    frase = re.sub(r"\s+", " ", m.group(1)).strip(" .,;")
+    out = {"envio_txt": frase}
+    t = norm(frase)  # "2a quinzena de out 26"
+    d = re.search(r"\b\d{1,2}\s+(\d{1,2})\s+(\d{2}|\d{4})\b", t)  # 20/10/2026
+    mm = re.search(r"\b(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)[a-z]*\s+(?:de\s+)?(\d{2}|\d{4})\b", t)
+    mes = ano = None
+    if mm:
+        mes = [x[:3] for x in MESES].index(mm.group(1)) + 1
+        ano = int(mm.group(2))
+    elif d and 1 <= int(d.group(1)) <= 12:
+        mes, ano = int(d.group(1)), int(d.group(2))
+    if mes and ano:
+        out["envio_mes"] = mes
+        out["envio_ano"] = ano + 2000 if ano < 100 else ano
+        q = re.search(r"\b([12])\s*a?\s+quinzena\b", t)
+        if q:
+            out["envio_quinzena"] = int(q.group(1))
+    return out
+
+
+def chave_ficha(item):
+    """aaaamm pelos campos Ano/Mês da ficha (sem mês: dezembro do ano)."""
+    try:
+        a = int(str(item.get("ano") or "").strip()[:4])
+    except ValueError:
+        return None
+    m = norm(item.get("mes"))
+    return a * 100 + (MESES.index(m) + 1 if m in MESES else 12)
+
+
+def chave_envio(item):
+    a, m = item.get("envio_ano"), item.get("envio_mes")
+    return a * 100 + m if a and m else None
+
+
+def chave_prev(item):
+    """A previsão que vale: a faixa de envio, se houver; senão a ficha."""
+    return chave_envio(item) or chave_ficha(item)
+
+
+def rot_chave(c):
+    return f"{MESES[c % 100 - 1][:3]}/{str(c // 100)[2:]}" if c else "?"
 
 
 # ----------------------------------------------------------------------------
@@ -256,6 +319,8 @@ def ler_ficha(html):
     if area is not None or galeria is not None:
         texto = " ".join(x.get_text(" ") for x in (area, galeria) if x is not None)
         ficha["_pre_venda"] = bool(RE_PREVENDA.search(texto))
+        if area is not None:
+            ficha.update(ler_envio(area.get_text(" ")))
     else:
         ficha["_pre_venda"] = None  # não deu para saber
     return ficha
@@ -269,6 +334,48 @@ def carregar(caminho):
         with open(caminho, encoding="utf-8") as f:
             return json.load(f)
     return {"versao": 1, "itens": []}
+
+
+CAMPOS_ENVIO = ("envio_txt", "envio_mes", "envio_ano", "envio_quinzena")
+
+
+def aplicar_previsao(item, ficha):
+    """Atualiza ano/mês e a faixa de envio com a ficha relida. Se a previsão
+    mudou, guarda a primeira e registra a mudança. Devolve (antes, depois)
+    quando mudou, senão None."""
+    ant_ficha, ant_envio = chave_ficha(item), chave_envio(item)
+    for k in ("ano", "mes"):
+        if ficha.get(k):           # campo vazio na releitura não apaga o que havia
+            item[k] = ficha[k]
+    for k in CAMPOS_ENVIO:         # a faixa some quando a Panini tira: acompanha
+        if ficha.get(k) is not None:
+            item[k] = ficha[k]
+        else:
+            item.pop(k, None)
+    item["ficha_lida_em"] = hoje()
+    # compara a mesma fonte antes e depois (faixa com faixa, ficha com ficha),
+    # para não confundir "envio" com "mês de lançamento"
+    nov_envio = chave_envio(item)
+    antes, depois = (ant_envio, nov_envio) if ant_envio and nov_envio else (ant_ficha, chave_ficha(item))
+    if antes and depois and antes != depois:
+        item.setdefault("previsao_original", antes)
+        item.setdefault("mudancas_previsao", []).append({"de": antes, "para": depois, "em": hoje()})
+        return antes, depois
+    return None
+
+
+def precisa_reler(item, chave_hoje):
+    if item.get("estado") != "pre-venda":
+        return False
+    lida = item.get("ficha_lida_em")
+    if not lida:
+        return True                # registro de antes desta versão
+    if lida >= hoje():
+        return False               # já relida hoje
+    c = chave_prev(item)
+    if c is None or c <= chave_hoje:
+        return True                # vence este mês ou já passou: é quando a Panini adia
+    return (dt.date.today() - dt.date.fromisoformat(lida)).days >= DIAS_RELER
 
 
 def podar(itens):
@@ -302,6 +409,7 @@ def executar(saida, pasta_html=None):
             vistos.setdefault(it["slug"], it)
 
     novos = lancados = fora = 0
+    adiados = []
     for slug, it in vistos.items():
         atual = por_slug.get(slug)
         if atual is None:
@@ -316,6 +424,7 @@ def executar(saida, pasta_html=None):
                     ficha = ler_ficha(r.text)
                     ficha.pop("_pre_venda", None)
                     novo.update(ficha)
+                    novo["ficha_lida_em"] = hoje()
             except requests.RequestException:
                 pass
             por_slug[slug] = novo
@@ -341,11 +450,33 @@ def executar(saida, pasta_html=None):
             item["estado"], item["saiu_em"] = "fora-do-site", hoje()
             fora += 1
         elif r.status_code == 200:
-            pv = ler_ficha(r.text).get("_pre_venda")
+            ficha = ler_ficha(r.text)
+            pv = ficha.get("_pre_venda")
             if pv is False:
                 item["estado"], item["lancou_em"] = "a-venda", hoje()
                 lancados += 1
+            else:
+                mud = aplicar_previsao(item, ficha)
+                if mud:
+                    adiados.append((item, *mud))
             item["visto_em"] = hoje()
+
+    # releitura das fichas das pré-vendas (a Panini muda a previsão sem aviso)
+    chave_hoje = dt.date.today().year * 100 + dt.date.today().month
+    fila = [i for i in por_slug.values() if precisa_reler(i, chave_hoje)]
+    fila.sort(key=lambda i: (chave_prev(i) or 0, i.get("ficha_lida_em") or ""))  # vencidas primeiro
+    relidas = 0
+    for item in fila[:MAX_RELEITURAS]:
+        try:
+            r = cli.get(item["url"])
+        except requests.RequestException:
+            continue
+        if r.status_code != 200:
+            continue               # 404 e lançamento ficam para a varredura de amanhã
+        relidas += 1
+        mud = aplicar_previsao(item, ler_ficha(r.text))
+        if mud:
+            adiados.append((item, *mud))
 
     itens = podar(list(por_slug.values()))
     itens.sort(key=lambda i: (i["estado"] != "pre-venda", i.get("lancou_em") or "", i.get("pre_venda_desde") or ""),
@@ -355,12 +486,15 @@ def executar(saida, pasta_html=None):
         "gerado_em": agora(),
         "fonte": list(CATEGORIAS.values()),
         "execucao": {"requisicoes": cli.n, "novos": novos, "lancados": lancados,
-                     "fora_do_site": fora, "categorias": relatorio},
+                     "fora_do_site": fora, "fichas_relidas": relidas,
+                     "fichas_na_fila": len(fila), "previsoes_mudadas": len(adiados),
+                     "categorias": relatorio},
         "itens": itens,
     }
     os.makedirs(os.path.dirname(os.path.abspath(saida)), exist_ok=True)
     with open(saida, "w", encoding="utf-8") as f:
         json.dump(saida_json, f, ensure_ascii=False, indent=1)
+    saida_json["_adiados"] = [(i["titulo"], a, d) for i, a, d in adiados]
     return saida_json
 
 
@@ -372,7 +506,10 @@ def main():
     res = executar(a.saida, a.salvar_html)
     ex = res["execucao"]
     print(f"{len(res['itens'])} itens no arquivo | novos {ex['novos']} | lançados {ex['lancados']} | "
-          f"fora do site {ex['fora_do_site']} | {ex['requisicoes']} requisições")
+          f"fora do site {ex['fora_do_site']} | fichas relidas {ex['fichas_relidas']} | "
+          f"{ex['requisicoes']} requisições")
+    for titulo, a, d in res["_adiados"]:
+        print(f"   previsão mudou: {titulo}: {rot_chave(a)} -> {rot_chave(d)}")
     for c in ex["categorias"]:
         print("  ", c)
     em_prevenda = sum(1 for i in res["itens"] if i["estado"] == "pre-venda")
