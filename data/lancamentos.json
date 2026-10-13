@@ -1,22 +1,25 @@
 {
  "versao": 1,
- "gerado_em": "2026-10-13T16:32:15+00:00",
+ "gerado_em": "2026-10-13T20:34:54+00:00",
  "fonte": [
   "https://panini.com.br/dc-comics",
   "https://panini.com.br/panini-comics"
  ],
  "execucao": {
-  "requisicoes": 18,
+  "requisicoes": 170,
   "novos": 0,
-  "lancados": 1,
+  "lancados": 0,
   "fora_do_site": 0,
+  "fichas_relidas": 152,
+  "fichas_na_fila": 152,
+  "previsoes_mudadas": 25,
   "categorias": [
    {
     "categoria": "DC Comics",
     "ordem_usada": "most_recent",
-    "paginas_lidas": 9,
+    "paginas_lidas": 6,
     "total_na_categoria": 1763,
-    "itens_lidos": 333
+    "itens_lidos": 222
    },
    {
     "categoria": "Panini Comics",
@@ -51,7 +54,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "JSA (2026) VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "vingadores-lja-04-capa-variante-1",
@@ -76,7 +84,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "vingadores-lja-04-capa-variante-2",
@@ -101,7 +114,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "vingadores-lja-04",
@@ -126,7 +144,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "os-piores-do-mundo-apresentando-bat-mirim-e-mr-mxyzptlk",
@@ -151,7 +174,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "SUPERMAN & BATMAN: OS PIORES DO MUNDO",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "dc-ko-especial-combate-02",
@@ -176,7 +204,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "DC: REI OMEGA COMPENDIUM",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "box-batman-um-dia-ruim",
@@ -201,7 +234,12 @@
    "encadernacao": "Capa dura",
    "colecao": "BATMAN: UM DIA RUIM BOXSET",
    "tipo_publicacao": "Pack, kit & box",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "novos-deuses-vol-02",
@@ -226,7 +264,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "NOVOS DEUSES (2026) VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "as-aventuras-do-superman-livro-de-el-vol-01",
@@ -251,7 +294,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "AS AVENTURAS DO SUPERMAN: LIVRO DE EL",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "mulher-maravilha-por-mike-deodato-jr",
@@ -276,7 +324,12 @@
    "encadernacao": "Capa dura",
    "colecao": "MULHER-MARAVILHA POR MIKE DEODATO JR. (DC VINTAGE)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-gotham-1893-uma-liga-pela-justica",
@@ -301,7 +354,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "BATMAN: GOTHAM 1893 - UMA LIGA PELA JUSTICA",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-robin-ano-um-vol-02",
@@ -326,7 +384,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "BATMAN & ROBIN: ANO UM",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "dc-ko-04",
@@ -351,7 +414,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "DC KO",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-a-gargula-de-gotham-edicao-de-luxo",
@@ -376,7 +444,12 @@
    "encadernacao": "Capa dura",
    "colecao": "BATMAN: A GARGULA DE GOTHAM - EDIÇÃO COMPLETA",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-por-tom-king-vol-15",
@@ -401,7 +474,12 @@
    "encadernacao": "Capa dura",
    "colecao": "BATMAN POR TOM KING",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "crise-nas-infinitas-terras-vol-07-crise-nas-infinitas-terras",
@@ -426,7 +504,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "CRISE NAS INFINITAS TERRAS VOL.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-cacador-de-marte-06",
@@ -451,7 +534,12 @@
    "encadernacao": "Canoa",
    "colecao": "ABSOLUTE CACADOR DE MARTE N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-arqueiro-verde-01",
@@ -476,7 +564,12 @@
    "encadernacao": "Canoa",
    "colecao": "ABSOLUTE ARQUEIRO VERDE N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "a-saga-do-superman-vol-4-47",
@@ -501,7 +594,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO SUPERMAN",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "a-saga-do-lanterna-verde-12",
@@ -526,7 +624,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO LANTERNA VERDE. 01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "a-saga-do-batman-vol-12-68",
@@ -551,7 +654,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "jovens-titas-em-acao-15",
@@ -577,7 +685,12 @@
    "colecao": "TEEN TITANS GO!",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "jovens-titas-em-acao-14",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "superman-por-geoff-johns-vol-04",
@@ -603,7 +716,12 @@
    "colecao": "SUPERMAN POR GEOFF JOHNS VOL. 01",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "superman-por-geoff-johns-vol-03-o-ultimo-filho",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-padroes-sombrios-vol-02",
@@ -629,7 +747,12 @@
    "colecao": "BATMAN: PADROES SOMBRIOS VOL.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "batman-padroes-sombrios-vol-01",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "dc-de-ouro-mulher-maravilha",
@@ -654,7 +777,12 @@
    "encadernacao": "Capa dura",
    "colecao": "MULHER-MARAVILHA - EDIÇÃO DE OURO",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "vingadores-lja-03-capa-variante",
@@ -680,7 +808,12 @@
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "vingadores-lja-02-capa-variante",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "vingadores-lja-03",
@@ -706,7 +839,12 @@
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "vingadores-lja-02-capa-variante",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "wonder-woman-01-fac-simile",
@@ -732,7 +870,12 @@
    "colecao": "ADVENTURE COMICS 210 - FAC-SIMILE",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "detective-comics-27-fac-simile",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "superman-o-legado-das-estrelas-dc-de-bolso",
@@ -758,7 +901,12 @@
    "colecao": "REINO DO AMANHA (DC POCKET)",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "batman-o-cavaleiro-das-trevas-dc-de-bolso",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-batman-02-abatm002r",
@@ -785,7 +933,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-batman-01-capa-variante",
    "proximo_volume": "absolute-batman-03",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-batman-01-capa-variante",
@@ -811,7 +964,12 @@
    "colecao": "ABSOLUTE BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "absolute-batman-02-abatm002r",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "liga-da-justica-sem-limites-2025-15",
@@ -837,7 +995,12 @@
    "colecao": "LIGA DA JUSTIÇA: SEM LIMITES N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "liga-da-justica-sem-limites-2025-14",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-superman-os-melhores-do-mundo-2025-13",
@@ -863,7 +1026,12 @@
    "colecao": "BATMAN/SUPERMAN: OS MELHORES DO MUNDO (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "batman-superman-os-melhores-do-mundo-2025-12",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "superman-2025-15",
@@ -889,7 +1057,12 @@
    "colecao": "SUPERMAN (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "superman-2025-14",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-2025-14",
@@ -915,7 +1088,12 @@
    "colecao": "BATMAN (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "batman-2025-13",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "mulher-maravilha-flash-2025-15",
@@ -941,7 +1119,12 @@
    "colecao": "MULHER-MARAVILHA/FLASH (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "mulher-maravilha-flash-2025-14",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "lanterna-verde-2025-15",
@@ -967,7 +1150,12 @@
    "colecao": "LANTERNA VERDE (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "lanterna-verde-2025-14",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-batman-08",
@@ -993,7 +1181,12 @@
    "colecao": "ABSOLUTE BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-batman-07-capa-variante",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-mulher-maravilha-07",
@@ -1019,7 +1212,12 @@
    "colecao": "ABSOLUTE MULHER-MARAVILHA",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-mulher-maravilha-06",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "watchmen-edicao-absoluta",
@@ -1044,7 +1242,12 @@
    "encadernacao": "Capa dura com estojo",
    "colecao": "WATCHMEN (EDICAO ABSOLUTA)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "a-saga-do-batman-vol-11-67",
@@ -1070,7 +1273,12 @@
    "colecao": "A SAGA DO BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-batman-vol-10-66",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "a-saga-do-flash-22",
@@ -1096,7 +1304,12 @@
    "colecao": "A SAGA DO FLASH VOL. 1",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-flash-21",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "mulher-maravilha-o-espirito-da-verdade",
@@ -1121,7 +1334,12 @@
    "encadernacao": "Capa dura",
    "colecao": "MULHER-MARAVILHA: ESPIRITO DA VERDADE",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-52-mulher-maravilha-ossos",
@@ -1147,7 +1365,12 @@
    "colecao": "SUPER-EROES AS LENDAS DC",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-51-arqueiro-verde-a-queda",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "a-saga-do-superman-vol-3-46",
@@ -1173,7 +1396,12 @@
    "colecao": "A SAGA DO SUPERMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-superman-vol-2-45",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "a-nova-historia-do-universo-dc",
@@ -1198,7 +1426,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "A NOVA HISTÓRIA DO UNIVERSO DC",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "sr-incrivel-ano-um",
@@ -1223,7 +1456,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "SENHOR INCRÍVEL: ANO UM",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "vingadores-lja-02",
@@ -1250,7 +1488,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "lja-vingadores-01-capa-variante",
    "proximo_volume": "vingadores-lja-03-capa-variante",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "vingadores-lja-02-capa-variante",
@@ -1277,7 +1520,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "lja-vingadores-01-capa-variante",
    "proximo_volume": "vingadores-lja-03-capa-variante",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "dc-ko-03",
@@ -1303,7 +1551,12 @@
    "colecao": "DC KO",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "dc-ko-02",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "crise-nas-infinitas-terras-vol-06-crise-nas-multiplas-terras-parte-06",
@@ -1329,7 +1582,12 @@
    "colecao": "CRISE NAS INFINITAS TERRAS VOL.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "crise-nas-infinitas-terras-vol-05-crise-nas-multiplas-terras-parte-05",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-rumo-a-terra-de-ninguem-vol-01",
@@ -1354,7 +1612,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "BATMAN: RUMO À TERRA DE NINGUÉM VOL. 01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-51-arqueiro-verde-a-queda",
@@ -1381,7 +1644,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-50-batman-robin-a-busca-por-robin",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-52-mulher-maravilha-ossos",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "mulher-maravilha-flash-2025-14",
@@ -1408,7 +1676,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "mulher-maravilha-flash-2025-13",
    "proximo_volume": "mulher-maravilha-flash-2025-15",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "superman-2025-14",
@@ -1435,7 +1708,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "superman-2025-13",
    "proximo_volume": "superman-2025-15",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "liga-da-justica-sem-limites-2025-14",
@@ -1462,7 +1740,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "liga-da-justica-sem-limites-2025-13",
    "proximo_volume": "liga-da-justica-sem-limites-2025-15",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "lanterna-verde-2025-14",
@@ -1489,7 +1772,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "lanterna-verde-2025-13",
    "proximo_volume": "lanterna-verde-2025-15",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "os-misterios-de-batman-e-scooby-doo-11",
@@ -1515,7 +1803,12 @@
    "colecao": "BATMAN E SCOOBY DOO VOL. 1",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "os-misterios-de-batman-e-scooby-doo-10",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-2025-13",
@@ -1542,7 +1835,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "batman-2025-12",
    "proximo_volume": "batman-2025-14",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-superman-07",
@@ -1568,7 +1866,12 @@
    "colecao": "ABSOLUTE SUPERMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-superman-06",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-lanterna-verde-05",
@@ -1594,7 +1897,12 @@
    "colecao": "ABSOLUTE LANTERNA VERDE N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-lanterna-verde-04",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-flash-05",
@@ -1620,7 +1928,12 @@
    "colecao": "ABSOLUTE FLASH N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-flash-04",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-superman-os-melhores-do-mundo-2025-12",
@@ -1647,7 +1960,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "batman-superman-os-melhores-do-mundo-2025-11",
    "proximo_volume": "batman-superman-os-melhores-do-mundo-2025-13",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "lja-vingadores-01-capa-variante",
@@ -1667,13 +1985,26 @@
    "referencia": "ALJVI001V",
    "autores": "George Pérez, Kurt Busiek",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 48,
    "encadernacao": "Capa Cartão",
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "vingadores-lja-02-capa-variante",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "jovens-titas-em-acao-14",
@@ -1693,14 +2024,27 @@
    "referencia": "ATTGO014",
    "autores": "Erich Owen, Jeremy Lawson, Matthew K. Manning, Sholly Fisch",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 48,
    "encadernacao": "Canoa",
    "colecao": "TEEN TITANS GO!",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "jovens-titas-em-acao-13",
    "proximo_volume": "jovens-titas-em-acao-15",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "superman-sem-limites-01",
@@ -1720,12 +2064,25 @@
    "referencia": "ASMSL001",
    "autores": "Dan Slott, Rafael Albuquerque",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 160,
    "encadernacao": "Capa Cartão",
    "colecao": "SUPERMAN SEM LIMITES VOL. 01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-50-batman-robin-a-busca-por-robin",
@@ -1745,14 +2102,27 @@
    "referencia": "ASULE050",
    "autores": "Patrick Gleason, Peter J. Tomasi",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 176,
    "encadernacao": "Capa Cartão",
    "colecao": "SUPER-EROES AS LENDAS DC",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-49-liga-da-justica-o-virus-amazo",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-51-arqueiro-verde-a-queda",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "lja-vingadores-01",
@@ -1772,13 +2142,26 @@
    "referencia": "ALJVI001",
    "autores": "George Pérez, Kurt Busiek",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 48,
    "encadernacao": "Capa Cartão",
    "colecao": "LJA/VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "vingadores-lja-02-capa-variante",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "lanterna-verde-a-origem-de-kyle-rayner-compendium",
@@ -1798,12 +2181,25 @@
    "referencia": "ACKYL001",
    "autores": "Beau Smith, Bill Willingham, Darryl Banks, Fred Haynes, Marv Wolfman, Ron Lim, Ron Marz",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 704,
    "encadernacao": "Capa Cartão",
    "colecao": "LANTERNA VERDE: O SURGIMENTO DE KYLE RAYNER COMPEN",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "a-saga-do-batman-vol-10-66",
@@ -1823,14 +2219,27 @@
    "referencia": "ASABA066",
    "autores": "Alan Grant, Chuck Dixon, Dave Taylor, Doug Moench, Graham Nolan, Jim Aparo",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 144,
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-batman-vol-9-65",
    "proximo_volume": "a-saga-do-batman-vol-11-67",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "a-saga-do-superman-vol-2-45",
@@ -1850,14 +2259,27 @@
    "referencia": "ASASU045",
    "autores": "Dan Jurgens, Jackson Guice, Jerry Ordway, Jon Bogdanove, Louise Simonson, Roger Stern, Tom Grummett",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 144,
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO SUPERMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-superman-vol-1-44",
    "proximo_volume": "a-saga-do-superman-vol-3-46",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "a-saga-do-lanterna-verde-11",
@@ -1877,13 +2299,26 @@
    "referencia": "ASALE011",
    "autores": "Geoff Johns, Ivan Reis, Júlio Ferreira, Oclair Albert, Sandra Hope, Shane Davis",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 152,
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO LANTERNA VERDE. 01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-lanterna-verde-10",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "batman-por-neal-adams-edicao-absoluta-vol-3",
@@ -1903,13 +2338,26 @@
    "referencia": "AANEA003",
    "autores": "David V. Reed, Denny O'Neil, Frank Robbins, Irv Novick, Neal Adams",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 280,
    "encadernacao": "Capa dura",
    "colecao": "BATMAN POR NEAL ADAMS VOL. 01 (EDICAO ABSOLUTA)",
    "tipo_publicacao": "Omnibus & Edições de luxo",
    "volume_anterior": "batman-por-neal-adams-edicao-absoluta-vol-2",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "absolute-vilania-01",
@@ -1929,12 +2377,25 @@
    "referencia": "ABVIL001",
    "autores": "Al Ewing, Giuseppe Camuncoli, Romulo Fajardo Jr., Stefano Nesi",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 32,
    "encadernacao": "Canoa",
    "colecao": "ABSOLUTE VILOES",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-49-liga-da-justica-o-virus-amazo",
@@ -1954,14 +2415,27 @@
    "referencia": "ASULE049",
    "autores": "Doug Mahnke, Geoff Johns, Jason Fabok",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 128,
    "encadernacao": "Capa Cartão",
    "colecao": "SUPER-EROES AS LENDAS DC",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-48-batman-robin-duas-caras",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-50-batman-robin-a-busca-por-robin",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "superman-2025-13",
@@ -1981,14 +2455,27 @@
    "referencia": "ASPMN013",
    "autores": "Alejandro Sánchez, Eber Ferreira, Eddy Barrows, Ivan Plascencia, Joshua Williamson, Mark Waid, Skylar Patridge",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 48,
    "encadernacao": "Canoa",
    "colecao": "SUPERMAN (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "superman-2025-12",
    "proximo_volume": "superman-2025-14",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-48-batman-robin-duas-caras",
@@ -2008,14 +2495,27 @@
    "referencia": "ASULE048",
    "autores": "Patrick Gleason, Peter J. Tomasi",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 160,
    "encadernacao": "Capa Cartão",
    "colecao": "SUPER-EROES AS LENDAS DC",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-47-liga-da-justica-a-liga-da-injustica",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-49-liga-da-justica-o-virus-amazo",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "os-misterios-de-batman-e-scooby-doo-10",
@@ -2035,14 +2535,27 @@
    "referencia": "ABSCO010",
    "autores": "Dario Brizuela, Sholly Fisch",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 48,
    "encadernacao": "Não disponível",
    "colecao": "BATMAN E SCOOBY DOO VOL. 1",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "os-misterios-de-batman-e-scooby-doo-09",
    "proximo_volume": "os-misterios-de-batman-e-scooby-doo-11",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "a-saga-do-batman-vol-9-65",
@@ -2062,14 +2575,27 @@
    "referencia": "ASABA065",
    "autores": "Chuck Dixon, Graham Nolan, Jim Balent, Mike Wieringo",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 144,
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-batman-vol-8-64",
    "proximo_volume": "a-saga-do-batman-vol-10-66",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "a-saga-do-flash-21",
@@ -2089,14 +2615,27 @@
    "referencia": "ASAFA021",
    "autores": "Brian Augustyn, Doug Braithwaite, Gil Kane, Joe Staton, Mark Waid, Stephen DeStefano, Tom Morgan, Tom Peyer",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 144,
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO FLASH VOL. 1",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-flash-20",
    "proximo_volume": "a-saga-do-flash-22",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "a-saga-do-superman-vol-1-44",
@@ -2116,14 +2655,27 @@
    "referencia": "ASASU044",
    "autores": "Butch Guice, Dan Jurgens, Jerry Ordway, Jon Bogdanove, Louise Simonson, Roger Stern, Tom Grummett",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 176,
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO SUPERMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-superman-vol-19-43",
    "proximo_volume": "a-saga-do-superman-vol-2-45",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-47-liga-da-justica-a-liga-da-injustica",
@@ -2143,14 +2695,27 @@
    "referencia": "ASULE047",
    "autores": "Geoff Johns, Ivan Reis",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 128,
    "encadernacao": "Capa Cartão",
    "colecao": "SUPER-EROES AS LENDAS DC",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-46-batman-o-homem-que-nao-estava-la",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-48-batman-robin-duas-caras",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-46-batman-o-homem-que-nao-estava-la",
@@ -2177,7 +2742,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-45-flash-licoes-de-historia",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-47-liga-da-justica-a-liga-da-injustica",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "dc-ko-especial-combate-01",
@@ -2197,12 +2767,25 @@
    "referencia": "AROCO001",
    "autores": "Cary Nord, Daniel Bayliss, Giuseppe Camuncoli, Jason Howard, Joëlle Jones, Joshua Williamson, Leah Williams, Mirka Andolfo, Scott Snyder, Sean Izaakse",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 136,
    "encadernacao": "Capa Cartão",
    "colecao": "DC: REI OMEGA COMPENDIUM",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "a-saga-do-batman-vol-8-64",
@@ -2222,14 +2805,27 @@
    "referencia": "ASABA064",
    "autores": "Alan Grant, Chuck Dixon, Dave Taylor, Doug Moench, Graham Nolan, Kelley Jones",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 144,
    "encadernacao": "Capa Cartão",
    "colecao": "A SAGA DO BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-saga-do-batman-vol-7-63",
    "proximo_volume": "a-saga-do-batman-vol-9-65",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-45-flash-licoes-de-historia",
@@ -2249,14 +2845,27 @@
    "referencia": "ASULE045",
    "autores": "Brian Buccellato, Patrick Zircher",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 144,
    "encadernacao": "Capa Cartão",
    "colecao": "SUPER-EROES AS LENDAS DC",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "grandes-herois-dc-os-novos-52-vol-44-mulher-maravilha-pele",
    "proximo_volume": "grandes-herois-dc-os-novos-52-vol-46-batman-o-homem-que-nao-estava-la",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "batman-padroes-sombrios-vol-01",
@@ -2282,7 +2891,12 @@
    "colecao": "BATMAN: PADROES SOMBRIOS VOL.01",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "batman-padroes-sombrios-vol-02",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "superman-vs-homem-aranha-edicao-comemorativa-50-anos-encontros-classicos-dc-e-marvel",
@@ -2307,7 +2921,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "ENCONTROS CLÁSSICOS DC E MARVEL: SUPERMAN VS. HOME",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "star-wars-doutora-aphra-agente-do-caos",
@@ -2332,7 +2951,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "STAR WARS: DOUTORA APHRA - AGENTE DO CAOS",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "tio-patinhas-o-pato-mais-poderoso-da-terra",
@@ -2357,7 +2981,12 @@
    "encadernacao": "Capa dura",
    "colecao": "TIO PATINHAS: O PATO MAIS PODEROSO DO MUNDO",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "rei-spawn-vol-5",
@@ -2382,7 +3011,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "REI SPAWN",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "transformers-03-universo-energon-10",
@@ -2407,7 +3041,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "UNIVERSO ENERGON",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "um-circulo-vicioso-edicao-de-luxo",
@@ -2432,7 +3071,12 @@
    "encadernacao": "Capa dura",
    "colecao": "UM CIRCULO VICIOSO (COMPLETO)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "nocterra-vol-3",
@@ -2457,7 +3101,12 @@
    "encadernacao": "Capa dura",
    "colecao": "NOCTERRA VOL. 1",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "invencivel-apresenta-03-brit",
@@ -2482,7 +3131,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "INVENCIVEL APRESENTA",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "conan-o-barbaro-2024-15",
@@ -2507,7 +3161,12 @@
    "encadernacao": "Canoa",
    "colecao": "CONAN (2023) VOL. 01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "epic-mickey-a-colecao-completa",
@@ -2532,7 +3191,12 @@
    "encadernacao": "Capa dura",
    "colecao": "EPIC MICKEY THE COMICS COLLECTION",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "star-wars-saindo-da-escuridao-vol-1",
@@ -2557,7 +3221,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "STAR WARS (2026) VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "star-wars-historias-do-hiperespaco-grievous",
@@ -2583,7 +3252,12 @@
    "colecao": "STAR WARS - HYPERSPACE: QUI-GON",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "star-wars-historias-do-hiperespaco-qui-gon",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "spawn-mata-todos-os-spawns",
@@ -2608,7 +3282,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "SPAWN MATA TODOS OS SPAWNS",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "invencivel-vol-04-o-melhor-da-classe",
@@ -2635,7 +3314,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-03-perfeitos-estranhos-ainve003r",
    "proximo_volume": "invencivel-vol-05-os-fatos-da-vida",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "invencivel-vol-05-os-fatos-da-vida",
@@ -2662,7 +3346,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-04-o-melhor-da-classe",
    "proximo_volume": "invencivel-vol-06-um-mundo-diferente",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "invencivel-vol-03-perfeitos-estranhos-ainve003r",
@@ -2689,7 +3378,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-02-oito-e-demais",
    "proximo_volume": "invencivel-vol-04-o-melhor-da-classe",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "invencivel-vol-01-negocios-de-familia",
@@ -2715,7 +3409,12 @@
    "colecao": "INVENCIVEL - 1",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "invencivel-vol-02-oito-e-demais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "invencivel-vol-21",
@@ -2741,7 +3440,12 @@
    "colecao": "INVENCIVEL - 1",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-20",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "a-espada-selvagem-de-conan-2024-07",
@@ -2767,7 +3471,12 @@
    "colecao": "A ESPADA SELVAGEM DE CONAN (2023) VOL. 01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "a-espada-selvagem-de-conan-2024-06",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "rivais-cosmicos-03-universo-energon-09",
@@ -2793,7 +3502,12 @@
    "colecao": "UNIVERSO ENERGON",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "destro-universo-energon-08",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "spawn-origens-vol-28",
@@ -2819,7 +3533,12 @@
    "colecao": "SPAWN: ORIGENS",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "spawn-origens-vol-27",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "mickey-e-minnie-em-casablanca",
@@ -2844,7 +3563,12 @@
    "encadernacao": "Não disponível",
    "colecao": "CASABALNCA (GRAPHIC DISNEY)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "aliens-versus-vingadores",
@@ -2869,7 +3593,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "ALIENS VS VINGADORES",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "star-wars-a-ascencao-skywalker",
@@ -2894,7 +3623,12 @@
    "encadernacao": "Capa dura",
    "colecao": "STAR WARS: A ASCENCAO SKYWALKER",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "star-wars-the-high-republic-o-pavor-dos-jedi",
@@ -2920,7 +3654,12 @@
    "colecao": "STAR WARS: HIGH REPUBLIC ADVENTURES",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "star-wars-the-high-republic-a-cacada",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "o-pequeno-principe",
@@ -2945,7 +3684,12 @@
    "encadernacao": "Capa dura",
    "colecao": "MICKEY PRINCIPE (GRAPHIC DISNEY)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "invencivel-apresenta-02-capas-ltda",
@@ -2971,7 +3715,12 @@
    "colecao": "INVENCIVEL APRESENTA",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-apresenta-01-eve-atomica-e-rex-plosao",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "little-nightmares-descida-ao-lugar-nenhum",
@@ -2996,7 +3745,12 @@
    "encadernacao": "Capa dura",
    "colecao": "LITTLE NIGHTMARES: DESCIDA AO LUGAR NENHUM",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "espectadores",
@@ -3021,7 +3775,12 @@
    "encadernacao": "Capa dura",
    "colecao": "ESPECTADORES",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "conan-o-barbaro-2024-14",
@@ -3047,7 +3806,12 @@
    "colecao": "CONAN (2023) VOL. 01",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "conan-o-barbaro-2024-13",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "pato-donald-o-farol-do-cabo-quac-colecao-carl-barks",
@@ -3073,7 +3837,12 @@
    "colecao": "COLEÇÃO CARL BARKS",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "pato-donald-o-tesouro-do-pirata-colecao-carl-barks-vol-1",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "alien-vol-4",
@@ -3099,7 +3868,12 @@
    "colecao": "ALIEN VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "alien-vol-3-icarus",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "mickey-contra-a-alianca-malefica",
@@ -3125,7 +3899,12 @@
    "colecao": "BD DISNEY",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "um-trabalho-para-o-superpato",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "star-wars-legado-de-vader-vol-01",
@@ -3150,7 +3929,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "STAR WARS: LEGADO DE VADER",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "invencivel-vol-20",
@@ -3177,7 +3961,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-19",
    "proximo_volume": "invencivel-vol-21",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "folhas-vermelhas-graphic-disney",
@@ -3202,7 +3991,12 @@
    "encadernacao": "Capa dura",
    "colecao": "FOLHAS VERMELHAS (GRAPHIC DISNEY)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "destro-universo-energon-08",
@@ -3229,7 +4023,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "scarlett-universo-energon-07",
    "proximo_volume": "rivais-cosmicos-03-universo-energon-09",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "invencivel-apresenta-01-eve-atomica-e-rex-plosao",
@@ -3249,13 +4048,26 @@
    "referencia": "AINAP001",
    "autores": "Benito Cereno, Nate Bellegarde, Robert Kirkman",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 144,
    "encadernacao": "Capa Cartão",
    "colecao": "INVENCIVEL APRESENTA",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "invencivel-apresenta-02-capas-ltda",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "spawn-vol-13",
@@ -3275,13 +4087,26 @@
    "referencia": "ASPWN013",
    "autores": "Brett Booth",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 144,
    "encadernacao": "Capa Cartão",
    "colecao": "SPAWN",
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "spawn-vol-12",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "invencivel-vol-19",
@@ -3301,14 +4126,27 @@
    "referencia": "AINVE019",
    "autores": "Robert Kirkman, Ryan Ottley",
    "ano": "2026",
-   "mes": "Setembro",
+   "mes": "Outubro",
    "paginas": 152,
    "encadernacao": "Capa Cartão",
    "colecao": "INVENCIVEL - 1",
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-18",
    "proximo_volume": "invencivel-vol-20",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Out/26",
+   "envio_mes": 10,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13",
+   "previsao_original": 202609,
+   "mudancas_previsao": [
+    {
+     "de": 202609,
+     "para": 202610,
+     "em": "2026-10-13"
+    }
+   ]
   },
   {
    "slug": "invencivel-vol-02-oito-e-demais",
@@ -3335,7 +4173,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "invencivel-vol-01-negocios-de-familia",
    "proximo_volume": "invencivel-vol-03-perfeitos-estranhos-ainve003r",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-cacador-de-marte-02",
@@ -3362,7 +4205,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-cacador-de-marte-01",
    "proximo_volume": "absolute-cacador-de-marte-03",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-flash-01",
@@ -3388,7 +4236,12 @@
    "colecao": "ABSOLUTE FLASH N.01",
    "tipo_publicacao": "Revistas Periódicas",
    "proximo_volume": "absolute-flash-02",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-batman-03",
@@ -3415,7 +4268,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "absolute-batman-02-abatm002r",
    "proximo_volume": "absolute-batman-04",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "grandes-herois-dc-os-novos-52-vol-53-batman-robin-robin-vive",
@@ -3440,7 +4298,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "SUPER-EROES AS LENDAS DC",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "dc-marvel-o-caso-do-chamego-cosmico-outras-historias",
@@ -3465,7 +4328,12 @@
    "encadernacao": "Capa dura",
    "colecao": "SUPERMAN/HOMEM-ARANHA - CAPA DURA",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "mulher-maravilha-flash-2025-16",
@@ -3490,7 +4358,12 @@
    "encadernacao": "Canoa",
    "colecao": "MULHER-MARAVILHA/FLASH (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "lanterna-verde-2025-16",
@@ -3515,7 +4388,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "LANTERNA VERDE (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "jovens-titas-unidos",
@@ -3540,7 +4418,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "JOVENS TITAS: TOGETHER",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "a-casa-dos-misterios-vol-02",
@@ -3565,7 +4448,12 @@
    "encadernacao": "Capa dura",
    "colecao": "A CASA DOS MISTERIOS VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-flash-06",
@@ -3590,7 +4478,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "ABSOLUTE FLASH N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-lanterna-verde-06",
@@ -3615,7 +4508,12 @@
    "encadernacao": "Canoa",
    "colecao": "ABSOLUTE LANTERNA VERDE N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-superman-08",
@@ -3640,7 +4538,12 @@
    "encadernacao": "Canoa",
    "colecao": "ABSOLUTE SUPERMAN",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-asilo-arkham-dc-de-bolso",
@@ -3665,7 +4568,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "REINO DO AMANHA (DC POCKET)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "monstro-do-pantano-licao-de-anatomia-dc-de-bolso",
@@ -3690,7 +4598,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "REINO DO AMANHA (DC POCKET)",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "liga-da-justica-sem-limites-2025-16",
@@ -3715,7 +4628,12 @@
    "encadernacao": "Canoa",
    "colecao": "LIGA DA JUSTIÇA: SEM LIMITES N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-2025-15",
@@ -3740,7 +4658,12 @@
    "encadernacao": "Canoa",
    "colecao": "BATMAN (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-2025-01",
@@ -3765,7 +4688,12 @@
    "encadernacao": "Canoa",
    "colecao": "BATMAN (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-superman-os-melhores-do-mundo-2025-14",
@@ -3790,7 +4718,12 @@
    "encadernacao": "Canoa",
    "colecao": "BATMAN/SUPERMAN: OS MELHORES DO MUNDO (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "absolute-batman-01",
@@ -3815,7 +4748,12 @@
    "encadernacao": "Canoa",
    "colecao": "ABSOLUTE BATMAN",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "superman-2025-16",
@@ -3840,7 +4778,12 @@
    "encadernacao": "Canoa",
    "colecao": "SUPERMAN (2025) N.01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "marvel-dc-o-mercenario-e-o-cavaleiro-outras-historias",
@@ -3865,7 +4808,12 @@
    "encadernacao": "Capa dura",
    "colecao": "DEADPOOL/BATMAN - CAPA DURA",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Nov/26",
+   "envio_mes": 11,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "detective-comics-27-fac-simile",
@@ -3892,7 +4840,12 @@
    "tipo_publicacao": "Revistas Periódicas",
    "volume_anterior": "action-comics-252-fac-simile",
    "proximo_volume": "wonder-woman-01-fac-simile",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "batman-a-piada-mortal-dc-de-bolso-adcpo003r2",
@@ -3919,7 +4872,12 @@
    "tipo_publicacao": "Livros e Edições Especiais",
    "volume_anterior": "watchmen-dc-de-bolso-adcpo002r3",
    "proximo_volume": "batman-silencio-dc-de-bolso",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "os-sacrificados-vol-3",
@@ -3944,7 +4902,12 @@
    "encadernacao": "Capa dura",
    "colecao": "OS SACRIFICADORES VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "star-wars-cavaleiros-jedi-vol-1",
@@ -3969,7 +4932,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "STAR WARS: CAVALEIROS JEDI VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "spawn-pistoleiro-vol-5",
@@ -3994,7 +4962,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "SPAWN PISTOLEIRO VOL.01",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "spawn-apresenta-sam-twitch-vol-4",
@@ -4019,7 +4992,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "SAM E TWITCH - 1",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "a-espada-selvagem-de-conan-2024-078",
@@ -4044,7 +5022,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "A ESPADA SELVAGEM DE CONAN (2023) VOL. 01",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "invencivel-vol-22",
@@ -4069,7 +5052,12 @@
    "encadernacao": "Capa dura",
    "colecao": "INVENCIVEL - 1",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "spawn-origens-vol-29",
@@ -4094,7 +5082,12 @@
    "encadernacao": "Capa Cartão",
    "colecao": "SPAWN: ORIGENS",
    "tipo_publicacao": "Revistas Periódicas",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "pato-donald-o-misterio-do-pantano-colecao-carl-barks-vol-3",
@@ -4119,7 +5112,12 @@
    "encadernacao": "Capa dura",
    "colecao": "COLEÇÃO CARL BARKS",
    "tipo_publicacao": "Livros e Edições Especiais",
-   "visto_em": "2026-10-13"
+   "visto_em": "2026-10-13",
+   "envio_txt": "2ª quinzena de Dez/26",
+   "envio_mes": 12,
+   "envio_ano": 2026,
+   "envio_quinzena": 2,
+   "ficha_lida_em": "2026-10-13"
   },
   {
    "slug": "o-mercenario-e-o-cavaleiro-outras-historias",
