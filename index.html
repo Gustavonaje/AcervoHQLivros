@@ -1751,6 +1751,9 @@ const LOJAS = [
   { nome: "Panini", url: (q) => `https://panini.com.br/catalogsearch/result/?q=${q}` },
 ];
 
+// o que "Limpar filtros" zera (busca e filtros, não a ordem)
+const RECORTE_LIMPO = { busca: "", fTipo: "", fEditora: "", fGenero: "", fColecao: "", fLeitura: "", fCaminho: false };
+const RECORTE_PADRAO = { ...RECORTE_LIMPO, ordem: "recentes", ordemInv: false };
 const ORDENS = [
   { v: "recentes", rot: "Adicionados por último", inverso: "Adicionados há mais tempo" },
   { v: "titulo", rot: "Título (A–Z)", inverso: "Título (Z–A)" },
@@ -1771,7 +1774,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.24", data: "13/10/2026", nota: "lançamentos: a previsão acompanha os adiamentos da Panini (faixa de envio, adiada, atrasada)" };
+const VERSAO = { numero: "3.25", data: "14/10/2026", nota: "busca, filtros e ordem separados por aba (o filtro de uma tela não esvazia mais a outra)" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -7560,13 +7563,29 @@ function Acervo() {
   // trocar de aba fecha o painel de filtros do celular, que é de cada aba
   useEffect(() => { setFiltrosCel(false); }, [aba]);
   const [parcelandoLote, setParcelandoLote] = useState(false);
-  const [busca, setBusca] = useState("");
-  const [fTipo, setFTipo] = useState("");
-  const [fEditora, setFEditora] = useState("");
-  const [fGenero, setFGenero] = useState("");
-  const [fColecao, setFColecao] = useState("");
-  const [ordem, setOrdem] = useState("recentes");
-  const [ordemInv, setOrdemInv] = useState(false);
+  /* Busca, filtros e ordem são de cada aba. Antes era um conjunto só para
+     todas: o chip "A caminho" dos desejos esvaziava a estante, o "Lido" da
+     estante escondia desejos, e a busca feita numa tela seguia filtrando a
+     outra. Agora cada aba lembra o próprio recorte enquanto o app está
+     aberto; os nomes abaixo continuam os mesmos e valem para a aba atual. */
+  const [recortes, setRecortes] = useState({});
+  const recorte = { ...RECORTE_PADRAO, ...(recortes[aba] || {}) };
+  const { busca, fTipo, fEditora, fGenero, fColecao, fLeitura, fCaminho, ordem, ordemInv } = recorte;
+  // "alvo" é a aba que recebe a mudança; por padrão, a que está aberta
+  const mudarRecorte = (campo, v, alvo = aba) => setRecortes((p) => {
+    const atual = { ...RECORTE_PADRAO, ...(p[alvo] || {}) };
+    const novo = typeof v === "function" ? v(atual[campo]) : v;
+    return atual[campo] === novo ? p : { ...p, [alvo]: { ...atual, [campo]: novo } };
+  });
+  const setBusca = (v) => mudarRecorte("busca", v);
+  const setFTipo = (v) => mudarRecorte("fTipo", v);
+  const setFEditora = (v) => mudarRecorte("fEditora", v);
+  const setFGenero = (v) => mudarRecorte("fGenero", v);
+  const setFColecao = (v) => mudarRecorte("fColecao", v);
+  const setFLeitura = (v) => mudarRecorte("fLeitura", v);
+  const setFCaminho = (v) => mudarRecorte("fCaminho", v);
+  const setOrdem = (v) => mudarRecorte("ordem", v);
+  const setOrdemInv = (v) => mudarRecorte("ordemInv", v);
 
   /* Ordem das coleções: por situação (em andamento, com lacunas, completas),
      perto de completar, alfabética ou manual, arrastando os cards. A escolha
@@ -7634,8 +7653,6 @@ function Acervo() {
   const [listaEditando, setListaEditando] = useState(null);
   const [listaAberta, setListaAberta] = useState(null);
   const [importando, setImportando] = useState(false);
-  const [fLeitura, setFLeitura] = useState("");
-  const [fCaminho, setFCaminho] = useState(false);
   const [trocaEditora, setTrocaEditora] = useState(null);
   const [arquivo, setArquivo] = useState(null);
   const [permPendente, setPermPendente] = useState(false);
@@ -8516,7 +8533,7 @@ function Acervo() {
     setMetaSeries([]); setSerieAberta(null); setSerieEditando(null);
     setEventos([]); setEras([]); setLinhasTempo([]); setLinhaAberta(null); setGruposSerie([]); setGruposAbertos([]); setVincPanini([]);
     setMetaPers([]); setPersAberto(null);
-    limparFiltros(); setAba("estante");
+    setRecortes({}); setFSit("todas"); setAba("estante");
     avisar("Tudo apagado. O acervo começou do zero.");
   };
 
@@ -9476,9 +9493,12 @@ function Acervo() {
     avisar(`${n} item(ns) agora com a editora “${novo}”.`);
   };
 
+  // limpa só a aba aberta; a ordem escolhida continua
   const limparFiltros = () => {
-    setFSit("todas"); setFTipo(""); setFEditora(""); setFGenero(""); setFColecao(""); setFLeitura(""); setFCaminho(false); setBusca(""); };
-  const temFiltro = fTipo || fEditora || fGenero || fColecao || fLeitura || busca;
+    if (aba === "series") setFSit("todas");
+    setRecortes((p) => ({ ...p, [aba]: { ...RECORTE_PADRAO, ordem, ordemInv } }));
+  };
+  const temFiltro = fTipo || fEditora || fGenero || fColecao || fLeitura || fCaminho || busca;
   const emSeries = aba === "series";
   // dentro da aba, só a divisão "Séries" mostra as ferramentas de série (lista/mapa, filtros, atualizar)
   const emSerial = emSeries && divOrig === "series";
@@ -9776,7 +9796,7 @@ function Acervo() {
               <div key={id}>
                 <button
                   className={`gaveta-item ${aba === id ? "ativo" : ""}`}
-                  onClick={() => { setAba(id); setFColecao(""); setMenuCel(false); window.scrollTo(0, 0); }}
+                  onClick={() => { setAba(id); setMenuCel(false); window.scrollTo(0, 0); }}
                 >
                   <Ico size={18} /> <span>{rot}</span>
                   {n != null && <b>{n}</b>}
@@ -9807,10 +9827,10 @@ function Acervo() {
 
       <div className={`barra ${filtrosCel ? "cel-aberta" : ""}`}>
         <div className="abas">
-          <button className={`aba ${aba === "estante" ? "ativa" : ""}`} onClick={() => { setAba("estante"); setFColecao(""); }}>
+          <button className={`aba ${aba === "estante" ? "ativa" : ""}`} onClick={() => setAba("estante")}>
             <Library size={15} /> Estante <span className="cont">{numeros.estante}</span>
           </button>
-          <button className={`aba ${aba === "desejos" ? "ativa" : ""}`} onClick={() => { setAba("desejos"); setFColecao(""); }}>
+          <button className={`aba ${aba === "desejos" ? "ativa" : ""}`} onClick={() => setAba("desejos")}>
             <Heart size={15} /> Desejos <span className="cont">{numeros.desejos}</span>
           </button>
           <button className={`aba ${emColecoes ? "ativa" : ""}`} onClick={() => setAba("colecoes")}>
@@ -10817,7 +10837,11 @@ function Acervo() {
           navLista={emPersonagens ? personagensVisiveis : null}
           aoNavegar={(p) => abrirPersonagem(p)}
           aoAbrirItem={(i) => { setPersAberto(null); setOrigemItem(null); setNavLista(null); setAberto(i); }}
-          aoBuscar={(nome) => { setPersAberto(null); setOrigemItem(null); setAba("estante"); setBusca(nome); }}
+          aoBuscar={(nome) => {
+            setPersAberto(null); setOrigemItem(null);
+            setRecortes((p) => ({ ...p, estante: { ...RECORTE_PADRAO, ...(p.estante || {}), ...RECORTE_LIMPO, busca: nome } }));
+            setAba("estante");
+          }}
           aoRebuscar={() => {
             const id = chavePersonagem(persAberto.nome);
             setMetaPers((prev) => prev.filter((x) => x.id !== id));
