@@ -1333,7 +1333,7 @@ const CSS = `
 .segm button.ativo{background:#2C2546;color:var(--papel);box-shadow:inset 0 0 0 1px var(--amarelo);}
 .sep-v{width:1px;height:28px;background:var(--linha);flex:none;}
 
-/* ---------- coleções: calendário da Panini, filtros e situação ---------- */
+/* ---------- coleções: checklist do que já saiu, filtros e situação ---------- */
 .selo.emdia{background:rgba(79,201,139,.95);color:#062014;}
 .selo.pre{background:rgba(20,17,32,.88);color:var(--amarelo);box-shadow:inset 0 0 0 1px var(--amarelo);}
 .lomb.pre{background:transparent;border:1.5px solid var(--amarelo);}
@@ -1359,26 +1359,22 @@ const CSS = `
 .cl-cal-cab h3{margin:0 0 4px;font-family:var(--disp);font-size:19px;font-weight:700;letter-spacing:-.01em;}
 .cl-cal-cab p{margin:0;font-size:13px;color:var(--papel2);line-height:1.45;max-width:780px;}
 .cl-cal-resumo{margin:0;font-size:13.5px;color:#DCD5E8;}
-.cl-meses{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px;}
-.cl-mes{display:flex;flex-direction:column;gap:6px;min-width:0;padding:14px 10px 8px;border-radius:12px;background:#221D38;}
-.cl-mes-cab{display:flex;align-items:center;gap:8px;padding:0 6px;}
-.cl-mes-cab b{font-family:var(--disp);font-size:17px;font-weight:700;}
-.cl-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;
-  border-radius:999px;border:1px solid #5a4f80;color:var(--papel2);cursor:help;}
+/* checklist "já saiu, falta comprar": linhas que correm em colunas */
+.cl-check{columns:3 280px;column-gap:14px;padding:8px 6px;border-radius:12px;background:#221D38;}
+.cl-check .cl-vol{break-inside:avoid;}
+.cl-vol.chk{grid-template-columns:14px minmax(0,1fr) auto auto;}
+.cl-vol.chk i{width:14px;height:14px;border-radius:3px;border:1.5px solid #8A82A3;}
+.cl-vol.chk:hover i{border-color:var(--amarelo);}
+.cl-check-lac{align-self:flex-start;font-size:12.5px;}
 .cl-rot{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#8A82A3;}
-.cl-mes > .cl-rot{padding:0 6px;}
-.cl-vols{display:flex;flex-direction:column;gap:1px;margin-top:2px;}
 .cl-vol{display:grid;grid-template-columns:8px minmax(0,1fr) auto auto;gap:9px;align-items:center;padding:7px 6px;
   border-radius:8px;min-height:34px;text-align:left;width:100%;}
 .cl-vol:hover{background:#2C2546;}
 .cl-vol i{display:block;width:7px;height:14px;border-radius:1px;border:1.5px solid var(--amarelo);}
-.cl-vol.venda i{border:none;background:var(--verde);}
-.cl-vol.cam i{border:none;background:var(--violeta);}
 .cl-vol .nm{font-size:13.5px;color:#DCD5E8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cl-vol:hover .nm{color:var(--papel);}
 .cl-vol .nu{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--papel);}
 .cl-vol .pr{font-family:var(--mono);font-size:11px;color:#8A82A3;min-width:62px;text-align:right;}
-.cl-vol.cam .pr{color:#BCA9FF;}
 .cl-barra{display:flex;flex-wrap:wrap;align-items:center;gap:10px;}
 .cl-barra .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:8px;}
 .cl-barra .chips::-webkit-scrollbar{display:none;}
@@ -1394,14 +1390,8 @@ const CSS = `
 @media (max-width:760px){
   .cl-cal{padding:14px 12px;}
   .cl-cal-cab p{font-size:12.5px;}
-  /* no celular os meses viram uma faixa que desliza para o lado */
-  .cl-meses{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin:0 -12px;padding:0 12px 4px;scrollbar-width:none;}
-  .cl-meses::-webkit-scrollbar{display:none;}
-  .cl-mes{flex:0 0 88%;scroll-snap-align:start;}
-  .cl-meses{align-items:flex-start;}
-  .cl-vol{min-height:44px;grid-template-columns:8px minmax(0,1fr) auto;row-gap:1px;}
-  .cl-vol i{grid-row:span 2;}
-  .cl-vol .pr{grid-column:2 / 4;text-align:left;min-width:0;font-size:10.5px;}
+  .cl-check{columns:1;padding:4px;}
+  .cl-vol{min-height:44px;}
   /* coluna sem quebra: com flex-wrap a fileira de filtros ficava da largura
      dela mesma (481px) e saía da tela em vez de rolar */
   .cl-barra{flex-direction:column;align-items:stretch;gap:8px;flex-wrap:nowrap;}
@@ -1774,7 +1764,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.25", data: "14/10/2026", nota: "busca, filtros e ordem separados por aba (o filtro de uma tela não esvazia mais a outra)" };
+const VERSAO = { numero: "3.26", data: "18/10/2026", nota: "coleções: o calendário de pré-vendas virou o checklist do que já saiu e falta comprar" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -7302,9 +7292,7 @@ const SECOES_COL = [
 
 function situacaoDasColecoes(colecoes, itens, lancDe) {
   const porId = new Map();
-  const saindo = [];
-  const agora = new Date();
-  const chaveHoje = agora.getFullYear() * 100 + agora.getMonth() + 1;
+  const checklist = [];
   for (const col of colecoes) {
     const e = estadoColecao(col, itens);
     const pre = new Map();
@@ -7317,10 +7305,8 @@ function situacaoDasColecoes(colecoes, itens, lancDe) {
         if (!l) continue;
         if (l.estado === "pre-venda") {
           if (!m.aCaminho && !pre.has(m.volume)) pre.set(m.volume, l.previsao || null);
-          saindo.push({ col, vol: m.volume, item: m, estado: "pre", previsao: l.previsao || null, preco: l.preco || "", caminho: !!m.aCaminho });
         } else if (l.estado === "a-venda" && !m.aCaminho) {
           aVenda.add(m.volume);
-          saindo.push({ col, vol: m.volume, item: m, estado: "venda", previsao: null, preco: l.preco || "", caminho: false });
         }
       }
     }
@@ -7365,6 +7351,19 @@ function situacaoDasColecoes(colecoes, itens, lancDe) {
       status = { txt: ult ? `completa · ${MESES_CURTO[Number(ult.slice(5, 7)) - 1]}/${ult.slice(2, 4)}` : "completa", cls: "ok" };
     }
 
+    /* Checklist "já saiu, falta comprar": das coleções em andamento, os
+       volumes já lançados que não estão na estante nem a caminho — os que a
+       Panini confirmou (nos desejos, fora da pré-venda) e os buracos da
+       numeração. O que ainda vai sair fica na aba Lançamentos. */
+    if (grupo === "anda") {
+      for (const v of [...new Set([...rel, ...venda])].sort((a, b) => a - b)) {
+        const m = e.noDesejo.find((i) => i.volume === v && !i.aCaminho) || null;
+        const l = m && lancDe ? lancDe(m) : null;
+        const lancou = l && l.estado === "a-venda";
+        checklist.push({ col, vol: v, item: m, preco: lancou ? l.preco || "" : "", lancouEm: lancou ? l.data || "" : "" });
+      }
+    }
+
     porId.set(col.id, {
       e, grupo, pre, aVenda, rel, selo, status, aux,
       ordemAnda: venda.length && !prox ? 0 : !prox ? 1 : (prox.p ? prox.p.chave : 999998),
@@ -7372,91 +7371,56 @@ function situacaoDasColecoes(colecoes, itens, lancDe) {
     });
   }
 
-  // calendário: primeiro o que já está nas lojas, depois mês a mês, por fim o que não tem data
-  const grupos = new Map();
-  for (const s of saindo) {
-    const k = s.estado === "venda" ? "0" : s.previsao ? String(s.previsao.chave) : "999999";
-    if (!grupos.has(k)) grupos.set(k, []);
-    grupos.get(k).push(s);
-  }
-  const meses = [...grupos.keys()].sort().map((k) => {
-    const lista = grupos.get(k).sort((a, b) => a.col.nome.localeCompare(b.col.nome, "pt-BR") || a.vol - b.vol);
-    const p = lista[0].previsao;
-    // a previsão vem como "novembro de 2026" ou, sem mês, só "2026"
-    const mm = p ? String(p.txt || "").match(/^(.+) de (\d{4})$/) : null;
-    const nomeMes = mm ? mm[1].charAt(0).toUpperCase() + mm[1].slice(1) : p ? String(p.txt || p.curto) : "";
-    const ano = mm ? Number(mm[2]) : 0;
-    const rot = k === "0" ? "Já nas lojas" : k === "999999" ? "Sem previsão"
-      : !mm ? `Ainda em ${nomeMes}` : ano === agora.getFullYear() ? nomeMes : `${nomeMes} de ${ano}`;
-    const aComprar = lista.filter((s) => !s.caminho);
-    const soma = aComprar.reduce((t, s) => t + precoDoTexto(s.preco), 0);
-    const comprados = lista.length - aComprar.length;
-    return {
-      k, rot, lista,
-      curto: k === "0" ? "já nas lojas" : k === "999999" ? "sem previsão" : `em ${mm ? mm[1] : nomeMes}`,
-      passado: p && k !== "0" && k !== "999999" ? p.chave < chaveHoje : false,
-      resumo: `${lista.length} ${lista.length === 1 ? "volume" : "volumes"}${soma ? ` · ${brl(soma)}` : ""}${comprados ? ` · ${comprados} já ${comprados === 1 ? "comprado" : "comprados"}` : ""}`,
-      soma,
-    };
-  });
-  return { porId, meses };
+  checklist.sort((x, y) => x.col.nome.localeCompare(y.col.nome, "pt-BR") || x.vol - y.vol);
+  return { porId, checklist };
 }
 
-/* Calendário "Saindo na Panini": os volumes das suas coleções em pré-venda,
-   mês a mês, com preço e total do mês. Quando a Panini anuncia um número
-   novo, ele aparece aqui sozinho. */
-function SaindoNaPanini({ meses, aberto, aoAlternar, aoAbrirColecao, lidoEm }) {
-  if (!meses.length) return null;
-  const total = meses.reduce((t, m) => t + m.soma, 0);
-  const resumo = meses.map((m, i) => `${m.lista.length} ${i === 0 ? (m.lista.length === 1 ? "volume " : "volumes ") : ""}${m.curto}`).join(" · ")
-    + (total ? ` · ${brl(total)} no total.` : ".");
+/* "Já saiu, falta comprar": um checklist das coleções em andamento — cada
+   linha é um volume que já lançou e você ainda não pegou. Pré-venda não
+   entra (está na aba Lançamentos) e o que está a caminho já foi comprado.
+   Coleções fechadas com lacunas ficam no filtro "Com lacunas". */
+function JaSaiuFaltaComprar({ lista, lac, aberto, aoAlternar, aoAbrirColecao, aoVerLacunas, lidoEm }) {
+  const nCols = new Set(lista.map((x) => x.col.id)).size;
+  const soma = lista.reduce((t, x) => t + precoDoTexto(x.preco), 0);
+  const resumo = lista.length
+    ? `${lista.length} ${lista.length === 1 ? "volume" : "volumes"} de ${nCols} ${nCols === 1 ? "coleção" : "coleções"}${soma ? ` · ${brl(soma)} pelo preço da Panini` : ""}.`
+    : "Nada pendente: você tem todos os volumes já lançados das coleções em andamento.";
   return (
     <section className="cl-cal">
       <div className="cl-cal-cab">
         <div>
-          <h3>Saindo na Panini</h3>
+          <h3>Já saiu, falta comprar</h3>
           <p>
-            Volumes das suas coleções em pré-venda, mês a mês{lidoEm ? ` (lista da Panini de ${lidoEm})` : ""}. Quando a Panini anuncia
-            um número novo, ele aparece aqui. Clique num volume para abrir a coleção.
+            Volumes já lançados das coleções em andamento que ainda não estão na sua estante nem a caminho
+            {lidoEm ? ` (lista da Panini de ${lidoEm})` : ""}. O que ainda vai sair está na aba Lançamentos.
+            Clique num volume para abrir a coleção.
           </p>
         </div>
         <button className="btn btn-mini" onClick={aoAlternar} aria-expanded={aberto}>
           <ChevronDown size={13} style={aberto ? { transform: "rotate(180deg)" } : undefined} /> {aberto ? "Recolher" : "Mostrar"}
         </button>
       </div>
-      {aberto ? (
-        <div className="cl-meses">
-          {meses.map((m) => (
-            <div className={`cl-mes ${m.k === "0" ? "venda" : ""}`} key={m.k}>
-              <div className="cl-mes-cab">
-                <b>{m.rot}</b>
-                {m.passado && (
-                  <span className="cl-tag" title="O mês previsto já passou e a lista da Panini ainda traz como pré-venda. A Panini costuma adiar para o mês seguinte: se a lista for antiga, rode a leitura da Panini na aba Lançamentos para atualizar.">
-                    atrasado
-                  </span>
-                )}
-              </div>
-              <span className="cl-rot">{m.resumo}</span>
-              <div className="cl-vols">
-                {m.lista.map((s) => (
-                  <button
-                    key={`${s.col.id}-${s.item.id}`}
-                    className={`cl-vol ${s.caminho ? "cam" : s.estado}`}
-                    onClick={() => aoAbrirColecao(s.col)}
-                    title={`${s.col.nome} #${s.vol}${s.caminho ? " — já comprado, a caminho" : s.estado === "venda" ? " — já lançou, falta comprar" : ""}${s.previsao ? ` · previsão: ${s.previsao.longo}` : ""}${s.preco ? ` · ${s.preco}` : ""}`}
-                  >
-                    <i aria-hidden="true" />
-                    <span className="nm">{s.col.nome}</span>
-                    <span className="nu">#{s.vol}</span>
-                    <span className="pr">{s.caminho ? "comprado" : s.preco}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
+      <p className="cl-cal-resumo">{resumo}</p>
+      {aberto && lista.length > 0 && (
+        <div className="cl-check" role="list">
+          {lista.map((x) => {
+            const dica = `${x.col.nome} #${x.vol} — ${x.lancouEm ? `a Panini lançou em ${dataCurtaLanc(x.lancouEm)}` : "já lançado"}`
+              + `${x.item ? ", está nos seus desejos" : ", não está nos seus desejos"}${x.preco ? ` · ${x.preco}` : ""}`;
+            return (
+              <button key={`${x.col.id}-${x.vol}`} role="listitem" className="cl-vol chk" onClick={() => aoAbrirColecao(x.col)} title={dica}>
+                <i aria-hidden="true" />
+                <span className="nm">{x.col.nome}</span>
+                <span className="nu">#{x.vol}</span>
+                <span className="pr">{x.preco}</span>
+              </button>
+            );
+          })}
         </div>
-      ) : (
-        <p className="cl-cal-resumo">{resumo}</p>
+      )}
+      {aberto && lac.vols > 0 && (
+        <button className="btn-mini-link cl-check-lac" onClick={aoVerLacunas}>
+          Coleções fechadas com lacunas: {lac.vols} {lac.vols === 1 ? "volume" : "volumes"} em {lac.cols} {lac.cols === 1 ? "coleção" : "coleções"} — ver
+        </button>
       )}
     </section>
   );
@@ -9436,6 +9400,13 @@ function Acervo() {
     return n;
   }, [colecoes, situacaoCols]);
 
+  // fora do checklist: coleções que não estão em andamento e têm volumes já lançados faltando
+  const lacunasFechadas = useMemo(() => {
+    let vols = 0, cols = 0;
+    for (const x of situacaoCols.porId.values()) if (x.grupo === "lac" && x.rel.length) { vols += x.rel.length; cols++; }
+    return { vols, cols };
+  }, [situacaoCols]);
+
   const reordenarColecoes = useCallback((idOrigem, idDestino) => {
     if (!idOrigem || !idDestino || idOrigem === idDestino) return;
     setColecoes((prev) => {
@@ -10300,11 +10271,13 @@ function Acervo() {
             ? [
                 colecoes.length > 0 && (
                   <div className="cl-topo" key="cl-topo">
-                    <SaindoNaPanini
-                      meses={situacaoCols.meses}
+                    <JaSaiuFaltaComprar
+                      lista={situacaoCols.checklist}
+                      lac={lacunasFechadas}
                       aberto={calColAberto}
                       aoAlternar={() => setCalColAberto((v) => !v)}
                       aoAbrirColecao={(c) => setColAberta(c)}
+                      aoVerLacunas={() => setFiltroCol("lac")}
                       lidoEm={lancLidoEm}
                     />
                     <div className="cl-barra">
