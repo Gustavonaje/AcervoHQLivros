@@ -1204,6 +1204,9 @@ const CSS = `
 .slot-lanc.lancou{background:rgba(79,201,139,.95);color:#062014;}
 .slot-lanc small{font-size:8px;font-weight:600;letter-spacing:.03em;opacity:.85;}
 .slot.caminho img{opacity:.55;}
+/* desejo ainda não comprado: capa em preto e branco só aqui na grade da
+   coleção; a ficha do item continua colorida. Comprou, volta a cor. */
+.slot.desejo img,.slot.desejo .capa-vazia{filter:grayscale(1) brightness(.88);transition:filter .2s;}
 .compra-bloco{display:flex;flex-direction:column;gap:10px;margin:14px 0 4px;padding:12px 14px;border-radius:10px;border:1px dashed var(--linha);}
 .compra-bloco.caminho{border:1px solid rgba(165,140,255,.45);background:rgba(165,140,255,.07);}
 .compra-bloco .dica{margin:0;}
@@ -1764,7 +1767,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.26", data: "18/10/2026", nota: "coleções: o calendário de pré-vendas virou o checklist do que já saiu e falta comprar" };
+const VERSAO = { numero: "3.27", data: "20/10/2026", nota: "coleções: volumes que ainda são desejo aparecem em preto e branco na grade" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -15365,7 +15368,7 @@ function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoA
                     </button>
                   );
                 return (
-                  <button key={v} className={`slot ${m.lista === "desejos" && m.aCaminho ? "caminho" : ""}`} onClick={() => aoAbrirItem(m)} title={m.titulo}>
+                  <button key={v} className={`slot ${m.lista === "desejos" ? (m.aCaminho ? "caminho" : "desejo") : ""}`} onClick={() => aoAbrirItem(m)} title={m.titulo}>
                     <Capa item={m} src={capaDe(m)} />
                     {(() => {
                       /* Só aparece o que a leitura da Panini confirmou: volume que
@@ -15389,7 +15392,7 @@ function DetalheColecao({ col, itens, capaDe, aoFechar, aoEditar, aoRemover, aoA
               })
             : null}
           {soltos.map((m) => (
-            <button key={m.id} className="slot" onClick={() => aoAbrirItem(m)} title={m.titulo}>
+            <button key={m.id} className={`slot ${m.lista === "desejos" ? (m.aCaminho ? "caminho" : "desejo") : ""}`} onClick={() => aoAbrirItem(m)} title={m.titulo}>
               <Capa item={m} src={capaDe(m)} />
               <span className="slot-num">{m.volume != null ? `#${m.volume}` : m.titulo.slice(0, 12)}</span>
             </button>
