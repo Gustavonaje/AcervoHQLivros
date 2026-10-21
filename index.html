@@ -1767,7 +1767,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.29", data: "21/10/2026", nota: "capas e fichas por ISBN com prazo: fonte lenta não segura mais a tela" };
+const VERSAO = { numero: "3.30", data: "21/10/2026", nota: "Fandom: aviso diz o que se sabe (recusou ou não foi alcançado) e a primeira pausa é de 8 s" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -11884,10 +11884,14 @@ async function tentarParse(wiki, pagina, extra = "prop=text", sinal) {
    recusa vem sem permissão de origem, e o navegador a mostra como erro de
    CORS. Toda consulta ao Fandom passa por aqui:
    - em fila, espaçadas entre si;
-   - uma recusa pausa a fila inteira — 20 s, depois 1 min, depois 3 min se
+   - uma recusa pausa a fila inteira — 8 s, depois 30 s, depois 2 min se
      continuar recusando — e cada consulta tenta de novo UMA vez, depois da
      pausa. Antes eram três novas tentativas por consulta: com dezenas na
      fila, uma recusa virava minutos de erros mesmo depois de você desistir;
+   - o motivo quase nunca é legível: 429 (excesso), 403 (bloqueio) e erro
+     do servidor chegam todos como "Failed to fetch". O aviso não afirma o
+     que não sabe: diz se o Fandom respondeu recusando ou se nem foi
+     alcançado (sem conexão, extensão bloqueando);
    - quem passa um "signal" (a janela de busca de datas) pode cancelar: ao
      fechar a janela, o que ela deixou na fila sai sem ir à rede. */
 const _fetchOriginal = window.fetch.bind(window);
@@ -11895,19 +11899,34 @@ let _proximaWiki = 0;
 let _pausaWiki = 0;            // até quando a fila está parada por uma recusa
 let _recusasSeguidas = 0;      // a pausa cresce se as recusas continuam
 const ESPACO_WIKI = 500;       // ms entre consultas: 2 por segundo
-const PAUSAS_WIKI = [20000, 60000, 180000];
+const PAUSAS_WIKI = [8000, 30000, 120000];
 
 const dormir = (ms) => new Promise((r) => setTimeout(r, ms));
 const erroCancelada = () => new DOMException("consulta cancelada", "AbortError");
 
-function recusaDoFandom() {
+async function recusaDoFandom(status, url) {
   const agora = Date.now();
   if (agora < _pausaWiki) return;   // recusas da mesma rajada contam uma vez só
   const ms = PAUSAS_WIKI[Math.min(_recusasSeguidas, PAUSAS_WIKI.length - 1)];
   _recusasSeguidas++;
-  _pausaWiki = agora + ms;
+  _pausaWiki = agora + ms;           // a pausa vale já; o aviso pode vir um instante depois
+  let motivo;
+  if (status === 429) motivo = "O Fandom pediu uma pausa por excesso de consultas";
+  else if (status >= 500) motivo = "O Fandom está instável agora";
+  else {
+    /* Sem código legível, confere se o site está ao alcance com um pedido
+       leve fora da API (o ícone do site), que não conta no limite dela. */
+    let alcanca = false;
+    try {
+      await _fetchOriginal(new URL(url).origin + "/favicon.ico", { mode: "no-cors", credentials: "omit", cache: "no-store" });
+      alcanca = true;
+    } catch (e) { /* nem chegou ao site */ }
+    motivo = alcanca
+      ? "O Fandom recusou a consulta (limite de consultas ou instabilidade do site)"
+      : "Não deu para alcançar o Fandom (sem conexão, ou alguma extensão do navegador bloqueando fandom.com)";
+  }
   if (typeof window.__avisoFreio === "function") {
-    window.__avisoFreio(`O Fandom pediu uma pausa por excesso de consultas. Tentando de novo em ${ms >= 60000 ? `${ms / 60000} min` : `${ms / 1000} s`}…`);
+    window.__avisoFreio(`${motivo}. Tentando de novo em ${ms >= 60000 ? `${ms / 60000} min` : `${ms / 1000} s`}…`);
   }
 }
 
@@ -11938,7 +11957,7 @@ window.fetch = async (entrada, opcoes) => {
   if (/[?&]action=parse\b/.test(url)) {
     await vezNoFandom(sinal);
     const r = await _fetchOriginal(entrada, opcoes);
-    if (r.status === 429) recusaDoFandom();
+    if (r.status === 429) recusaDoFandom(429, url);
     return r;
   }
 
@@ -11952,9 +11971,10 @@ window.fetch = async (entrada, opcoes) => {
       r = null;   // recusa sem CORS chega como falha de rede
     }
     if (r && r.status !== 429 && r.status !== 503) { _recusasSeguidas = 0; return r; }
-    recusaDoFandom();
+    recusaDoFandom(r ? r.status : 0, url);
   }
-  throw new Error("O Fandom limitou as consultas por excesso. Espere alguns minutos e tente de novo.");
+  throw new Error("O Fandom não aceitou as consultas agora. Espere alguns minutos e tente de novo. "
+    + "No F12 (aba Console), a linha em vermelho mostra o motivo: 429 é limite por excesso, 403 é bloqueio, 5xx é o site instável.");
 };
 
 /* Base de cada editora original. Com a editora preenchida, a busca começa
