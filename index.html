@@ -1767,7 +1767,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.27", data: "20/10/2026", nota: "coleções: volumes que ainda são desejo aparecem em preto e branco na grade" };
+const VERSAO = { numero: "3.28", data: "20/10/2026", nota: "Fandom: pausa única quando ele recusa, busca cancelada ao fechar a janela e só na base da editora original" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -5073,6 +5073,7 @@ function Formulario({ inicial, capaAtual, colecoes, sugestoesOrig, aoAbrirLote, 
         {buscaDatas !== null && origens[buscaDatas] && (
           <ModalDatasWiki
             nomeSerie={origens[buscaDatas].serie}
+            editora={origens[buscaDatas].editora}
             edicoesTexto={origens[buscaDatas].edicoesTexto}
             jaTemCapa={!!(temCapaSerie && temCapaSerie(chaveSerie(origens[buscaDatas].serie)))}
             podeRenomear
@@ -8593,7 +8594,7 @@ function Acervo() {
       for (const w of WIKIS) candidatos.push({ wiki: w, pagina: "Category:" + nome });
     }
     try {
-      const vols = await volumesDaWiki(nome);
+      const vols = await volumesDaWiki(nome, { editora: (series.find((x) => x.id === md.id) || {}).editora });
       const exatos = vols.filter((v) => semAcento(v.rot) === semAcento(nome));
       candidatos.push(...exatos, ...vols.filter((v) => !exatos.includes(v)));
     } catch (e) { /* segue com o que houver */ }
@@ -8833,7 +8834,7 @@ function Acervo() {
       for (const w of WIKIS) candidatos.push({ wiki: w, pagina: "Category:" + se.nome, rot: se.nome });
     }
     try {
-      const vols = await volumesDaWiki(se.nome);
+      const vols = await volumesDaWiki(se.nome, { editora: se.editora });
       const exato = vols.filter((v) => semAcento(v.rot) === semAcento(se.nome));
       candidatos.push(...exato, ...vols.filter((v) => !exato.includes(v)));
     } catch (e) { /* segue com o que houver */ }
@@ -11793,11 +11794,11 @@ const textoParaOrigens = (txt) => {
    devolve erro e a resposta sai sem o cabeçalho de CORS, o que o navegador
    relata como bloqueio. São reservas, então a falha não impede nada; só
    não pode escapar como erro solto no console. */
-async function tentarParse(wiki, pagina, extra = "prop=text") {
+async function tentarParse(wiki, pagina, extra = "prop=text", sinal) {
   try {
     const url = wiki.base + "?action=parse&page=" + encodeURIComponent(pagina)
       + "&" + extra + "&format=json&origin=*";
-    const r = await fetch(url, { mode: "cors", credentials: "omit" });
+    const r = await fetch(url, { mode: "cors", credentials: "omit", signal: sinal });
     if (!r.ok) return null;
     const d = await r.json();
     if (d.error) return null;
@@ -11808,59 +11809,100 @@ async function tentarParse(wiki, pagina, extra = "prop=text") {
 }
 
 /* ── freio nas consultas ao Fandom ────────────────────────────
-   O DC Database limita o volume: aceita uma rajada e depois recusa por
-   alguns minutos. A recusa vem sem permissão de origem, e o navegador a
-   relata como "Failed to fetch" — foi o que parou tudo depois de duas
-   séries. Aqui toda consulta ao Fandom passa por um ponto só: espaçadas
-   entre si, e repetidas com espera crescente quando recusadas. */
+   O Fandom (DC, Marvel, Image e Dark Horse Database) limita o volume por
+   endereço: aceita uma rajada e depois recusa (429) por alguns minutos. A
+   recusa vem sem permissão de origem, e o navegador a mostra como erro de
+   CORS. Toda consulta ao Fandom passa por aqui:
+   - em fila, espaçadas entre si;
+   - uma recusa pausa a fila inteira — 20 s, depois 1 min, depois 3 min se
+     continuar recusando — e cada consulta tenta de novo UMA vez, depois da
+     pausa. Antes eram três novas tentativas por consulta: com dezenas na
+     fila, uma recusa virava minutos de erros mesmo depois de você desistir;
+   - quem passa um "signal" (a janela de busca de datas) pode cancelar: ao
+     fechar a janela, o que ela deixou na fila sai sem ir à rede. */
 const _fetchOriginal = window.fetch.bind(window);
 let _proximaWiki = 0;
-let _freioAte = 0;          // depois de uma recusa, todos esperam juntos
-const ESPACO_WIKI = 350;    // ms entre consultas: ~3 por segundo
-const ESPERAS = [4000, 12000, 30000];
+let _pausaWiki = 0;            // até quando a fila está parada por uma recusa
+let _recusasSeguidas = 0;      // a pausa cresce se as recusas continuam
+const ESPACO_WIKI = 500;       // ms entre consultas: 2 por segundo
+const PAUSAS_WIKI = [20000, 60000, 180000];
 
 const dormir = (ms) => new Promise((r) => setTimeout(r, ms));
+const erroCancelada = () => new DOMException("consulta cancelada", "AbortError");
+
+function recusaDoFandom() {
+  const agora = Date.now();
+  if (agora < _pausaWiki) return;   // recusas da mesma rajada contam uma vez só
+  const ms = PAUSAS_WIKI[Math.min(_recusasSeguidas, PAUSAS_WIKI.length - 1)];
+  _recusasSeguidas++;
+  _pausaWiki = agora + ms;
+  if (typeof window.__avisoFreio === "function") {
+    window.__avisoFreio(`O Fandom pediu uma pausa por excesso de consultas. Tentando de novo em ${ms >= 60000 ? `${ms / 60000} min` : `${ms / 1000} s`}…`);
+  }
+}
+
+// espera a vez na fila; durante uma pausa, confere o cancelamento a cada segundo
+async function vezNoFandom(sinal) {
+  for (;;) {
+    if (sinal && sinal.aborted) throw erroCancelada();
+    const agora = Date.now();
+    if (agora < _pausaWiki) { await dormir(Math.min(_pausaWiki - agora, 1000)); continue; }
+    const vez = Math.max(agora, _proximaWiki);
+    _proximaWiki = vez + ESPACO_WIKI;
+    if (vez > agora) await dormir(vez - agora);
+    if (sinal && sinal.aborted) throw erroCancelada();
+    if (Date.now() < _pausaWiki) continue;   // começou uma pausa enquanto esperava
+    return;
+  }
+}
 
 window.fetch = async (entrada, opcoes) => {
   const url = String((entrada && entrada.url) || entrada || "");
   if (!/\.fandom\.com\//.test(url)) return _fetchOriginal(entrada, opcoes);
+  const sinal = opcoes && opcoes.signal;
 
-  /* "action=parse" pede ao Fandom que desenhe a página inteira — para a
-     categoria da Hellblazer, trezentos links. É a consulta mais pesada do
-     app, e o 503 dela significa "caro demais agora", não "tente de novo".
-     Repeti-la quatro vezes, com o freio travando tudo por até 46 segundos,
-     era o que transformava uma falha inofensiva numa tempestade. Uma
-     tentativa só, sem acionar o freio: quem chama já sabe seguir sem ela. */
+  /* "action=parse" pede ao Fandom que desenhe a página inteira — a consulta
+     mais pesada do app. Ela falha sozinha em categorias grandes (503 sem
+     CORS), e isso significa "caro demais", não "pare tudo": uma tentativa,
+     e só um 429 legível pausa a fila. */
   if (/[?&]action=parse\b/.test(url)) {
-    const agora = Date.now();
-    const vez = Math.max(agora, _proximaWiki, _freioAte);
-    _proximaWiki = vez + ESPACO_WIKI;
-    if (vez > agora) await dormir(vez - agora);
-    return _fetchOriginal(entrada, opcoes);
+    await vezNoFandom(sinal);
+    const r = await _fetchOriginal(entrada, opcoes);
+    if (r.status === 429) recusaDoFandom();
+    return r;
   }
 
-  for (let tentativa = 0; tentativa <= ESPERAS.length; tentativa++) {
-    // cada chamada reserva a própria vez, então rajadas paralelas também se espaçam
-    const agora = Date.now();
-    const vez = Math.max(agora, _proximaWiki, _freioAte);
-    _proximaWiki = vez + ESPACO_WIKI;
-    if (vez > agora) await dormir(vez - agora);
-
+  for (let tentativa = 0; tentativa < 2; tentativa++) {
+    await vezNoFandom(sinal);
+    let r = null;
     try {
-      const r = await _fetchOriginal(entrada, opcoes);
-      if (r.status === 429 || r.status === 503) throw new Error("limite");
-      return r;
+      r = await _fetchOriginal(entrada, opcoes);
     } catch (e) {
-      if (tentativa === ESPERAS.length) {
-        throw new Error("O DC Database não está respondendo — provavelmente limitou as consultas por excesso. Espere alguns minutos e tente de novo.");
-      }
-      _freioAte = Date.now() + ESPERAS[tentativa];
-      if (typeof window.__avisoFreio === "function") {
-        window.__avisoFreio(`O DC Database pediu uma pausa. Tentando de novo em ${ESPERAS[tentativa] / 1000}s…`);
-      }
+      if (e && e.name === "AbortError") throw e;
+      r = null;   // recusa sem CORS chega como falha de rede
     }
+    if (r && r.status !== 429 && r.status !== 503) { _recusasSeguidas = 0; return r; }
+    recusaDoFandom();
   }
+  throw new Error("O Fandom limitou as consultas por excesso. Espere alguns minutos e tente de novo.");
 };
+
+/* Base de cada editora original. Com a editora preenchida, a busca começa
+   só na base dela — procurar "The Flash" na Marvel, na Image e na Dark
+   Horse gastava consultas à toa e ajudava a esgotar o limite do Fandom. */
+const EDITORAS_DAS_WIKIS = {
+  dc: ["dc", "vertigo", "wildstorm", "black label", "milestone", "zuda", "helix", "minx", "jinx"],
+  marvel: ["marvel", "epic", "icon", "max", "star comics", "malibu"],
+  image: ["image", "skybound", "top cow", "shadowline"],
+  darkhorse: ["dark horse"],
+};
+function wikisPorEditora(editora) {
+  const e = semAcento(String(editora || "")).trim();
+  if (!e) return [];
+  return Object.entries(EDITORAS_DAS_WIKIS)
+    .filter(([, nomes]) => nomes.some((n) => e === n || e.startsWith(n + " ") || e.includes(n + " comics")))
+    .map(([id]) => id);
+}
 
 const WIKIS = [
   { id: "dc", rot: "DC", base: "https://dc.fandom.com/api.php", editora: "DC Comics", pais: "Estados Unidos" },
@@ -11887,7 +11929,7 @@ const anoDoNome = (n) => {
   return m ? Number(m[1]) : null;
 };
 
-async function anosDosVolumes(cands) {
+async function anosDosVolumes(cands, sinal) {
   const fora = new Map();
   const porWiki = new Map();
   for (const v of cands) {
@@ -11899,7 +11941,7 @@ async function anosDosVolumes(cands) {
     try {
       const url = wiki.base + "?action=query&prop=revisions&rvprop=content&rvslots=main&titles="
         + encodeURIComponent(titulos.slice(0, 50).join("|")) + "&format=json&formatversion=2&origin=*";
-      const r = await fetch(url, { mode: "cors", credentials: "omit" });
+      const r = await fetch(url, { mode: "cors", credentials: "omit", signal: sinal });
       if (!r.ok) continue;
       const d = await r.json();
       for (const pg of (d.query && d.query.pages) || []) {
@@ -11971,11 +12013,12 @@ const paginasDeEdicaoUnica = (pagina) => {
 
 /* Lê as edições de uma página e, se ela vier vazia ou não existir, tenta as
    alternativas na ordem. Devolve também qual página respondeu. */
-async function edicoesComReserva(wiki, pagina, alvos, reservas) {
+async function edicoesComReserva(wiki, pagina, alvos, reservas, sinal) {
   let primeiroErro = null;
   for (const p of [pagina, ...(reservas || [])].filter(Boolean)) {
+    if (sinal && sinal.aborted) throw erroCancelada();
     try {
-      const eds = await edicoesDaWiki(wiki, p, alvos);
+      const eds = await edicoesDaWiki(wiki, p, alvos, sinal);
       if (eds && (eds.numeros.length || eds.datas.length)) return { eds, pagina: p };
     } catch (e) { if (!primeiroErro) primeiroErro = e; }
   }
@@ -11983,7 +12026,7 @@ async function edicoesComReserva(wiki, pagina, alvos, reservas) {
   return null;
 }
 
-async function volumesDaWiki(nome) {
+async function volumesDaWiki(nome, { editora, sinal } = {}) {
   const link = paginaDoLink(nome);
   if (link) {
     const cat = categoriaDaEdicao(link.titulo);
@@ -11999,6 +12042,7 @@ async function volumesDaWiki(nome) {
   const nomes = variacoesDoNome(nome);
   if (!nomes.length) return [];
   const achados = new Map();
+  const opc = { mode: "cors", credentials: "omit", signal: sinal };
 
   /* Guarda também a página que deu origem à categoria. Especiais e
      one-shots costumam não ter categoria de volume: sem essa reserva, o app
@@ -12014,7 +12058,8 @@ async function volumesDaWiki(nome) {
     achados.set(chave, { wiki: w, pagina, rot: pagina.replace(/^Category:/, ""), reserva: reserva || "" });
   };
 
-  await Promise.all(WIKIS.map(async (w) => {
+  const buscarEm = async (w) => {
+    if (sinal && sinal.aborted) return;
     /* 0) Antes de buscar por texto, pergunta direto se as páginas existem.
        A busca do MediaWiki erra com dois-pontos no título — "The
        Multiversity: The Just" não aparecia —, enquanto a checagem por
@@ -12027,7 +12072,7 @@ async function volumesDaWiki(nome) {
       }
       const url = `${w.base}?action=query&titles=${encodeURIComponent([...new Set(candidatos)].slice(0, 50).join("|"))}`
         + `&format=json&formatversion=2&origin=*`;
-      const r = await fetch(url, { mode: "cors", credentials: "omit" });
+      const r = await fetch(url, opc);
       if (r.ok) {
         const d = await r.json();
         const existem = ((d.query && d.query.pages) || []).filter((pg) => !pg.missing).map((pg) => pg.title);
@@ -12044,16 +12089,17 @@ async function volumesDaWiki(nome) {
           }
         }
       }
-    } catch (e) { /* segue para a busca por texto */ }
+    } catch (e) { if (sinal && sinal.aborted) return; /* segue para a busca por texto */ }
 
     if (achados.size) return;
 
     for (const n of nomes) {
+      if (sinal && sinal.aborted) return;
       // 1) procura a categoria do volume
       try {
         const url = `${w.base}?action=query&list=search&srsearch=${encodeURIComponent("Category:" + n + " Vol")}`
           + `&srnamespace=14&srlimit=10&format=json&origin=*`;
-        const r = await fetch(url, { mode: "cors", credentials: "omit" });
+        const r = await fetch(url, opc);
         if (r.ok) {
           const d = await r.json();
           ((d.query && d.query.search) || []).forEach((x) => registrar(w, x.title));
@@ -12068,7 +12114,7 @@ async function volumesDaWiki(nome) {
       try {
         const url = `${w.base}?action=query&list=search&srsearch=${encodeURIComponent(n + " Vol 1 1")}`
           + `&srnamespace=0&srlimit=10&format=json&origin=*`;
-        const r = await fetch(url, { mode: "cors", credentials: "omit" });
+        const r = await fetch(url, opc);
         if (r.ok) {
           const d = await r.json();
           ((d.query && d.query.search) || []).forEach((x) => {
@@ -12085,7 +12131,7 @@ async function volumesDaWiki(nome) {
       try {
         const url = `${w.base}?action=query&list=search&srsearch=${encodeURIComponent(n)}`
           + `&srnamespace=0&srlimit=6&format=json&origin=*`;
-        const r = await fetch(url, { mode: "cors", credentials: "omit" });
+        const r = await fetch(url, opc);
         if (r.ok) {
           const d = await r.json();
           const alvo = semAcento(n);
@@ -12100,7 +12146,17 @@ async function volumesDaWiki(nome) {
 
       if (achados.size) break;
     }
-  }));
+  };
+
+  /* Com a editora original conhecida, só a base dela; as outras entram
+     apenas se nada aparecer ali (editora preenchida errada, por exemplo). */
+  const preferidas = WIKIS.filter((w) => wikisPorEditora(editora).includes(w.id));
+  if (preferidas.length) {
+    await Promise.all(preferidas.map(buscarEm));
+    if (!achados.size) await Promise.all(WIKIS.filter((w) => !preferidas.includes(w)).map(buscarEm));
+  } else {
+    await Promise.all(WIKIS.map(buscarEm));
+  }
 
   return [...achados.values()];
 }
@@ -12170,7 +12226,7 @@ async function numerosDoHtmlDaCategoria(wiki, pagina) {
   return [...fora];
 }
 
-async function edicoesDaWiki(wiki, pagina, alvos) {
+async function edicoesDaWiki(wiki, pagina, alvos, sinal) {
   const base = String(pagina).replace(/^Category:/, "");
 
   /* Alguns especiais não têm volume nem número no título: a página é só
@@ -12179,7 +12235,7 @@ async function edicoesDaWiki(wiki, pagina, alvos) {
   if (!/^Category:/i.test(pagina)) {
     const url = wiki.base + "?action=query&prop=revisions&rvprop=content&rvslots=main&titles="
       + encodeURIComponent(pagina) + "&format=json&formatversion=2&origin=*";
-    const r = await fetch(url, { mode: "cors", credentials: "omit" });
+    const r = await fetch(url, { mode: "cors", credentials: "omit", signal: sinal });
     if (!r.ok) throw new Error("a página não respondeu (" + r.status + ")");
     const d = await r.json();
     const pg = ((d.query && d.query.pages) || [])[0] || {};
@@ -12190,7 +12246,7 @@ async function edicoesDaWiki(wiki, pagina, alvos) {
       // reserva: a frase de abertura do texto renderizado
       try {
         const r2 = await fetch(wiki.base + "?action=parse&page=" + encodeURIComponent(pagina)
-          + "&prop=text&format=json&formatversion=2&origin=*", { mode: "cors", credentials: "omit" });
+          + "&prop=text&format=json&formatversion=2&origin=*", { mode: "cors", credentials: "omit", signal: sinal });
         if (r2.ok) {
           const d2 = await r2.json();
           const texto = ((d2.parse && d2.parse.text) || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
@@ -12220,7 +12276,7 @@ async function edicoesDaWiki(wiki, pagina, alvos) {
       const url = wiki.base + "?action=query&list=categorymembers&cmtitle=" + encodeURIComponent(pagina)
         + "&cmnamespace=0&cmlimit=500&format=json&formatversion=2&origin=*"
         + (continuar ? "&cmcontinue=" + encodeURIComponent(continuar) : "");
-      const r = await fetch(url, { mode: "cors", credentials: "omit" });
+      const r = await fetch(url, { mode: "cors", credentials: "omit", signal: sinal });
       if (!r.ok) break;
       const d = await r.json();
       titulos = titulos.concat(((d.query && d.query.categorymembers) || []).map((x) => x.title));
@@ -12250,7 +12306,7 @@ async function edicoesDaWiki(wiki, pagina, alvos) {
     try {
       const url = wiki.base + "?action=query&titles=" + encodeURIComponent(sonda.join("|"))
         + "&format=json&formatversion=2&origin=*";
-      const r = await fetch(url, { mode: "cors", credentials: "omit" });
+      const r = await fetch(url, { mode: "cors", credentials: "omit", signal: sinal });
       if (r.ok) {
         const d = await r.json();
         edicoes = ((d.query && d.query.pages) || [])
@@ -12272,7 +12328,7 @@ async function edicoesDaWiki(wiki, pagina, alvos) {
     const url = wiki.base + "?action=query&prop=revisions&rvprop=content&rvslots=main&titles="
       + encodeURIComponent(lote.map((x) => x.titulo).join("|")) + "&format=json&formatversion=2&origin=*";
     try {
-      const r = await fetch(url, { mode: "cors", credentials: "omit" });
+      const r = await fetch(url, { mode: "cors", credentials: "omit", signal: sinal });
       if (!r.ok) continue;
       const d = await r.json();
       const porTitulo = new Map(lote.map((x) => [x.titulo, x.n]));
@@ -12293,7 +12349,7 @@ async function edicoesDaWiki(wiki, pagina, alvos) {
       try {
         const url = wiki.base + "?action=parse&page=" + encodeURIComponent(e.titulo)
           + "&prop=text&format=json&formatversion=2&origin=*";
-        const r = await fetch(url, { mode: "cors", credentials: "omit" });
+        const r = await fetch(url, { mode: "cors", credentials: "omit", signal: sinal });
         if (!r.ok) continue;
         const d = await r.json();
         const texto = ((d.parse && d.parse.text) || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
@@ -12334,7 +12390,7 @@ async function edicoesDaWiki(wiki, pagina, alvos) {
       try {
         const url = wiki.base + "?action=query&prop=revisions&rvprop=content&rvslots=main&titles="
           + encodeURIComponent(tituloDe(n)) + "&format=json&formatversion=2&origin=*";
-        const r = await fetch(url, { mode: "cors", credentials: "omit" });
+        const r = await fetch(url, { mode: "cors", credentials: "omit", signal: sinal });
         if (!r.ok) return { n, data: "" };
         const d = await r.json();
         const pg = ((d.query && d.query.pages) || [])[0] || {};
@@ -12371,7 +12427,7 @@ async function edicoesDaWiki(wiki, pagina, alvos) {
   }
 
   // 3) reserva: o texto renderizado da categoria, no formato "#N (Mês, Ano)"
-  const d = await tentarParse(wiki, pagina);
+  const d = await tentarParse(wiki, pagina, "prop=text", sinal);
   if (!d) throw new Error(`não achei edições em “${base}”. Confira o volume, ou cole o endereço da página da edição.`);
   const html = (d.parse && d.parse.text && d.parse.text["*"]) || "";
   const mapa = new Map();
@@ -13916,7 +13972,12 @@ function ImportarLote({ isbnsExistentes, itensExistentes, colecoesExistentes, ao
 /* Escolhe o volume na wiki e traz as datas de capa. A escolha é sua porque
    "Wonder Woman 220" existe em 1975 e em 2005 — o app mostra os volumes e
    você diz qual é, uma vez por série. */
-function ModalDatasWiki({ nomeSerie, edicoesTexto, jaTemCapa, podeRenomear, aoAplicar, aoFechar }) {
+function ModalDatasWiki({ nomeSerie, editora, edicoesTexto, jaTemCapa, podeRenomear, aoAplicar, aoFechar }) {
+  /* Fechou a janela, acabou: o que ela deixou na fila do Fandom é cancelado
+     em vez de continuar consultando (e errando) em segundo plano. */
+  const cancelar = useRef(null);
+  if (!cancelar.current) cancelar.current = new AbortController();
+  useEffect(() => () => cancelar.current.abort(), []);
   const [etapa, setEtapa] = useState("buscando");
   const [volumes, setVolumes] = useState([]);
   const [erro, setErro] = useState("");
@@ -13937,7 +13998,7 @@ function ModalDatasWiki({ nomeSerie, edicoesTexto, jaTemCapa, podeRenomear, aoAp
 
   useEffect(() => {
     let vivo = true;
-    volumesDaWiki(nomeSerie)
+    volumesDaWiki(nomeSerie, { editora, sinal: cancelar.current.signal })
       .then((v) => {
         if (!vivo) return;
         setVolumes(v);
@@ -13948,7 +14009,7 @@ function ModalDatasWiki({ nomeSerie, edicoesTexto, jaTemCapa, podeRenomear, aoAp
            Uma requisição para todos, e a escolha continua sendo sua. */
         const alvo = anoDoNome(nomeSerie);
         if (v.length > 1) {
-          anosDosVolumes(v).then((anos) => {
+          anosDosVolumes(v, cancelar.current.signal).then((anos) => {
             if (!vivo || !anos.size) return;
             const com = v.map((x) => ({ ...x, ano: anos.get(x.rot) || null }));
             if (alvo) {
@@ -13963,7 +14024,7 @@ function ModalDatasWiki({ nomeSerie, edicoesTexto, jaTemCapa, podeRenomear, aoAp
       })
       .catch((e) => { if (vivo) { setErro(String(e.message || e)); setEtapa("erro"); } });
     return () => { vivo = false; };
-  }, [nomeSerie]);
+  }, [nomeSerie, editora]);
 
   const [manual, setManual] = useState("");
 
@@ -14007,7 +14068,7 @@ function ModalDatasWiki({ nomeSerie, edicoesTexto, jaTemCapa, podeRenomear, aoAp
          achou e, por fim, a #1/#0 deduzida do nome — o caminho dos one-shots,
          que antes só funcionava colando o link. */
       const reservas = [v.reserva, ...paginasDeEdicaoUnica(v.pagina)].filter((x) => x && x !== v.pagina);
-      const achou = await edicoesComReserva(v.wiki, v.pagina, meusNums, reservas);
+      const achou = await edicoesComReserva(v.wiki, v.pagina, meusNums, reservas, cancelar.current.signal);
       const eds = achou ? achou.eds : { datas: [], numeros: [] };
       if (!eds.datas.length && !eds.numeros.length) {
         setErro("A página abriu, mas não tinha datas no formato esperado."); setEtapa("erro"); return;
@@ -14656,6 +14717,7 @@ function FormSerie({ serie, capaAtual, aoSalvar, aoFechar, aoAvisar }) {
       {buscando && (
         <ModalDatasWiki
           nomeSerie={serie.nome}
+          editora={serie.editora}
           edicoesTexto=""
           jaTemCapa={!!capaAtual}
           aoFechar={() => setBuscando(false)}
