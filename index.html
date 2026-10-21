@@ -1767,7 +1767,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.28", data: "20/10/2026", nota: "Fandom: pausa única quando ele recusa, busca cancelada ao fechar a janela e só na base da editora original" };
+const VERSAO = { numero: "3.29", data: "21/10/2026", nota: "capas e fichas por ISBN com prazo: fonte lenta não segura mais a tela" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -3160,6 +3160,27 @@ const comoTexto = (v) => {
 };
 const NOME_PROVEDOR = { cbl: "CBL", "mercado-editorial": "Mercado Editorial", "open-library": "Open Library", "google-books": "Google Books" };
 
+/* As bases de livros às vezes travam sem responder, e o navegador só
+   desiste depois de dezenas de segundos ("timed out"). Cada consulta tem
+   prazo: passou, segue sem ela e o relato da busca mostra qual não veio. */
+async function fetchComPrazo(url, ms = 6000) {
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), ms);
+  try {
+    return await fetch(url, { signal: ctl.signal });
+  } catch (e) {
+    if (ctl.signal.aborted) throw new Error(`não respondeu em ${ms / 1000} s`);
+    throw e;
+  } finally {
+    clearTimeout(t);
+  }
+}
+// teto para uma fonte inteira (algumas tentam duas ou três variações do ISBN)
+const comPrazoTotal = (promessa, ms) => Promise.race([
+  promessa,
+  new Promise((_, falha) => setTimeout(() => falha(new Error(`não respondeu em ${ms / 1000} s`)), ms)),
+]);
+
 /* A melhor porta para livro brasileiro: a BrasilAPI consulta a Câmara
    Brasileira do Livro — registro oficial de ISBN daqui, onde Panini e
    JBC registram —, o Mercado Editorial, a Open Library e o Google Books. */
@@ -3169,7 +3190,7 @@ async function viaBrasilApi(isbn, provedores) {
   for (const v of variantesIsbn(isbn)) {
     let d;
     try {
-      const r = await fetch(`https://brasilapi.com.br/api/isbn/v1/${v}${q}`);
+      const r = await fetchComPrazo(`https://brasilapi.com.br/api/isbn/v1/${v}${q}`);
       if (r.status === 404) continue;
       if (!r.ok) { ultimoErro = new Error(`respondeu ${r.status}`); continue; }
       d = await r.json();
@@ -3195,7 +3216,7 @@ async function viaBrasilApi(isbn, provedores) {
 
 async function consultaGoogle(q) {
   for (const extra of ["", "&country=BR"]) {
-    const r = await fetch(`https://www.googleapis.com/books/v1/volumes?maxResults=1${extra}&q=${encodeURIComponent(q)}`);
+    const r = await fetchComPrazo(`https://www.googleapis.com/books/v1/volumes?maxResults=1${extra}&q=${encodeURIComponent(q)}`);
     if (r.status === 429) throw new Error("429");
     if (r.status === 403 && !extra) continue;
     if (!r.ok) throw new Error(`Google Books respondeu ${r.status}`);
@@ -3232,7 +3253,7 @@ async function viaOpenLibrary(isbns) {
   const deOnde = new Map();
   for (const i of isbns) for (const v of variantesIsbn(i)) if (!deOnde.has(v)) deOnde.set(v, i);
   const chaves = [...deOnde.keys()].map((v) => `ISBN:${v}`).join(",");
-  const r = await fetch(`https://openlibrary.org/api/books?bibkeys=${chaves}&format=json&jscmd=data`);
+  const r = await fetchComPrazo(`https://openlibrary.org/api/books?bibkeys=${chaves}&format=json&jscmd=data`, isbns.length > 1 ? 20000 : 6000);
   if (!r.ok) throw new Error(`Open Library respondeu ${r.status}`);
   const d = await r.json();
   const saida = {};
@@ -3257,7 +3278,7 @@ async function viaMercadoEditorial(isbn) {
   for (const v of variantesIsbn(isbn)) {
     let d;
     try {
-      const r = await fetch(`https://api.mercadoeditorial.org/api/v1.2/book?isbn=${v}`);
+      const r = await fetchComPrazo(`https://api.mercadoeditorial.org/api/v1.2/book?isbn=${v}`);
       if (!r.ok) continue;
       d = await r.json();
     } catch (e) { continue; }
@@ -3295,10 +3316,17 @@ async function buscarIsbn(isbn) {
     ["Open Library", async () => (await viaOpenLibrary([isbn]))[isbn]],
     ["Mercado Editorial direto", () => viaMercadoEditorial(isbn)],
   ];
+  /* Antes, uma base por vez: se a primeira travasse, todas esperavam por
+     ela. Agora todas são consultadas juntas, cada uma com prazo, e a ficha
+     é montada na mesma ordem de prioridade de sempre. */
+  const respostas = await Promise.all(fontes.map(([, consultar]) =>
+    comPrazoTotal(consultar(), 9000).then((r) => ({ r }), (erro) => ({ erro }))));
   let ficha = null;
-  for (const [nome, consultar] of fontes) {
+  for (let k = 0; k < fontes.length; k++) {
+    const [nome] = fontes[k];
     try {
-      const r = await consultar();
+      if (respostas[k].erro) throw respostas[k].erro;
+      const r = respostas[k].r;
       if (r && r.titulo) {
         ficha = mesclarRegistros(ficha, r);
         relato.push({ nome, estado: "achou" });
@@ -3330,7 +3358,7 @@ const faltaNaFicha = (r) => (r ? CAMPOS_FICHA.filter((c) => !r[c]) : CAMPOS_FICH
 async function consultaGoogleVarios(q, n = 10, editora) {
   const busca = editora ? `${q} inpublisher:${editora}` : q;
   for (const extra of ["", "&country=BR"]) {
-    const r = await fetch(`https://www.googleapis.com/books/v1/volumes?maxResults=${n}${extra}&q=${encodeURIComponent(busca)}`);
+    const r = await fetchComPrazo(`https://www.googleapis.com/books/v1/volumes?maxResults=${n}${extra}&q=${encodeURIComponent(busca)}`);
     if (r.status === 429) throw new Error("429");
     if (r.status === 403 && !extra) continue;
     if (!r.ok) throw new Error(`Google Books respondeu ${r.status}`);
@@ -3346,7 +3374,7 @@ const isbnDoVolume = (v) => {
 };
 async function viaOpenLibraryBusca(q, n = 10) {
   const campos = "title,author_name,publisher,first_publish_year,number_of_pages_median,isbn,cover_i";
-  const r = await fetch(`https://openlibrary.org/search.json?limit=${n}&fields=${campos}&q=${encodeURIComponent(q)}`);
+  const r = await fetchComPrazo(`https://openlibrary.org/search.json?limit=${n}&fields=${campos}&q=${encodeURIComponent(q)}`);
   if (!r.ok) throw new Error(`Open Library respondeu ${r.status}`);
   const d = await r.json();
   return (d.docs || []).filter((x) => x.title).map((x) =>
@@ -3367,7 +3395,7 @@ async function viaMercadoEditorialPorTitulo(q, editora, n = 12) {
   if (editora) params.set("nome_fantasia_da_editora", editora);
   let d;
   try {
-    const r = await fetch(`https://api.mercadoeditorial.org/api/v1.2/book?${params}`);
+    const r = await fetchComPrazo(`https://api.mercadoeditorial.org/api/v1.2/book?${params}`);
     if (!r.ok) throw new Error(`Mercado Editorial respondeu ${r.status}`);
     d = await r.json();
   } catch (e) { throw e; }
@@ -3406,22 +3434,18 @@ async function buscarPorTitulo(consulta, editora) {
   if (dentroDoClaude()) return { itens: [], bloqueado: true };
   const achados = [];
   const fontes = [];
-  try {
-    const r = await viaMercadoEditorialPorTitulo(consulta, editora);
-    achados.push(...r);
-    fontes.push({ nome: "Mercado Editorial", qtd: r.length });
-  } catch (e) { fontes.push({ nome: "Mercado Editorial", erro: true }); }
-  try {
-    const vs = await consultaGoogleVarios(consulta, 10, editora);
-    const r = vs.map((v) => limparRegistro(doVolume(v), isbnDoVolume(v)));
-    achados.push(...r);
-    fontes.push({ nome: "Google Books", qtd: r.length });
-  } catch (e) { fontes.push({ nome: "Google Books", erro: true }); }
-  try {
-    const r = await viaOpenLibraryBusca(editora ? `${consulta} ${editora}` : consulta);
-    achados.push(...r);
-    fontes.push({ nome: "Open Library", qtd: r.length });
-  } catch (e) { fontes.push({ nome: "Open Library", erro: true }); }
+  // as três juntas, cada uma com prazo; o resultado entra na ordem de sempre
+  const consultas = [
+    ["Mercado Editorial", () => viaMercadoEditorialPorTitulo(consulta, editora)],
+    ["Google Books", async () => (await consultaGoogleVarios(consulta, 10, editora)).map((v) => limparRegistro(doVolume(v), isbnDoVolume(v)))],
+    ["Open Library", () => viaOpenLibraryBusca(editora ? `${consulta} ${editora}` : consulta)],
+  ];
+  const respostas = await Promise.all(consultas.map(([, f]) => comPrazoTotal(f(), 9000).then((r) => ({ r }), () => ({ erro: true }))));
+  consultas.forEach(([nome], k) => {
+    if (respostas[k].erro) { fontes.push({ nome, erro: true }); return; }
+    achados.push(...respostas[k].r);
+    fontes.push({ nome, qtd: respostas[k].r.length });
+  });
 
   const alvo = editora ? semAcento(editora) : null;
   const bateEditora = (a) => !alvo || !a.editora || semAcento(a.editora).includes(alvo);
@@ -3442,6 +3466,15 @@ async function buscarPorTitulo(consulta, editora) {
 /* ══════════════════════════════════════════════════════════════
    PEÇAS DE INTERFACE
    ══════════════════════════════════════════════════════════════ */
+/* Fonte de capa que estoura o prazo duas vezes vai para o fim da fila
+   enquanto o app estiver aberto. Quando o Open Library fica lento, cada
+   capa esperava o navegador desistir dele — dezenas de segundos — antes
+   de tentar a Amazon; agora as primeiras descobrem e as outras nem esperam. */
+const PRAZO_CAPA = 5000;
+const estourosCapa = new Map();
+const hostDaCapa = (u) => { try { return new URL(u).hostname; } catch (e) { return ""; } };
+const capaLenta = (u) => (estourosCapa.get(hostDaCapa(u)) || 0) >= 2;
+
 function Capa({ item, src }) {
   // Open Library primeiro: com ?default=false ela falha limpo (404) quando
   // não tem a capa. A Amazon, quando não tem, devolve uma imagem "sem capa"
@@ -3450,22 +3483,58 @@ function Capa({ item, src }) {
   const candidatas = useMemo(() => {
     const base = candidatasCapa(item, src);
     // base64 já salvo não passa pelo filtro de http, mas é o que vale mais
-    if (typeof src === "string" && src.startsWith("data:")) return [src, ...base];
-    return base;
+    const lista = typeof src === "string" && src.startsWith("data:") ? [src, ...base] : base;
+    // as fontes que andaram travando vão para o fim, sem mudar a ordem das outras
+    return [...lista.filter((u) => !capaLenta(u)), ...lista.filter((u) => capaLenta(u))];
   }, [src, item && item.isbn]);
 
   const [n, setN] = useState(0);
+  const [carregada, setCarregada] = useState("");
+  const [visivel, setVisivel] = useState(false);
+  const imgRef = useRef(null);
   const assinatura = candidatas.join("|");
   useEffect(() => setN(0), [assinatura]);
 
-  const atual = candidatas[n];
+  /* A ordem foi decidida quando a capa montou; se nesse meio-tempo a fonte
+     da vez entrou na lista das lentas, pula para a próxima que não está. */
+  let idx = n;
+  while (idx < candidatas.length - 1 && capaLenta(candidatas[idx]) && candidatas.slice(idx + 1).some((u) => !capaLenta(u))) idx++;
+  const atual = candidatas[idx];
+
+  // o prazo só corre para capa na tela: com loading="lazy", a de fora nem começou a baixar
+  useEffect(() => {
+    if (visivel) return;
+    const el = imgRef.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") { setVisivel(true); return; }
+    const ob = new IntersectionObserver((es) => {
+      if (es.some((e) => e.isIntersecting)) { setVisivel(true); ob.disconnect(); }
+    }, { rootMargin: "200px" });
+    ob.observe(el);
+    return () => ob.disconnect();
+  }, [visivel, atual]);
+
+  // não carregou no prazo: passa para a próxima fonte (a última espera o quanto precisar)
+  useEffect(() => {
+    if (!visivel || !atual || carregada === atual || /^data:/.test(atual) || idx >= candidatas.length - 1) return;
+    const el = imgRef.current;
+    if (el && el.complete && el.naturalWidth) return;
+    const t = setTimeout(() => {
+      const h = hostDaCapa(atual);
+      estourosCapa.set(h, (estourosCapa.get(h) || 0) + 1);
+      setN((k) => Math.max(k, idx + 1));
+    }, PRAZO_CAPA);
+    return () => clearTimeout(t);
+  }, [visivel, atual, carregada, idx, candidatas]);
+
   if (atual) {
     return (
       <img
+        ref={imgRef}
         src={atual}
         alt=""
         loading="lazy"
-        onError={() => setN((k) => k + 1)}
+        onError={() => setN((k) => Math.max(k, idx + 1))}
         // capa "genérica" (sem imagem de verdade) costuma vir pequena e/ou
         // quadrada — bem diferente de uma capa de livro real, que é vertical
         // e maior. Qualquer imagem fora desse formato é tratada como quebrada.
@@ -3473,7 +3542,8 @@ function Capa({ item, src }) {
           const { naturalWidth: w, naturalHeight: h } = e.target;
           const pequena = w < 50 || h < 50;
           const naoEhVertical = h < w * 1.15; // capa de livro é sempre mais alta que larga
-          if (pequena || naoEhVertical) setN((k) => k + 1);
+          if (pequena || naoEhVertical) setN((k) => Math.max(k, idx + 1));
+          else setCarregada(atual);
         }}
       />
     );
