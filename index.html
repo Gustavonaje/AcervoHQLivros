@@ -712,6 +712,35 @@ const CSS = `
 .grupo-pe span{display:inline-flex;align-items:center;gap:3px;}
 .card-serie.no-grupo{border-left:2px solid rgba(242,179,61,.45);}
 
+/* ---------- grupos de coleções (v3.31) ---------- */
+.gc-pilha{position:relative;margin:7px 14px 0 0;}
+.gc-pilha .gc-frente{z-index:3;}
+.gc-pilha .gc-tras{position:absolute;inset:0;z-index:1;opacity:.5;transform:translate(14px,-8px) rotate(4.5deg);transition:.22s cubic-bezier(.2,.8,.3,1);}
+.gc-pilha .gc-tras.t1{z-index:2;opacity:.8;transform:translate(7px,-4px) rotate(2.2deg);}
+.card-grupo-col:hover .gc-tras{transform:translate(18px,-11px) rotate(6deg);}
+.card-grupo-col:hover .gc-tras.t1{transform:translate(9px,-6px) rotate(3deg);}
+.card-grupo-col.aberto .gc-frente{border-color:var(--amarelo);}
+.gc-qtd{position:absolute;left:7px;top:7px;z-index:2;min-width:24px;height:24px;padding:0 6px;box-sizing:border-box;border-radius:12px;
+  background:rgba(20,17,32,.88);border:1px solid var(--amarelo);color:var(--amarelo);font-family:var(--mono);font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;}
+.gc-prog{height:4px;margin-top:5px;border-radius:2px;background:var(--tinta3);overflow:hidden;}
+.gc-prog i{display:block;height:100%;background:var(--amarelo);}
+.gc-resumo{color:#C9C1DC;}
+.cl-faixa{grid-column:1 / -1;display:flex;flex-direction:column;gap:16px;padding:16px 18px 20px;border-radius:14px;
+  background:#19152B;border:1px solid rgba(242,179,61,.35);}
+.cl-faixa-cab{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;}
+.cl-faixa-cab h3{margin:0;font-family:var(--disp);font-size:18px;font-weight:700;}
+.cl-faixa-cab em{font-style:normal;font-family:var(--mono);font-size:12px;color:#8A82A3;}
+.cl-faixa-cab p{flex-basis:100%;margin:0;font-size:13px;color:var(--papel2);}
+.cl-faixa-grade{display:grid;gap:26px 18px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
+@media (max-width:760px){
+  .gc-pilha{margin:5px 9px 0 0;}
+  .gc-pilha .gc-tras{transform:translate(9px,-5px) rotate(4deg);}
+  .gc-pilha .gc-tras.t1{transform:translate(4px,-2px) rotate(2deg);}
+  .cl-faixa{padding:12px 10px 14px;}
+  .cl-faixa-grade{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:16px 10px;}
+}
+
 /* ── leque: grupo de séries e série de lançamentos ─────────────
    Ao passar o mouse, 1 a 4 capas de outras séries do grupo saem de trás
    da capa principal, abertas como cartas. Só visual: o clique continua
@@ -1767,7 +1796,7 @@ const ORDENS = [
 /* Versão do arquivo. A data é a da última alteração; o número sobe a cada
    entrega. Serve para você saber qual cópia está aberta quando houver mais
    de uma na pasta de downloads. */
-const VERSAO = { numero: "3.30", data: "21/10/2026", nota: "Fandom: aviso diz o que se sabe (recusou ou não foi alcançado) e a primeira pausa é de 8 s" };
+const VERSAO = { numero: "3.31", data: "03/11/2026", nota: "grupos de coleções (Novos 52, Absolute…) e capítulos digitais fora da numeração das séries" };
 
 const CHAVE = "acervo:v2:dados";
 const CHAVE_V1 = "acervo:v1:itens";
@@ -7500,6 +7529,195 @@ function JaSaiuFaltaComprar({ lista, lac, aberto, aoAlternar, aoAbrirColecao, ao
   );
 }
 
+/* ─── grupos de coleções ───
+   Só organização da aba Coleções: o grupo é um nome guardado na própria
+   coleção (col.grupo) — vai junto para a nuvem e para o backup. Um nível
+   só, e cada coleção em um grupo. Na ordem por situação o grupo se divide
+   pelas seções: cada coleção continua onde a situação dela manda, e o
+   grupo aparece em cada seção com as que estão lá. */
+const grupoDaCol = (c) => String((c && c.grupo) || "").trim();
+
+// a mesma capa que o card da coleção mostra: a dela ou a do primeiro volume
+function capaDaColecao(col, e, capaDe) {
+  const src = capaDe(col) || [...e.naEstante, ...e.membros]
+    .sort((a, b) => (a.volume ?? 999) - (b.volume ?? 999))
+    .map((i) => capaDe(i))
+    .find(Boolean) || "";
+  const primeiro = e.membros.length ? e.membros[0] : { titulo: col.nome, autor: "" };
+  return { item: { ...primeiro, titulo: col.nome }, src };
+}
+
+const NOME_SIT_COL = { anda: "em andamento", lac: "com lacunas", comp: "completas", outras: "outras" };
+function resumoDoGrupo(membros, porId) {
+  const n = { anda: 0, lac: 0, comp: 0, outras: 0 };
+  let emDia = 0, comFalta = 0, faltamLanc = 0;
+  for (const c of membros) {
+    const x = porId.get(c.id);
+    const g = x ? x.grupo : "outras";
+    n[g]++;
+    if (g === "anda") { if (x.selo.cls === "falta") comFalta++; else emDia++; }
+    if (g === "lac") faltamLanc += x.rel.length;
+  }
+  const partes = [];
+  if (n.anda) partes.push(comFalta ? `${emDia ? `${emDia} em dia · ` : ""}${comFalta} com falta` : `${emDia} em dia`);
+  if (n.lac) partes.push(n.anda || n.comp ? `${n.lac} com lacunas` : `faltam ${faltamLanc} já ${faltamLanc === 1 ? "lançado" : "lançados"}`);
+  if (n.comp) partes.push(`${n.comp} ${n.comp === 1 ? "completa" : "completas"}`);
+  if (n.outras) partes.push(`${n.outras} ${n.outras === 1 ? "outra" : "outras"}`);
+  return partes.join(" · ");
+}
+
+function CardGrupoColecao({ nome, membros, todos, porId, itens, capaDe, aberto, indice, aoAlternar, aoEditar,
+  arrastavel, arrastando, alvo, aoArrastarInicio, aoArrastarSobre, aoSairDoAlvo, aoSoltar, aoArrastarFim }) {
+  const capas = membros.slice(0, 3).map((c) => capaDaColecao(c, (porId.get(c.id) || {}).e || estadoColecao(c, itens), capaDe));
+  let tenho = 0, total = 0;
+  for (const c of membros) {
+    const e = (porId.get(c.id) || {}).e;
+    if (e && e.total > 0) { tenho += e.tenho.size; total += e.total; }
+  }
+  const parcial = membros.length < todos.length;
+  return (
+    <button
+      className={`card card-grupo-col ${aberto ? "aberto" : ""} ${arrastando ? "arrastando" : ""} ${alvo ? "alvo-solta" : ""}`}
+      onClick={aoAlternar}
+      aria-expanded={aberto}
+      style={{ animationDelay: `${Math.min(indice, 24) * 22}ms` }}
+      draggable={!!arrastavel}
+      onDragStart={arrastavel ? (ev) => {
+        ev.dataTransfer.effectAllowed = "move";
+        try { ev.dataTransfer.setData("text/plain", "grupo:" + nome); } catch {}
+        aoArrastarInicio();
+      } : undefined}
+      onDragOver={arrastavel ? (ev) => { ev.preventDefault(); ev.dataTransfer.dropEffect = "move"; aoArrastarSobre(); } : undefined}
+      onDragLeave={arrastavel ? aoSairDoAlvo : undefined}
+      onDrop={arrastavel ? (ev) => { ev.preventDefault(); ev.stopPropagation(); aoSoltar(); } : undefined}
+      onDragEnd={arrastavel ? aoArrastarFim : undefined}
+    >
+      {arrastavel && (
+        <span className="alca-arrasto" title="Arraste para mover o grupo inteiro">
+          <GripVertical size={14} />
+        </span>
+      )}
+      <div className="gc-pilha">
+        {capas.slice(1).reverse().map((c, i) => (
+          <div key={i} className={`card-capa gc-tras t${capas.length - 1 - i}`} aria-hidden="true">
+            <Capa item={c.item} src={c.src} />
+          </div>
+        ))}
+        <div className="card-capa gc-frente">
+          {capas[0] && <Capa item={capas[0].item} src={capas[0].src} />}
+          <span className="capa-vinco" />
+          <span className="gc-qtd">{membros.length}</span>
+        </div>
+      </div>
+      <div>
+        <div className="card-titulo" title={nome}>{nome}</div>
+        <div className="card-sub">
+          <b className="selo-grupo">grupo</b>
+          {parcial ? `${membros.length} de ${todos.length} coleções` : `${todos.length} ${todos.length === 1 ? "coleção" : "coleções"}`}
+        </div>
+        {total > 0 && (
+          <>
+            <div className="card-sub">{tenho} de {total} volumes</div>
+            <div className="gc-prog" aria-hidden="true"><i style={{ width: `${Math.round((tenho / total) * 100)}%` }} /></div>
+          </>
+        )}
+        <div className="card-status gc-resumo"><span>{resumoDoGrupo(membros, porId)}</span></div>
+        <div className="grupo-pe">
+          <span>
+            <ChevronDown size={11} style={{ transform: aberto ? "none" : "rotate(-90deg)", opacity: .6 }} />
+            {aberto ? "recolher" : "abrir"}
+          </span>
+          <span className="btn-mini-link" onClick={(e) => { e.stopPropagation(); aoEditar(); }}>
+            <Pencil size={10} /> editar
+          </span>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function FormGrupoColecao({ inicial, colecoes, porId, aoSalvar, aoDesfazer, aoFechar, aoAvisar }) {
+  const original = inicial.nome || "";
+  const [nome, setNome] = useState(original);
+  const [escolhidas, setEscolhidas] = useState(() => new Set(colecoes.filter((c) => original && grupoDaCol(c) === original).map((c) => c.id)));
+  const [busca, setBusca] = useState("");
+  const q = semAcento(busca.trim());
+  const outros = useMemo(() => new Set(colecoes.map(grupoDaCol).filter((g) => g && g !== original)), [colecoes, original]);
+  const lista = useMemo(() => {
+    const base = [...colecoes].sort((a, b) => {
+      const ma = escolhidas.has(a.id), mb = escolhidas.has(b.id);
+      if (ma !== mb) return ma ? -1 : 1;
+      return a.nome.localeCompare(b.nome, "pt-BR");
+    });
+    return q ? base.filter((c) => semAcento(c.nome).includes(q) || semAcento(grupoDaCol(c)).includes(q)) : base;
+  }, [colecoes, q, escolhidas]);
+  const alternar = (id) => setEscolhidas((p) => { const n = new Set(p); if (n.has(id)) n.delete(id); else n.add(id); return n; });
+  const juntaCom = nome.trim() && outros.has(nome.trim());
+  return (
+    <Modal
+      titulo={original ? `Editar grupo “${original}”` : "Novo grupo de coleções"}
+      aoFechar={aoFechar}
+      protegido
+      estreita
+      rodape={
+        <>
+          <button
+            className="btn btn-primario"
+            onClick={() => {
+              if (!nome.trim()) return aoAvisar("Dê um nome ao grupo.");
+              if (!escolhidas.size) return aoAvisar("Marque ao menos uma coleção.");
+              aoSalvar({ original, nome: nome.trim(), ids: [...escolhidas] });
+            }}
+          >
+            <Check size={15} /> Salvar grupo
+          </button>
+          <button className="btn" onClick={aoFechar}>Cancelar</button>
+          {original && (
+            <button className="btn btn-perigo" onClick={() => aoDesfazer(original)} style={{ marginLeft: "auto" }}>
+              <Trash2 size={14} /> Desfazer grupo
+            </button>
+          )}
+        </>
+      }
+    >
+      <div className="campo largo" style={{ marginBottom: 14 }}>
+        <label>Nome do grupo</label>
+        <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Novos 52, Renascimento, Absolute…" autoFocus />
+        <span className="dica">
+          {juntaCom
+            ? "Já existe um grupo com esse nome: as coleções marcadas entram nele."
+            : "É só organização da aba Coleções. Desfazer o grupo não apaga nenhuma coleção."}
+        </span>
+      </div>
+      <div className="campo largo">
+        <label>Coleções do grupo ({escolhidas.size})</label>
+        <input value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="filtrar por nome…" />
+      </div>
+      <div className="lt-escolha">
+        {lista.map((c) => {
+          const outro = grupoDaCol(c) && grupoDaCol(c) !== original ? grupoDaCol(c) : "";
+          const e = (porId.get(c.id) || {}).e;
+          return (
+            <button
+              key={c.id}
+              className={`lt-op ${escolhidas.has(c.id) ? "on" : ""}`}
+              onClick={() => alternar(c.id)}
+              aria-pressed={escolhidas.has(c.id)}
+              title={outro ? `hoje está no grupo “${outro}” — marcando aqui, ela sai de lá` : c.nome}
+            >
+              <i />
+              <b title={c.nome}>{c.nome}</b>
+              {outro && <em style={{ color: "var(--amarelo)" }}>em {outro}</em>}
+              <small>{e && e.total > 0 ? `${e.tenho.size} de ${e.total}` : c.tipo === "serie" ? "sem total" : "temática"}</small>
+            </button>
+          );
+        })}
+        {!lista.length && <p className="dica">Nenhuma coleção com esse nome.</p>}
+      </div>
+    </Modal>
+  );
+}
+
 function CardColecao({ col, itens, sit, capaDe, aoAbrir, indice, arrastavel, arrastando, alvo, aoArrastarInicio, aoArrastarSobre, aoSairDoAlvo, aoSoltar, aoArrastarFim }) {
   const e = sit ? sit.e : estadoColecao(col, itens);
   const capa = capaDe(col) || [...e.naEstante, ...e.membros]
@@ -7581,6 +7799,8 @@ function Acervo() {
   const [vincPanini, setVincPanini] = useState([]);
   const [grupoEditando, setGrupoEditando] = useState(null);
   const [gruposAbertos, setGruposAbertos] = useState([]);
+  const [gruposColAbertos, setGruposColAbertos] = useState([]);   // "secao:nome" dos grupos de coleções abertos
+  const [grupoColEditando, setGrupoColEditando] = useState(null);
   const [vistaSeries, setVistaSeries] = useState("lista");   // lista | mapa
   const [divOrig, setDivOrig] = useState("series");          // series | mangas | obras
   const [mangaAberto, setMangaAberto] = useState(null);
@@ -9108,14 +9328,14 @@ function Acervo() {
   const aberturas = useRef(0);
   useEffect(() => {
     const algoAberto = !!(aberto || serieAberta || persAberto || persEditando
-      || grupoEditando || painelNuvem || importando || menuCel || conflito);
+      || grupoEditando || grupoColEditando || painelNuvem || importando || menuCel || conflito);
     if (algoAberto && aberturas.current === 0) {
       aberturas.current = 1;
       try { history.pushState({ acervo: true }, ""); } catch (e) {}
     } else if (!algoAberto && aberturas.current === 1) {
       aberturas.current = 0;
     }
-  }, [aberto, serieAberta, persAberto, persEditando, grupoEditando, painelNuvem,
+  }, [aberto, serieAberta, persAberto, persEditando, grupoEditando, grupoColEditando, painelNuvem,
       importando, menuCel, conflito]);
 
   useEffect(() => {
@@ -9127,13 +9347,14 @@ function Acervo() {
       if (importando) return setImportando(false);
       if (persEditando) return setPersEditando(null);
       if (grupoEditando) return setGrupoEditando(null);
+      if (grupoColEditando) return setGrupoColEditando(null);
       if (persAberto) return setPersAberto(null);
       if (serieAberta) return setSerieAberta(null);
       if (aberto) return setAberto(null);
     };
     window.addEventListener("popstate", voltar);
     return () => window.removeEventListener("popstate", voltar);
-  }, [aberto, serieAberta, persAberto, persEditando, grupoEditando, painelNuvem,
+  }, [aberto, serieAberta, persAberto, persEditando, grupoEditando, grupoColEditando, painelNuvem,
       importando, menuCel, conflito]);
 
   const fecharDetalhe = () => {
@@ -9438,7 +9659,8 @@ function Acervo() {
     const sit = (c) => situacaoCols.porId.get(c.id) || { grupo: "outras", ordemAnda: 0, perto: -1, rel: [] };
     const az = (a, b) => a.nome.localeCompare(b.nome, "pt-BR");
     let base = colManual ? colecoesOrdenadas : [...colecoes].sort(az);
-    base = base.filter((c) => !q || c.nome.toLowerCase().includes(q) || (c.editora || "").toLowerCase().includes(q));
+    base = base.filter((c) => !q || c.nome.toLowerCase().includes(q) || (c.editora || "").toLowerCase().includes(q)
+      || grupoDaCol(c).toLowerCase().includes(q));
     if (filtroCol !== "todas") base = base.filter((c) => sit(c).grupo === filtroCol);
     if (ordemCol === "perto") {
       base = [...base].sort((a, b) => {
@@ -9457,12 +9679,60 @@ function Acervo() {
     }
     return base;
   }, [colecoes, colecoesOrdenadas, colManual, busca, filtroCol, ordemCol, situacaoCols]);
-  // na ordem por situação a grade ganha um título por grupo
+  /* Na ordem por situação a grade ganha um título por seção. Coleções do
+     mesmo grupo viram um card só, na posição da primeira delas; por
+     situação, o grupo aparece em cada seção com as que estão nela. Em A–Z
+     o grupo entra pelo nome, e em "perto de completar" pela soma dos
+     volumes de todas as dele. */
   const secoesCol = useMemo(() => {
-    if (ordemCol !== "situacao") return [{ id: "", cols: colecoesVisiveis }];
-    const grupo = (c) => (situacaoCols.porId.get(c.id) || { grupo: "outras" }).grupo;
-    return SECOES_COL.map((x) => ({ ...x, cols: colecoesVisiveis.filter((c) => grupo(c) === x.id) })).filter((x) => x.cols.length);
-  }, [colecoesVisiveis, ordemCol, situacaoCols]);
+    const porId = situacaoCols.porId;
+    const sitDe = (c) => (porId.get(c.id) || { grupo: "outras" }).grupo;
+    const todosDe = new Map();
+    for (const c of colecoes) {
+      const g = grupoDaCol(c);
+      if (!g) continue;
+      if (!todosDe.has(g)) todosDe.set(g, []);
+      todosDe.get(g).push(c);
+    }
+    const montar = (cols, secId) => {
+      const itensSec = [];
+      const vistos = new Map();
+      for (const c of cols) {
+        const g = grupoDaCol(c);
+        if (!g) { itensSec.push({ tipo: "col", col: c }); continue; }
+        if (vistos.has(g)) { vistos.get(g).membros.push(c); continue; }
+        const it = { tipo: "grupo", nome: g, chave: `${secId}:${g}`, membros: [c], todos: todosDe.get(g) || [c] };
+        vistos.set(g, it);
+        itensSec.push(it);
+      }
+      return itensSec;
+    };
+    if (ordemCol !== "situacao") {
+      const itensTudo = montar(colecoesVisiveis, "todas");
+      const nomeDe = (it) => (it.tipo === "grupo" ? it.nome : it.col.nome);
+      if (ordemCol === "az") itensTudo.sort((a, b) => nomeDe(a).localeCompare(nomeDe(b), "pt-BR"));
+      if (ordemCol === "perto") {
+        const medida = (it) => {
+          if (it.tipo === "col") { const x = porId.get(it.col.id); return { comp: sitDe(it.col) === "comp", perto: x ? x.perto : -1 }; }
+          let tenho = 0, total = 0, todasComp = true;
+          for (const c of it.membros) {
+            const x = porId.get(c.id);
+            if (sitDe(c) !== "comp") todasComp = false;
+            if (x && x.e.total > 0) { tenho += x.e.tenho.size + x.e.caminho.size; total += x.e.total; }
+          }
+          return { comp: todasComp, perto: total ? tenho / total : -1 };
+        };
+        const m = new Map(itensTudo.map((it) => [it, medida(it)]));
+        itensTudo.sort((a, b) => (m.get(a).comp - m.get(b).comp) || (m.get(b).perto - m.get(a).perto) || nomeDe(a).localeCompare(nomeDe(b), "pt-BR"));
+      }
+      return [{ id: "", n: colecoesVisiveis.length, itens: itensTudo }];
+    }
+    return SECOES_COL.map((x) => {
+      const cols = colecoesVisiveis.filter((c) => sitDe(c) === x.id);
+      return { ...x, n: cols.length, itens: montar(cols, x.id) };
+    }).filter((x) => x.n);
+  }, [colecoes, colecoesVisiveis, ordemCol, situacaoCols]);
+  const nomesGruposCol = useMemo(() => [...new Set(colecoes.map(grupoDaCol).filter(Boolean))].sort((a, b) => a.localeCompare(b, "pt-BR")), [colecoes]);
   const contaCol = useMemo(() => {
     const n = { todas: colecoes.length, anda: 0, lac: 0, comp: 0, outras: 0, rel: 0, pre: 0, caminho: 0 };
     for (const c of colecoes) {
@@ -9499,6 +9769,71 @@ function Acervo() {
       return prev.map((c) => ({ ...c, ordem: posicao.get(c.id) }));
     });
   }, []);
+
+  /* Ordem manual: o grupo se move inteiro. Arrastando para baixo ele
+     entra depois do alvo, para cima antes — como uma coleção sozinha. */
+  const reordenarBloco = useCallback((ids, idDestino) => {
+    if (!ids.length || !idDestino || ids.includes(idDestino)) return;
+    setColecoes((prev) => {
+      const lista = [...prev].sort((a, b) => {
+        const oa = a.ordem == null ? Infinity : a.ordem;
+        const ob = b.ordem == null ? Infinity : b.ordem;
+        return oa !== ob ? oa - ob : a.nome.localeCompare(b.nome, "pt-BR");
+      });
+      const bloco = lista.filter((c) => ids.includes(c.id));
+      const resto = lista.filter((c) => !ids.includes(c.id));
+      let para = resto.findIndex((c) => c.id === idDestino);
+      if (!bloco.length || para < 0) return prev;
+      if (lista.findIndex((c) => c.id === bloco[0].id) < lista.findIndex((c) => c.id === idDestino)) para += 1;
+      resto.splice(para, 0, ...bloco);
+      const posicao = new Map(resto.map((c, i) => [c.id, i]));
+      return prev.map((c) => ({ ...c, ordem: posicao.get(c.id) }));
+    });
+  }, []);
+  /* Solta o que está sendo arrastado — uma coleção ou um grupo ("g:Nome")
+     — sobre uma coleção ({ id }) ou sobre um grupo ({ grupo }). Sobre um
+     grupo, entra antes dele inteiro (subindo) ou depois dele inteiro
+     (descendo): nunca no meio do bloco, que embaralharia a ordem dele. */
+  const soltarColEm = (destino) => {
+    const origem = colArrastada;
+    setColArrastada(null); setColAlvo(null);
+    if (!origem) return;
+    const ord = colecoesOrdenadas;
+    const pos = (id) => ord.findIndex((c) => c.id === id);
+    const grupoOrigem = origem.startsWith("g:") ? origem.slice(2) : "";
+    const idsOrigem = grupoOrigem ? ord.filter((c) => grupoDaCol(c) === grupoOrigem).map((c) => c.id) : [origem];
+    let alvoId = destino.id;
+    if (destino.grupo) {
+      const daOrigem = grupoOrigem || grupoDaCol(ord.find((c) => c.id === origem));
+      if (daOrigem === destino.grupo) return;
+      const membrosAlvo = ord.filter((c) => grupoDaCol(c) === destino.grupo);
+      if (!membrosAlvo.length || !idsOrigem.length) return;
+      const desce = pos(idsOrigem[0]) < pos(membrosAlvo[0].id);
+      alvoId = (desce ? membrosAlvo[membrosAlvo.length - 1] : membrosAlvo[0]).id;
+    }
+    if (grupoOrigem) reordenarBloco(idsOrigem, alvoId);
+    else reordenarColecoes(origem, alvoId);
+  };
+
+  const salvarGrupoCol = ({ original, nome, ids }) => {
+    const sel = new Set(ids);
+    setColecoes((p) => p.map((c) => {
+      const g = grupoDaCol(c);
+      if (sel.has(c.id)) return g === nome ? c : { ...c, grupo: nome };
+      if (original && g === original) return { ...c, grupo: "" };
+      return c;
+    }));
+    setGrupoColEditando(null);
+    setGruposColAbertos([]);
+    avisar(`Grupo “${nome}”: ${ids.length} ${ids.length === 1 ? "coleção" : "coleções"}.`);
+  };
+  const desfazerGrupoCol = (nome) => {
+    if (!window.confirm(`Desfazer o grupo “${nome}”? As coleções continuam como estão, só deixam de ficar juntas.`)) return;
+    setColecoes((p) => p.map((c) => (grupoDaCol(c) === nome ? { ...c, grupo: "" } : c)));
+    setGrupoColEditando(null);
+    setGruposColAbertos([]);
+    avisar(`Grupo “${nome}” desfeito. As coleções continuam no acervo.`);
+  };
 
   const listasVisiveis = useMemo(() => {
     const q = busca.trim().toLowerCase();
@@ -10362,6 +10697,10 @@ function Acervo() {
                           </button>
                         ))}
                       </div>
+                      <button className="btn btn-mini" onClick={() => setGrupoColEditando({ nome: "" })}
+                              title="Juntar coleções num card só — por fase, linha ou editora">
+                        <Package size={13} /> Novo grupo
+                      </button>
                       <span className="cl-espaco" />
                       {colManual && busca.trim() && <span className="contagem">busca ativa — limpe para arrastar</span>}
                       <span className="cl-rot">Ordem</span>
@@ -10382,36 +10721,89 @@ function Acervo() {
                     </div>
                   </div>
                 ),
-                // um título por grupo (na ordem por situação) e os cards logo depois
-                ...secoesCol.flatMap((sec, si) => {
-                  const antes = secoesCol.slice(0, si).reduce((n, x) => n + x.cols.length, 0);
-                  return [
+                // um título por seção (na ordem por situação) e os cards logo depois
+                ...(() => {
+                  let indice = 0;
+                  const cardCol = (c) => (
+                    <CardColecao
+                      key={c.id}
+                      col={c}
+                      itens={itens}
+                      sit={situacaoCols.porId.get(c.id)}
+                      capaDe={capaDe}
+                      indice={indice++}
+                      aoAbrir={() => setColAberta(c)}
+                      arrastavel={podeArrastar}
+                      arrastando={colArrastada === c.id}
+                      alvo={colAlvo === c.id && colArrastada !== c.id}
+                      aoArrastarInicio={() => setColArrastada(c.id)}
+                      aoArrastarSobre={() => setColAlvo(c.id)}
+                      aoSairDoAlvo={() => setColAlvo((v) => (v === c.id ? null : v))}
+                      aoSoltar={() => soltarColEm({ id: c.id })}
+                      aoArrastarFim={() => { setColArrastada(null); setColAlvo(null); }}
+                    />
+                  );
+                  return secoesCol.flatMap((sec) => [
                     sec.id ? (
                       <div className="cl-sec" key={`sec-${sec.id}`}>
-                        <h3>{sec.tit}</h3><em>{sec.cols.length}</em><p>{sec.sub}</p>
+                        <h3>{sec.tit}</h3><em>{sec.n}</em><p>{sec.sub}</p>
                       </div>
                     ) : null,
-                    ...sec.cols.map((c, k) => (
-                <CardColecao
-                  key={c.id}
-                  col={c}
-                  itens={itens}
-                  sit={situacaoCols.porId.get(c.id)}
-                  capaDe={capaDe}
-                  indice={antes + k}
-                  aoAbrir={() => setColAberta(c)}
-                  arrastavel={podeArrastar}
-                  arrastando={colArrastada === c.id}
-                  alvo={colAlvo === c.id && colArrastada !== c.id}
-                  aoArrastarInicio={() => setColArrastada(c.id)}
-                  aoArrastarSobre={() => setColAlvo(c.id)}
-                  aoSairDoAlvo={() => setColAlvo((v) => (v === c.id ? null : v))}
-                  aoSoltar={() => { reordenarColecoes(colArrastada, c.id); setColArrastada(null); setColAlvo(null); }}
-                  aoArrastarFim={() => { setColArrastada(null); setColAlvo(null); }}
-                />
-                    )),
-                  ];
-                }),
+                    ...sec.itens.flatMap((it) => {
+                      if (it.tipo === "col") return [cardCol(it.col)];
+                      const aberto = gruposColAbertos.includes(it.chave);
+                      const alternar = () => setGruposColAbertos((p) => (p.includes(it.chave) ? p.filter((x) => x !== it.chave) : [...p, it.chave]));
+                      const marca = "g:" + it.nome;
+                      const saida = [
+                        <CardGrupoColecao
+                          key={`grupo-${it.chave}`}
+                          nome={it.nome}
+                          membros={it.membros}
+                          todos={it.todos}
+                          porId={situacaoCols.porId}
+                          itens={itens}
+                          capaDe={capaDe}
+                          aberto={aberto}
+                          indice={indice++}
+                          aoAlternar={alternar}
+                          aoEditar={() => setGrupoColEditando({ nome: it.nome })}
+                          arrastavel={podeArrastar}
+                          arrastando={colArrastada === marca}
+                          alvo={colAlvo === marca && colArrastada !== marca}
+                          aoArrastarInicio={() => setColArrastada(marca)}
+                          aoArrastarSobre={() => setColAlvo(marca)}
+                          aoSairDoAlvo={() => setColAlvo((v) => (v === marca ? null : v))}
+                          aoSoltar={() => soltarColEm({ grupo: it.nome })}
+                          aoArrastarFim={() => { setColArrastada(null); setColAlvo(null); }}
+                        />,
+                      ];
+                      if (aberto) {
+                        const fora = it.todos.filter((c) => !it.membros.includes(c));
+                        const ondeFora = [...new Set(fora.map((c) => NOME_SIT_COL[(situacaoCols.porId.get(c.id) || { grupo: "outras" }).grupo]))];
+                        saida.push(
+                          <div className="cl-faixa" key={`faixa-${it.chave}`}>
+                            <div className="cl-faixa-cab">
+                              <h3>{it.nome}</h3>
+                              <em>{it.membros.length} {it.membros.length === 1 ? "coleção" : "coleções"}</em>
+                              <span className="cl-espaco" />
+                              <button className="btn btn-mini" onClick={() => setGrupoColEditando({ nome: it.nome })}><Pencil size={12} /> Editar grupo</button>
+                              <button className="btn btn-mini" onClick={alternar}><ChevronDown size={13} style={{ transform: "rotate(180deg)" }} /> Recolher</button>
+                              {fora.length > 0 && (
+                                <p>
+                                  {sec.id
+                                    ? `Mais ${fora.length} deste grupo ${fora.length === 1 ? "está" : "estão"} em ${ondeFora.join(" e ")}.`
+                                    : `Mais ${fora.length} deste grupo ${fora.length === 1 ? "ficou" : "ficaram"} de fora pela busca ou pelo filtro.`}
+                                </p>
+                              )}
+                            </div>
+                            <div className="cl-faixa-grade">{it.membros.map(cardCol)}</div>
+                          </div>
+                        );
+                      }
+                      return saida;
+                    }),
+                  ]);
+                })(),
               ]
             : emPersonagens
             ? fatiar(personagensVisiveis).map((p, i) => (
@@ -10921,8 +11313,21 @@ function Acervo() {
         <FormColecao
           inicial={colEditando}
           capaAtual={capas[colEditando.id] || ""}
+          grupos={nomesGruposCol}
           aoSalvar={salvarColecao}
           aoFechar={() => setColEditando(null)}
+          aoAvisar={avisar}
+        />
+      )}
+
+      {grupoColEditando && (
+        <FormGrupoColecao
+          inicial={grupoColEditando}
+          colecoes={colecoesOrdenadas}
+          porId={situacaoCols.porId}
+          aoSalvar={salvarGrupoCol}
+          aoDesfazer={desfazerGrupoCol}
+          aoFechar={() => setGrupoColEditando(null)}
           aoAvisar={avisar}
         />
       )}
@@ -12309,7 +12714,10 @@ async function numerosDoHtmlDaCategoria(wiki, pagina) {
   const fora = new Set();
   // "Série #12 (Janeiro, 1990)" e também os títulos dos links "Série Vol 1 12"
   const re1 = /#(\d{1,7})\s*\(\s*[A-Za-z]+,?\s*\d{4}\s*\)/g;
-  const re2 = new RegExp(base.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\s+(\\d{1,7})(?![\\d])", "g");
+  /* "Série Vol 1 13 (Digital)" é capítulo digital, não edição: a Injustice
+     Year Two tem 12 edições impressas e 24 capítulos, e a página da
+     categoria lista os dois. Número seguido de parênteses não conta. */
+  const re2 = new RegExp(base.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\s+(\\d{1,7})(?![\\d])(?!\\s*\\()", "g");
   let m;
   while ((m = re1.exec(html))) fora.add(Number(m[1]));
   while ((m = re2.exec(html))) fora.add(Number(m[1]));
@@ -14902,7 +15310,7 @@ function FormSerie({ serie, capaAtual, aoSalvar, aoFechar, aoAvisar }) {
   );
 }
 
-function FormColecao({ inicial, capaAtual, aoSalvar, aoFechar, aoAvisar }) {
+function FormColecao({ inicial, capaAtual, grupos, aoSalvar, aoFechar, aoAvisar }) {
   const [c, setC] = useState({ ...inicial });
   const [capaNova, setCapaNova] = useState(undefined); // undefined = sem alteração
   const arquivoRef = useRef(null);
@@ -14924,7 +15332,7 @@ function FormColecao({ inicial, capaAtual, aoSalvar, aoFechar, aoAvisar }) {
 
   const salvar = () => {
     if (!c.nome.trim()) return aoAvisar("Dê um nome à coleção.");
-    aoSalvar({ ...c, nome: c.nome.trim(), total: c.tipo === "serie" ? Number(c.total) || 0 : 0 }, capaNova);
+    aoSalvar({ ...c, nome: c.nome.trim(), grupo: grupoDaCol(c), total: c.tipo === "serie" ? Number(c.total) || 0 : 0 }, capaNova);
   };
 
   return (
@@ -14971,6 +15379,12 @@ function FormColecao({ inicial, capaAtual, aoSalvar, aoFechar, aoAvisar }) {
         <div className="campo">
           <label>Editora</label>
           <input value={c.editora} onChange={(e) => set("editora", e.target.value)} placeholder="Panini" />
+        </div>
+        <div className="campo">
+          <label>Grupo (opcional)</label>
+          <input list="grupos-colecao" value={c.grupo || ""} onChange={(e) => set("grupo", e.target.value)} placeholder="Novos 52" />
+          <datalist id="grupos-colecao">{(grupos || []).map((g) => <option key={g} value={g} />)}</datalist>
+          <span className="dica">Coleções do mesmo grupo viram um card só na aba Coleções.</span>
         </div>
       </div>
 
